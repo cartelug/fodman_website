@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="Fodman International — Structured supply chain, logistics, and strategic advisory across East Africa since 2013."/>
+<title>Fodman International | Supply Chain & Strategic Advisory — East Africa</title>
+<link rel="stylesheet" href="style.css"/>
+<link rel="stylesheet" href="home.css"/>
+<link rel="icon" type="image/png" href="assets/fodman-logo.png"/>
+</head>
+<body>
+
+<!-- ═══ PRELOADER ═══ -->
+<div class="preloader" id="preloader">
+  <svg class="pl-mark" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+    <circle class="pl-globe-fill" cx="60" cy="60" r="42"/>
+    <circle class="pl-globe-ring" cx="60" cy="60" r="42"/>
+    <ellipse class="pl-meridian" cx="60" cy="60" rx="42" ry="17"/>
+    <ellipse class="pl-meridian" cx="60" cy="60" rx="17" ry="42"/>
+    <path class="pl-continent" d="M68 38 q10 2 12 10 q-4 8 -12 7 q-6 -10 0 -17 Z"/>
+    <path class="pl-continent" d="M55 70 q9 -2 11 8 q-3 10 -10 11 q-8 -10 -1 -19 Z"/>
+    <path class="pl-arrow a1" style="--len:55" d="M 32.0,26.0 C 40.0,44.0 50.0,52.0 63.0,66.0"/>
+    <path class="pl-arrow a2" style="--len:49" d="M 25.0,40.0 C 33.0,54.0 42.0,60.0 55.0,74.0"/>
+    <path class="pl-arrow a3" style="--len:41" d="M 20.0,53.0 C 28.0,62.0 35.0,68.0 46.0,80.0"/>
+    <path class="pl-head h1" d="M 70.5,74.1 L 56.1,70.2 L 67.7,59.4 Z"/>
+    <path class="pl-head h2" d="M 61.8,81.3 L 48.7,77.8 L 59.3,68.0 Z"/>
+    <path class="pl-head h3" d="M 52.1,86.6 L 40.3,83.4 L 49.9,74.6 Z"/>
+  </svg>
+  <div class="pl-wordmark syne">FODMAN<span>.</span></div>
+  <div class="pl-bar"><div class="pl-bar-fill"></div></div>
+  <div class="pl-tag">Structured Solutions · East Africa</div>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/fodman-logo-light.png" alt="Fodman International"/>
+      <span class="wm syne">FODMAN<i>.</i></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="supply-chain.html">Supply Chain</a>
+      <a href="advisory.html">Advisory</a>
+      <a href="about.html">Company</a>
+    </div>
+    <div class="nav-cta">
+      <a href="contact.html" class="btn btn--outline btn--sm">Request RFQ</a>
+      <a href="contact.html" class="btn btn--accent btn--sm">Book Consultation</a>
+    </div>
+    <button class="nav-burger" aria-label="Open menu">☰</button>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html">Home</a>
+  <a href="supply-chain.html">Supply Chain &amp; Logistics</a>
+  <a href="advisory.html">Research &amp; Advisory</a>
+  <a href="about.html">About Fodman</a>
+  <a href="contact.html" class="btn btn--accent" style="margin-top:20px;justify-content:center">Book Consultation</a>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     HERO — real photo, parallax, fade-in
+═══════════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-grid-bg"></div>
+
+  <!-- Desktop photo -->
+  <div class="hero-photo hero-photo--desktop" id="heroPhotoD">
+    <img src="assets/hero-desktop.jpg" alt="Fodman International regional operations leadership"/>
+    <!-- left-edge fade so photo blends into text zone -->
+    <div class="hero-photo-fade"></div>
+  </div>
+
+  <!-- Mobile photo -->
+  <div class="hero-photo hero-photo--mobile">
+    <img src="assets/hero-mobile.jpg" alt="Fodman International"/>
+    <div class="hero-photo-fade hero-photo-fade--top"></div>
+  </div>
+
+  <div class="container hero-container">
+    <div class="hero-content" id="heroContent">
+      <div class="hero-badges">
+        <div class="hero-badge"><span class="pulse-dot"></span>Established 2013 · Kampala</div>
+        <div class="hero-badge"><span class="pulse-dot"></span>Uganda · South Sudan</div>
+      </div>
+      <h1 class="syne hero-h1">
+        Structured<br>
+        Solutions<br>
+        <em>Across East Africa.</em>
+      </h1>
+      <p class="hero-sub">Supply chain coordination, institutional procurement, and strategic advisory — delivered with operational discipline across Uganda, South Sudan, and the broader East African region.</p>
+      <div class="hero-actions">
+        <a href="contact.html" class="btn btn--accent btn--lg">Submit RFQ <span class="arrow">→</span></a>
+        <a href="supply-chain.html" class="btn btn--outline btn--lg">Explore Services</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats bar at bottom of hero -->
+  <div class="hero-statsbar">
+    <div class="container">
+      <div class="hero-statsbar-inner">
+        <div class="hstat"><span class="hstat-val syne" data-counter data-target="10" data-suffix="+">10+</span><span class="hstat-lbl">Years Operating</span></div>
+        <div class="hstat-div"></div>
+        <div class="hstat"><span class="hstat-val syne" data-counter data-target="50" data-suffix="+">50+</span><span class="hstat-lbl">NGO &amp; Gov Clients</span></div>
+        <div class="hstat-div"></div>
+        <div class="hstat"><span class="hstat-val syne" data-counter data-target="15" data-suffix="+">15+</span><span class="hstat-lbl">Sectors Served</span></div>
+        <div class="hstat-div"></div>
+        <div class="hstat"><span class="hstat-val syne">2</span><span class="hstat-lbl">Regional HQs</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TICKER ═══ -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="tickerTrack">
+    <div class="ticker-item">ActionAid International</div>
+    <div class="ticker-item">WildAid</div>
+    <div class="ticker-item">WHO South Sudan</div>
+    <div class="ticker-item">Habitat for Humanity</div>
+    <div class="ticker-item">Advance Africa Initiative</div>
+    <div class="ticker-item">Government Ministries</div>
+    <div class="ticker-item">Development Agencies</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     ABOUT — split, scroll reveal
+═══════════════════════════════════════════ -->
+<section class="section--paper s-about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-copy reveal">
+        <div class="eyebrow">Who We Are</div>
+        <h2 class="syne">A decade of operational excellence across East Africa.</h2>
+        <p class="mt24">Founded in 2013, Fodman International has grown from a localized Kampala-based supplier into a regional strategic partner trusted by governments, development organizations, and multinational enterprises.</p>
+        <p class="mt16">We bridge the gap between strategic planning and physical implementation — combining operational logistics with institutional advisory to deliver compliant, impact-driven service in both stable and complex environments.</p>
+        <div class="mt32"><a href="about.html" class="btn btn--ghost">Read our story <span class="arrow">→</span></a></div>
+      </div>
+      <div class="about-stats reveal reveal-delay-2">
+        <div class="astat-grid">
+          <div class="astat astat--dark">
+            <span class="astat-val syne" data-counter data-target="10" data-suffix="+">10+</span>
+            <span class="astat-label">Years Experience</span>
+            <span class="astat-sub">Trusted since 2013</span>
+          </div>
+          <div class="astat astat--purple">
+            <span class="astat-val syne" data-counter data-target="50" data-suffix="+">50+</span>
+            <span class="astat-label">Clients Served</span>
+            <span class="astat-sub">NGO · Gov · Private</span>
+          </div>
+          <div class="astat astat--wide astat--grape">
+            <div class="astat-wide-inner">
+              <div>
+                <span class="astat-val syne" style="font-size:1.7rem">Kampala + Juba</span>
+                <span class="astat-label">Regional Presence</span>
+              </div>
+              <div class="astat-right">
+                <span class="astat-badge">100% Compliance Record</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     DIVISIONS — real photo card headers, hover zoom
+═══════════════════════════════════════════ -->
+<section class="section--dark s-divisions">
+  <div class="container">
+    <div class="section-head text-center reveal">
+      <div class="eyebrow" style="justify-content:center">Our Strategic Divisions</div>
+      <h2 class="syne" style="color:#fff">Two divisions. One integrated platform.</h2>
+      <p class="mt16">Each division operates as a specialized practice — together, they deliver end-to-end institutional support across the East African region.</p>
+    </div>
+    <div class="div-grid reveal">
+      <!-- Supply Chain -->
+      <a href="supply-chain.html" class="div-card">
+        <div class="div-card-img">
+          <img src="assets/division-supply.jpg" alt="Supply chain operations at Kampala warehouse"/>
+          <div class="div-card-img-overlay"></div>
+          <span class="div-tag">Division 01</span>
+        </div>
+        <div class="div-card-body">
+          <div class="div-icon">🚛</div>
+          <h3 class="syne">Supply Chain &amp; Logistics</h3>
+          <p>End-to-end procurement, freight, warehousing, and last-mile delivery for institutional and development-sector operations across East Africa.</p>
+          <ul class="div-list">
+            <li>Cross-border transport &amp; freight</li>
+            <li>Institutional procurement &amp; supplies</li>
+            <li>Warehousing &amp; distribution</li>
+            <li>Water materials &amp; medical logistics</li>
+          </ul>
+          <div class="div-cta">Explore Division <span>→</span></div>
+        </div>
+      </a>
+      <!-- Advisory -->
+      <a href="advisory.html" class="div-card div-card--purple">
+        <div class="div-card-img">
+          <img src="assets/division-advisory.jpg" alt="Advisory team in Kampala boardroom"/>
+          <div class="div-card-img-overlay"></div>
+          <span class="div-tag">Division 02</span>
+        </div>
+        <div class="div-card-body">
+          <div class="div-icon">📊</div>
+          <h3 class="syne">Research, Advisory &amp; Capacity</h3>
+          <p>Strategic advisory, M&amp;E frameworks, governance advisory, and capacity-building programs for institutional partners requiring rigorous operational support.</p>
+          <ul class="div-list">
+            <li>Market entry &amp; feasibility analysis</li>
+            <li>Monitoring, evaluation &amp; statistics</li>
+            <li>Corporate governance &amp; HR advisory</li>
+            <li>Compliance, risk &amp; policy research</li>
+          </ul>
+          <div class="div-cta">Explore Division <span>→</span></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CAPABILITIES — bg-capabilities.jpg at 6% opacity, table rows
+═══════════════════════════════════════════ -->
+<section class="section--grape s-capabilities">
+  <div class="cap-bg-img"><img src="assets/bg-capabilities.jpg" alt=""/></div>
+  <div class="container">
+    <div class="cap-grid">
+      <div class="cap-left reveal">
+        <div class="eyebrow">Core Capabilities</div>
+        <h2 class="syne" style="color:#fff">Built for complex, high-stakes operations.</h2>
+        <p class="mt16" style="max-width:420px">From sourcing specialized materials to navigating cross-border customs and relief convoys — our infrastructure is designed around accuracy, compliance, and speed.</p>
+        <div class="mt32"><a href="contact.html" class="btn btn--accent">Request a Proposal <span class="arrow">→</span></a></div>
+      </div>
+      <div class="cap-right">
+        <div class="cap-table">
+          <div class="cap-row reveal" style="transition-delay:.05s">
+            <div class="cap-num">01</div>
+            <div class="cap-title syne">Integrated Freight &amp; Transport</div>
+            <div class="cap-desc">End-to-end land and air freight for commercial and relief goods across Uganda and South Sudan.</div>
+            <div class="cap-arrow">→</div>
+          </div>
+          <div class="cap-row reveal" style="transition-delay:.12s">
+            <div class="cap-num">02</div>
+            <div class="cap-title syne">Institutional Procurement</div>
+            <div class="cap-desc">Specialized sourcing matching UN procurement standards for development programs and agencies.</div>
+            <div class="cap-arrow">→</div>
+          </div>
+          <div class="cap-row reveal" style="transition-delay:.19s">
+            <div class="cap-num">03</div>
+            <div class="cap-title syne">Compliance &amp; Customs</div>
+            <div class="cap-desc">Expert navigation of cross-border regulations, tax exemptions, and clearance documentation.</div>
+            <div class="cap-arrow">→</div>
+          </div>
+          <div class="cap-row reveal" style="transition-delay:.26s">
+            <div class="cap-num">04</div>
+            <div class="cap-title syne">M&amp;E Framework Development</div>
+            <div class="cap-desc">Monitoring and evaluation frameworks for development partners, NGOs, and government programs.</div>
+            <div class="cap-arrow">→</div>
+          </div>
+          <div class="cap-row reveal" style="transition-delay:.33s">
+            <div class="cap-num">05</div>
+            <div class="cap-title syne">Capacity Building &amp; Training</div>
+            <div class="cap-desc">Structured programs to strengthen organizational leadership, governance, and compliance teams.</div>
+            <div class="cap-arrow">→</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTORS — real photos with purple tint, staggered reveal
+═══════════════════════════════════════════ -->
+<section class="section--paper s-sectors">
+  <div class="container">
+    <div class="section-head text-center reveal" style="max-width:560px;margin:0 auto 56px">
+      <div class="eyebrow" style="justify-content:center">Who We Serve</div>
+      <h2 class="syne">Sectors we support.</h2>
+      <p class="mt16">Trusted by governments, development agencies, healthcare programmes, and private enterprises operating across East Africa.</p>
+    </div>
+    <div class="sectors-grid">
+      <a href="supply-chain.html" class="sector-card reveal" style="transition-delay:.04s">
+        <div class="sector-img"><img src="assets/sector-gov.jpg" alt="Uganda Ministry of Finance"/></div>
+        <div class="sector-body">
+          <h3 class="syne">Government Ministries</h3>
+          <p>Procurement &amp; supply chain departments across Uganda and South Sudan.</p>
+          <span class="sector-link">Learn more <span>→</span></span>
+        </div>
+      </a>
+      <a href="supply-chain.html" class="sector-card reveal" style="transition-delay:.12s">
+        <div class="sector-img"><img src="assets/sector-health.jpg" alt="Medical supply logistics"/></div>
+        <div class="sector-body">
+          <h3 class="syne">Healthcare &amp; Public Health</h3>
+          <p>Medical logistics, cold-chain management, and pharmaceutical supply operations.</p>
+          <span class="sector-link">Learn more <span>→</span></span>
+        </div>
+      </a>
+      <a href="advisory.html" class="sector-card reveal" style="transition-delay:.20s">
+        <div class="sector-img"><img src="assets/sector-ngo.jpg" alt="NGO field coordination"/></div>
+        <div class="sector-body">
+          <h3 class="syne">International NGOs</h3>
+          <p>Development agencies, humanitarian programmes, and field coordination support.</p>
+          <span class="sector-link">Learn more <span>→</span></span>
+        </div>
+      </a>
+      <a href="advisory.html" class="sector-card reveal" style="transition-delay:.28s">
+        <div class="sector-img"><img src="assets/sector-private.jpg" alt="Kampala business meeting"/></div>
+        <div class="sector-body">
+          <h3 class="syne">Private Multinationals</h3>
+          <p>Regional market entry, compliance advisory, and supply chain operations.</p>
+          <span class="sector-link">Learn more <span>→</span></span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     REGION — region-east-africa.jpg with parallax
+═══════════════════════════════════════════ -->
+<section class="section--dark s-region">
+  <div class="container">
+    <div class="region-grid">
+      <div class="region-copy reveal">
+        <div class="eyebrow">Regional Presence</div>
+        <h2 class="syne" style="color:#fff">Operating where our partners need us most.</h2>
+        <p class="mt24">With headquarters in Kampala and an operational hub in Juba, Fodman International maintains a deep understanding of local regulatory environments, procurement frameworks, and institutional compliance standards across both stable and complex operational contexts.</p>
+        <div class="region-offices mt40">
+          <div class="office-card">
+            <span class="office-flag">🇺🇬</span>
+            <div>
+              <div class="office-name syne">Uganda — Headquarters</div>
+              <div class="office-addr">P.O. Box 29559, Mbuya Kinawataka, Plot 14, Kampala</div>
+              <a href="tel:+256775858924" class="office-tel">+256 (0) 775 858 924</a>
+            </div>
+          </div>
+          <div class="office-card">
+            <span class="office-flag">🇸🇸</span>
+            <div>
+              <div class="office-name syne">South Sudan — Operational Hub</div>
+              <div class="office-addr">Techno House, Near Mobile Roundabout, Juba</div>
+              <a href="tel:+211955910378" class="office-tel">+211 (0) 955 910 378</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="region-photo reveal reveal-delay-2">
+        <div class="region-photo-wrap" id="regionPhotoWrap">
+          <img src="assets/region-east-africa.jpg" alt="East African trade route at golden hour" id="regionImg"/>
+          <div class="region-photo-overlay"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CTA — bg-cta.jpg at 8% behind gradient
+═══════════════════════════════════════════ -->
+<section class="section--paper s-cta">
+  <div class="container">
+    <div class="cta-block">
+      <div class="cta-bg-img"><img src="assets/bg-cta.jpg" alt=""/></div>
+      <div class="cta-glow"></div>
+      <div class="cta-inner">
+        <div class="eyebrow reveal" style="justify-content:center">Partner with Fodman</div>
+        <h2 class="syne reveal" style="color:#fff">Ready to streamline your<br>regional operations?</h2>
+        <p class="reveal" style="color:rgba(255,255,255,.65);max-width:500px;margin:0 auto 40px">Whether you need logistics coordination, institutional advisory, or capacity development — our team delivers structured, compliant proposals.</p>
+        <div class="cta-actions reveal">
+          <a href="contact.html" class="btn btn--accent btn--lg">Submit RFQ <span class="arrow">→</span></a>
+          <a href="contact.html" class="btn btn--outline btn--lg">Book a Consultation</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">
+          <img src="assets/fodman-logo-light.png" alt="Fodman International"/>
+          <span class="wm syne">FODMAN<i>.</i></span>
+        </div>
+        <p>East Africa's trusted partner for integrated supply chain solutions and institutional advisory services. Operating since 2013 across Uganda and South Sudan.</p>
+        <div class="footer-socials">
+          <a href="#" class="footer-social" aria-label="LinkedIn">in</a>
+          <a href="mailto:info@fodmaninternational.com" class="footer-social" aria-label="Email">✉</a>
+          <a href="https://www.fodmaninternational.com" class="footer-social" target="_blank" rel="noopener" aria-label="Website">↗</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="supply-chain.html">Supply Chain &amp; Logistics</a></li>
+          <li><a href="supply-chain.html">Institutional Procurement</a></li>
+          <li><a href="supply-chain.html">Cross-Border Transport</a></li>
+          <li><a href="advisory.html">Research &amp; Advisory</a></li>
+          <li><a href="advisory.html">M&amp;E Frameworks</a></li>
+          <li><a href="advisory.html">Capacity Building</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Fodman</a></li>
+          <li><a href="about.html">Mission &amp; Values</a></li>
+          <li><a href="about.html">Governance</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="contact.html">Request RFQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div class="footer-contact-item">📍 P.O. Box 29559, Mbuya Kinawataka, Plot 14, Kampala, Uganda</div>
+        <div class="footer-contact-item">📍 Techno House, Near Mobile Roundabout, Juba, South Sudan</div>
+        <div class="footer-contact-item"><a href="tel:+256775858924">📞 +256 (0) 775 858 924</a></div>
+        <div class="footer-contact-item"><a href="tel:+211955910378">📞 +211 (0) 955 910 378</a></div>
+        <div class="footer-contact-item"><a href="mailto:info@fodmaninternational.com">✉ info@fodmaninternational.com</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Fodman International Limited. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script src="home.js"></script>
+</body>
+</html>
