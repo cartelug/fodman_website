@@ -1,0 +1,56 @@
+/* ═══════════════════════════════════════════════════════
+   FODMAN — FONT LOADING
+   Display: Syne (Google Fonts) — the main face
+   Secondary sans: Knockout (HTF)
+   ───────────────────────────────────────────────────────
+   KNOCKOUT LICENSE:
+   Knockout is a paid Hoefler&Co typeface. To activate the
+   real Knockout, do ONE of the following:
+
+   OPTION A — Cloud.typography (HTF's CDN):
+     Replace the @import line below with your project link:
+     @import url("//cloud.typography.com/XXXXXXX/XXXXXXX/css/fonts.css");
+     HTF gives CSS names like:
+       "Knockout 31 A","Knockout 31 B"  (Featherweight)
+       "Knockout 49 A","Knockout 49 B"  (Liteweight)
+       "Knockout 68 A","Knockout 68 B"  (Bantamweight)
+       "Knockout 91 A".."Knockout 94 A" (Sumo..Cruiserweight)
+
+   OPTION B — Self-hosted WOFF2 (if you licensed the files):
+     Drop the .woff2 files into assets/fonts/ and uncomment
+     the @font-face blocks below, fixing the paths.
+
+   Until then, the site uses OSWALD (free, Google) as the
+   closest compressed-grotesque stand-in. Everything is
+   wired to "Knockout" first, so the real font snaps in the
+   instant you add the license — zero layout change.
+   ═══════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Oswald:wght@300;400;500;600;700&display=swap');
+
+/* ── OPTION B: self-hosted Knockout (uncomment when licensed) ──
+@font-face{
+  font-family:'Knockout';
+  src:url('assets/fonts/Knockout-49-Liteweight.woff2') format('woff2');
+  font-weight:400; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:'Knockout';
+  src:url('assets/fonts/Knockout-68-Bantamweight.woff2') format('woff2');
+  font-weight:600; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:'Knockout Sumo';
+  src:url('assets/fonts/Knockout-93-CruiserweightA.woff2') format('woff2');
+  font-weight:700; font-style:normal; font-display:swap;
+}
+──────────────────────────────────────────────────────────── */
+
+:root{
+  /* Display face — Syne, the main font */
+  --font-display: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  /* Secondary sans — Knockout, with Oswald free fallback */
+  --font-sans: 'Knockout', 'Knockout 49 A', 'Oswald', 'Inter', system-ui, sans-serif;
+  /* Compressed heavy Knockout for uppercase accents/eyebrows */
+  --font-knock-heavy: 'Knockout Sumo', 'Knockout 93 A', 'Oswald', sans-serif;
+}

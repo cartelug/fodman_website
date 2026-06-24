@@ -3,7 +3,7 @@
    Key changes from V1:
    · Hero: strict 2-zone grid (no collision)
    · Mobile: stacked photo/text (no overlap)
-   · Bebas Neue everywhere display
+   · Syne display, Knockout secondary
    · Animated SVG symbols (no emojis)
    · Purple glow animations on symbols
    ═══════════════════════════════════════════ */
@@ -130,12 +130,13 @@
   50%     { opacity:.7; box-shadow:0 0 0 7px rgba(155,123,208,0); }
 }
 
-/* THE HEADLINE — Bebas Neue, stacked monument */
+/* THE HEADLINE — Syne, stacked monument */
 .hero-h1 {
-  font-family: 'Bebas Neue', 'Impact', sans-serif;
-  font-size: clamp(4.5rem, 8.5vw, 9.5rem);
-  line-height: .94;
-  letter-spacing: .02em;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(3rem, 6.2vw, 6rem);
+  line-height: .98;
+  letter-spacing: -.04em;
   color: #fff;
   margin-bottom: 20px;
 }
@@ -172,8 +173,8 @@
   align-items: center; text-align: center; padding: 2px 16px;
 }
 .hstat-val {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 2.2rem; letter-spacing: .04em;
+  font-family: var(--font-display); font-weight: 800;
+  font-size: 2.2rem; letter-spacing: -.04em;
   color: #fff; line-height: 1;
 }
 .hstat-lbl {
@@ -227,8 +228,8 @@
     padding: 0;
   }
   .hero-h1 {
-    font-size: clamp(3.4rem, 13vw, 6rem);
-    line-height: .93;
+    font-size: clamp(2.6rem, 10vw, 4rem);
+    line-height: 1.0;
   }
   .hero-sub { font-size: .95rem; max-width: 100%; }
   .hero-actions { flex-direction: column; }
@@ -319,7 +320,7 @@
   display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
 }
 .astat { border-radius: var(--r3); padding: 28px 24px; display: flex; flex-direction: column; }
-.astat-val { font-family:'Bebas Neue',sans-serif; font-size:3.2rem; letter-spacing:.04em; line-height:1; }
+.astat-val { font-family:var(--font-display);font-weight:800;font-size:3rem;letter-spacing:-.05em; line-height:1; }
 .astat-label { font-size:.7rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin-top:8px; }
 .astat-sub { font-size:.8rem; margin-top:4px; }
 .astat--dark  { background:var(--plum); }
@@ -356,7 +357,7 @@
 .div-card-img-overlay { position:absolute; inset:0; background:linear-gradient(180deg,rgba(36,15,69,.1) 0%,rgba(36,15,69,.6) 100%); }
 .div-tag { position:absolute; top:14px; right:14px; background:rgba(155,123,208,.22); border:1px solid rgba(155,123,208,.35); color:var(--lilac2); font-size:.68rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; padding:5px 13px; border-radius:999px; }
 .div-card-body { padding:26px 30px 30px; }
-.div-card h3 { color:#fff; font-size:clamp(1.6rem,3vw,2.2rem); margin-bottom:10px; letter-spacing:.02em; }
+.div-card h3 { color:#fff; font-size:clamp(1.4rem,2.6vw,1.9rem);margin-bottom:10px;letter-spacing:-.02em; }
 .div-card p { font-size:.88rem; color:rgba(255,255,255,.62); margin-bottom:18px; line-height:1.65; }
 .div-list { display:flex; flex-direction:column; gap:8px; margin-bottom:20px; }
 .div-list li { font-size:.83rem; color:rgba(255,255,255,.56); padding-left:18px; position:relative; }
@@ -385,8 +386,8 @@
 .cap-row:hover { padding-left:8px; }
 .cap-row:hover .cap-arrow { color:var(--lilac); transform:translateX(5px); }
 .cap-row:hover .cap-title  { color:var(--lilac); }
-.cap-num   { font-family:'Bebas Neue',sans-serif; font-size:.95rem; color:var(--lilac); letter-spacing:.1em; }
-.cap-title { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:#fff; transition:color .18s ease; letter-spacing:.02em; }
+.cap-num   { font-family:var(--font-knock-heavy);font-size:.95rem;color:var(--lilac);letter-spacing:.1em;font-weight:700; }
+.cap-title { font-family:var(--font-display);font-weight:700;font-size:1.15rem;color:#fff;transition:color .18s ease;letter-spacing:-.02em; }
 .cap-desc  { font-size:.84rem; color:rgba(255,255,255,.52); line-height:1.5; }
 .cap-arrow { color:rgba(255,255,255,.28); font-size:1.1rem; flex-shrink:0; transition:all .18s ease; }
 .js .cap-row { opacity:0; transform:translateX(20px); transition:opacity .6s ease,transform .6s ease; }
@@ -410,7 +411,7 @@
 .sector-card:hover .sector-img img { transform:scale(1.07); }
 .sector-body { padding:20px 20px 22px; }
 .sector-sym { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
-.sector-body h3 { font-size:1.5rem; color:var(--ink); margin-bottom:7px; letter-spacing:.02em; }
+.sector-body h3 { font-size:1.25rem;color:var(--ink);margin-bottom:7px;letter-spacing:-.02em; }
 .sector-body p { font-size:.83rem; line-height:1.55; color:var(--inkM); margin-bottom:12px; }
 .sector-link { display:inline-flex; align-items:center; gap:6px; font-size:.75rem; font-weight:700; color:var(--purple); text-transform:uppercase; letter-spacing:.1em; transition:gap .18s ease; }
 .sector-card:hover .sector-link { gap:10px; }
@@ -423,7 +424,7 @@
 .region-offices { display:flex; flex-direction:column; gap:14px; margin-top:36px; }
 .office-card { display:flex; gap:16px; align-items:flex-start; padding:18px; border-radius:var(--r2); background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); }
 .office-sym { flex-shrink:0; }
-.office-name { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:.04em; color:#fff; margin-bottom:4px; }
+.office-name { font-family:var(--font-display);font-weight:700;font-size:1.05rem;letter-spacing:-.02em;color:#fff;margin-bottom:4px; }
 .office-addr { font-size:.82rem; color:rgba(255,255,255,.5); line-height:1.5; }
 .office-tel { display:inline-block; font-size:.82rem; font-weight:600; color:var(--lilac); margin-top:5px; }
 .office-tel:hover { color:var(--lilac2); }
