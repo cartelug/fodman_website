@@ -178,8 +178,8 @@
   color: #fff; line-height: 1;
 }
 .hstat-lbl {
-  font-size: .68rem; font-weight: 600;
-  letter-spacing: .12em; text-transform: uppercase;
+  font-family: var(--font-knock-heavy); font-weight: 700;
+  font-size: .68rem; letter-spacing: .16em; text-transform: uppercase;
   color: rgba(255,255,255,.44); margin-top: 4px;
 }
 .hstat-div { width:1px; height:36px; background:rgba(255,255,255,.1); flex-shrink:0; }
@@ -321,7 +321,7 @@
 }
 .astat { border-radius: var(--r3); padding: 28px 24px; display: flex; flex-direction: column; }
 .astat-val { font-family:var(--font-display);font-weight:800;font-size:3rem;letter-spacing:-.05em; line-height:1; }
-.astat-label { font-size:.7rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin-top:8px; }
+.astat-label { font-family:var(--font-knock-heavy); font-weight:700; font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; margin-top:8px; }
 .astat-sub { font-size:.8rem; margin-top:4px; }
 .astat--dark  { background:var(--plum); }
 .astat--dark .astat-val   { color:#fff; }
@@ -386,7 +386,7 @@
 .cap-row:hover { padding-left:8px; }
 .cap-row:hover .cap-arrow { color:var(--lilac); transform:translateX(5px); }
 .cap-row:hover .cap-title  { color:var(--lilac); }
-.cap-num   { font-family:var(--font-knock-heavy);font-size:.95rem;color:var(--lilac);letter-spacing:.1em;font-weight:700; }
+.cap-num   { font-family:var(--font-sumo);font-weight:900;font-size:.92rem;color:var(--lilac);letter-spacing:.08em; }
 .cap-title { font-family:var(--font-display);font-weight:700;font-size:1.15rem;color:#fff;transition:color .18s ease;letter-spacing:-.02em; }
 .cap-desc  { font-size:.84rem; color:rgba(255,255,255,.52); line-height:1.5; }
 .cap-arrow { color:rgba(255,255,255,.28); font-size:1.1rem; flex-shrink:0; transition:all .18s ease; }
