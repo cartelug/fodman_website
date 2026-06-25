@@ -1,9 +1,73 @@
 /* ═══════════════════════════════════════════════════════
+   FODMAN INTERNATIONAL — FONTS
+   Syne from Google CDN · Knockout self-hosted WOFF2
+   @font-face paths are relative to THIS file (style.css)
+   which sits at the same level as the assets/ folder.
+   No @import chain — Safari iOS requires direct declarations.
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Syne display face ── */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&display=swap');
+
+/* ── Knockout 49 Lightweight — body, nav, buttons (weight 400) ── */
+@font-face {
+  font-family: 'Knockout';
+  src: url('assets/fonts/Knockout-49-Lightweight.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Knockout 48 Featherweight — light body (weight 300) ── */
+@font-face {
+  font-family: 'Knockout';
+  src: url('assets/fonts/Knockout-48-Featherweight.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Knockout 52 Cruiserweight — eyebrows, labels, caps (weight 700) ── */
+@font-face {
+  font-family: 'Knockout';
+  src: url('assets/fonts/Knockout-52-Cruiserweight.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Knockout 54 Sumo — ultra heavy accent (weight 900) ── */
+@font-face {
+  font-family: 'Knockout Sumo';
+  src: url('assets/fonts/Knockout-54-Sumo.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Knockout 72 Full Cruiserweight — wider compressed (weight 700) ── */
+@font-face {
+  font-family: 'Knockout Full';
+  src: url('assets/fonts/Knockout-72-Full-Cruiserweight.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── CSS font variables ── */
+:root {
+  --font-display:     'Syne', ui-sans-serif, system-ui, sans-serif;
+  --font-sans:        'Knockout', 'Arial Narrow', Arial, sans-serif;
+  --font-knock-heavy: 'Knockout', 'Arial Narrow', Arial, sans-serif;
+  --font-sumo:        'Knockout Sumo', 'Knockout Full', 'Knockout', Arial, sans-serif;
+  --font-knock-full:  'Knockout Full', 'Knockout', Arial, sans-serif;
+}
+
+/* ═══════════════════════════════════════════════════════
    FODMAN INTERNATIONAL — DESIGN SYSTEM V3
    Display: Syne   ·   Secondary sans: Knockout (Oswald fallback)
    Brand:   Purple #4A2178 · Silver #A0A0A0
    ═══════════════════════════════════════════════════════ */
-@import url('_fonts.css');
 
 :root {
   --plum:#240F45; --grape:#321557; --purple:#4A2178; --purple2:#5E2E94;
