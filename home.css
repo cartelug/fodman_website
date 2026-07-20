@@ -24,6 +24,31 @@
   overflow: hidden;
 }
 
+/* Living background — slow-drifting aurora glows + faint ledger rules,
+   painted at the hero root (z-index:auto) so hero-left's explicit
+   z-index:2 always stacks above it. hero-left's own background is
+   transparent (see below) so this shows through the text zone. */
+.hero-bg-aurora{ position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+.hero-bg-aurora .aur{ position:absolute; border-radius:50%; filter:blur(70px); }
+.hero-bg-aurora .aur-a{
+  width:520px; height:520px; top:-150px; left:4%;
+  background:radial-gradient(circle,rgba(94,46,148,.55),transparent 70%);
+  animation:auroraDriftA 26s ease-in-out infinite;
+}
+.hero-bg-aurora .aur-b{
+  width:460px; height:460px; bottom:-170px; left:30%;
+  background:radial-gradient(circle,rgba(155,123,208,.4),transparent 70%);
+  animation:auroraDriftB 32s ease-in-out infinite;
+}
+@keyframes auroraDriftA{ 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(60px,40px) scale(1.08)} }
+@keyframes auroraDriftB{ 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-50px,-30px) scale(1.05)} }
+.hero-bg-ledger{
+  position:absolute; inset:0; pointer-events:none;
+  background-image:repeating-linear-gradient(0deg, rgba(255,255,255,.032) 0 1px, transparent 1px 96px);
+  mask-image:linear-gradient(180deg, transparent, black 18%, black 78%, transparent);
+  -webkit-mask-image:linear-gradient(180deg, transparent, black 18%, black 78%, transparent);
+}
+
 /* The two-zone inner grid */
 .hero-zones {
   display: grid;
@@ -32,10 +57,11 @@
   position: relative;
 }
 
-/* LEFT ZONE — text, solid bg, grid bg texture */
+/* LEFT ZONE — text over the living background (transparent on purpose:
+   .hero already supplies the plum base; this lets the aurora/ledger
+   layers above show through instead of being hidden under a solid fill) */
 .hero-left {
   position: relative;
-  background: var(--plum);
   display: flex; align-items: center;
   padding: 60px 0 60px 0;
   z-index: 2;
@@ -71,10 +97,18 @@
   pointer-events: none;
 }
 
-/* RIGHT ZONE — photo fills this column only */
+/* RIGHT ZONE — photo fills this column only.
+   Two independent transform layers so they never fight each other:
+   .hero-photo-parallax (JS-driven translateY on scroll) wraps the img,
+   and the img itself owns a slow CSS Ken Burns zoom — one transform
+   property per element, so both motions run simultaneously. */
 .hero-right {
   position: relative;
   overflow: hidden;
+}
+.hero-photo-parallax{
+  position: absolute; inset: 0;
+  will-change: transform;
 }
 .hero-right img {
   width: 100%; height: 100%;
@@ -82,6 +116,7 @@
   object-position: center 15%; /* pull face up slightly */
   will-change: transform;
   display: block;
+  animation: heroKenBurns 24s ease-in-out infinite alternate;
   /* Feather the photo's own left edge to true transparency so it
      dissolves into the plum panel — no hard rectangular cutoff */
   -webkit-mask-image: linear-gradient(90deg,
@@ -95,6 +130,7 @@
     rgba(0,0,0,.6) 27%, rgba(0,0,0,.85) 36%,
     #000 46%);
 }
+@keyframes heroKenBurns{ from{ transform:scale(1); } to{ transform:scale(1.045); } }
 /* Top fade so nav transition is smooth */
 .hero-right::before {
   content: "";
@@ -119,29 +155,44 @@
   z-index: 1; pointer-events: none;
 }
 
-/* Hero content */
+/* Hero content — no single block-level fade anymore; each child below
+   has its own entrance + transition-delay, all keyed off this one
+   ".loaded" class (still toggled by the same home.js trigger), so the
+   whole hero reads as one choreographed sequence instead of a block. */
 .hero-content {
   padding: 0 56px 0 0;
   position: relative; z-index: 4;
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity .9s ease .2s, transform .9s ease .2s;
   width: 100%;
 }
-.hero-content.loaded { opacity:1; transform:translateY(0); }
 
 .hero-badges {
   display: flex; gap: 10px; flex-wrap: wrap;
   margin-bottom: 24px;
+  opacity:0; transform:translateY(14px);
+  transition:opacity .7s ease, transform .7s ease;
 }
+.hero-content.loaded .hero-badges{ opacity:1; transform:translateY(0); transition-delay:.02s; }
+
 .hero-badge {
+  position: relative;
   display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(255,255,255,.07);
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 999px; padding: 7px 15px;
+  background: rgba(255,255,255,.06);
+  border-radius: 999px; padding: 8px 16px;
   font-size: .72rem; font-weight: 600;
-  color: rgba(255,255,255,.75); letter-spacing: .04em;
+  color: rgba(255,255,255,.8); letter-spacing: .04em;
 }
+/* Animated gradient border (mask-composite ring trick) replacing the
+   old flat 1px border — a slow-shifting shimmer instead of a static line */
+.hero-badge::before{
+  content:""; position:absolute; inset:0; border-radius:inherit; padding:1px;
+  background:linear-gradient(120deg, rgba(155,123,208,.7), rgba(255,255,255,.1), rgba(126,79,184,.7));
+  background-size:220% 220%;
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: badgeBorder 7s ease infinite;
+  pointer-events:none;
+}
+@keyframes badgeBorder{ 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
 .pulse-dot {
   width: 7px; height: 7px; border-radius: 50%;
   background: var(--lilac); flex-shrink: 0;
@@ -152,7 +203,9 @@
   50%     { opacity:.7; box-shadow:0 0 0 7px rgba(155,123,208,0); }
 }
 
-/* THE HEADLINE — Syne, stacked monument */
+/* THE HEADLINE — Syne, stacked monument.
+   Each line is masked (overflow:hidden) with an inner span that rises
+   up from below — a kinetic reveal instead of a plain opacity fade. */
 .hero-h1 {
   font-family: var(--font-display);
   font-weight: 800;
@@ -162,10 +215,20 @@
   color: #fff;
   margin-bottom: 20px;
 }
-.hero-h1 em {
+.hero-h1 .hl-line{ display:block; overflow:hidden; }
+.hero-h1 .hl-line > span{
+  display:inline-block;
+  transform:translateY(112%);
+  opacity:0;
+  transition:transform .85s cubic-bezier(.16,1,.3,1), opacity .5s ease;
+}
+.hero-content.loaded .hero-h1 .hl-line > span{ transform:translateY(0); opacity:1; }
+.hero-content.loaded .hero-h1 .hl-line:nth-child(1) > span{ transition-delay:.06s; }
+.hero-content.loaded .hero-h1 .hl-line:nth-child(2) > span{ transition-delay:.15s; }
+.hero-content.loaded .hero-h1 .hl-line:nth-child(3) > span{ transition-delay:.24s; }
+.hero-content.loaded .hero-h1 .hl-line:nth-child(4) > span{ transition-delay:.33s; }
+.hero-h1 .hl-em > span {
   color: var(--lilac);
-  font-style: normal;
-  display: block;
   text-shadow: 0 0 60px rgba(155,123,208,.35);
 }
 
@@ -175,8 +238,60 @@
   max-width: 480px; line-height: 1.72;
   margin-bottom: 34px;
   font-weight: 400;
+  opacity:0; transform:translateY(14px);
+  transition:opacity .7s ease, transform .7s ease;
 }
-.hero-actions { display:flex; gap:14px; flex-wrap:wrap; }
+.hero-content.loaded .hero-sub{ opacity:1; transform:translateY(0); transition-delay:.44s; }
+
+.hero-actions {
+  display:flex; gap:14px; flex-wrap:wrap;
+  opacity:0; transform:translateY(14px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.hero-content.loaded .hero-actions{ opacity:1; transform:translateY(0); transition-delay:.52s; }
+
+/* Primary CTA — slow idle glow so the one action that matters keeps
+   catching the eye, plus a cursor-tracked spotlight matching the
+   Ledger Grid cards elsewhere on the page (position set via JS). */
+.hero-actions .btn--accent{
+  position:relative; overflow:hidden;
+  animation: ctaIdlePulse 3.4s ease-in-out infinite;
+}
+@keyframes ctaIdlePulse{
+  0%,100%{ box-shadow:0 12px 32px rgba(155,123,208,.4); }
+  50%     { box-shadow:0 18px 48px rgba(155,123,208,.66); }
+}
+.hero-actions .btn--accent::after{
+  content:""; position:absolute; inset:0; border-radius:inherit;
+  background:radial-gradient(150px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.4), transparent 62%);
+  opacity:0; transition:opacity .3s ease; pointer-events:none;
+}
+.hero-actions .btn--accent:hover::after{ opacity:1; }
+.hero-actions .btn--accent:hover{ animation-play-state:paused; }
+
+/* Scroll cue — bottom-center of the two-zone area, linking to the
+   next section via the existing smooth-anchor handler in main.js */
+.hero-scrollcue{
+  position:absolute; left:50%; bottom:18px; transform:translateX(-50%);
+  z-index:5; display:flex; flex-direction:column; align-items:center; gap:8px;
+  color:rgba(255,255,255,.5); text-decoration:none;
+  font-size:.66rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+  transition:color .2s ease;
+}
+.hero-scrollcue:hover{ color:#fff; }
+.scrollcue-mouse{
+  width:22px; height:34px; border:1.5px solid currentColor; border-radius:12px;
+  display:flex; justify-content:center; padding-top:6px;
+}
+.scrollcue-dot{
+  width:3px; height:7px; border-radius:2px; background:currentColor;
+  animation:scrollDot 1.8s ease infinite;
+}
+@keyframes scrollDot{
+  0%{ opacity:1; transform:translateY(0); }
+  70%{ opacity:0; transform:translateY(10px); }
+  100%{ opacity:0; transform:translateY(0); }
+}
 
 /* ─── STATS BAR ─── */
 .hero-statsbar {
@@ -193,7 +308,13 @@
 .hstat {
   flex: 1; display: flex; flex-direction: column;
   align-items: center; text-align: center; padding: 2px 16px;
+  transition: transform .2s ease;
 }
+.hstat:hover{ transform: translateY(-2px); }
+.hstat-ic{ width: 20px; height: 20px; margin-bottom: 8px; opacity: .5; transition: opacity .2s ease; }
+.hstat:hover .hstat-ic{ opacity: .85; }
+.hstat-ic svg{ width:100%; height:100%; }
+.hstat-ic svg *{ stroke: var(--lilac); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 .hstat-val {
   font-family: var(--font-display); font-weight: 800;
   font-size: 2.2rem; letter-spacing: -.04em;
@@ -629,5 +750,5 @@
 /* ─── RESPONSIVE ─── */
 @media(max-width:1100px){ .sectors-grid{grid-template-columns:repeat(2,1fr)} .cap-grid{grid-template-columns:1fr;gap:48px} .cap-row{grid-template-columns:38px 1fr 1fr auto;gap:12px} }
 @media(max-width:900px){ .about-grid{grid-template-columns:1fr;gap:48px} .div-grid{grid-template-columns:1fr} .region-grid{grid-template-columns:1fr;gap:48px} .region-photo-wrap{height:360px} }
-@media(max-width:768px){ .hero-left{padding:28px 0 24px} .sectors-grid{grid-template-columns:1fr 1fr} .cap-row{grid-template-columns:1fr;gap:4px} .cap-num{display:none} .cta-block{padding:52px 24px} }
+@media(max-width:768px){ .hero-left{padding:28px 0 24px} .sectors-grid{grid-template-columns:1fr 1fr} .cap-row{grid-template-columns:1fr;gap:4px} .cap-num{display:none} .cta-block{padding:52px 24px} .hero-scrollcue{display:none} .hero-bg-aurora .aur-a{width:320px;height:320px} .hero-bg-aurora .aur-b{width:280px;height:280px} }
 @media(max-width:520px){ .sectors-grid{grid-template-columns:1fr} .astat-grid{grid-template-columns:1fr} .astat--wide{grid-column:1} }

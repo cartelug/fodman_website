@@ -57,17 +57,19 @@
       <a href="https://wa.me/256775858924" target="_blank" rel="noopener" class="btn btn--wa btn--sm">WhatsApp</a>
       <a href="contact.html" class="btn btn--accent btn--sm">Request RFQ</a>
     </div>
-    <button class="nav-burger" aria-label="Open menu" id="burgerBtn">&#9776;</button>
+    <button class="nav-burger" aria-label="Open menu" aria-expanded="false" id="burgerBtn"><span class="burger-bars" aria-hidden="true"><span></span><span></span><span></span></span></button>
   </div></nav>
 <div class="mobile-nav" id="mobileNav">
-  <a href="index.html">Home</a>
+  <a href="index.html" class="active">Home</a>
   <div class="m-sub-label">Services</div>
-  <a href="lending.html" class="m-sub">Financial Services</a>
-  <a href="supply-chain.html" class="m-sub">Logistics &amp; Supplies</a>
-  <a href="consultancy.html" class="m-sub">Management Consultancy</a>
-  <a href="advisory.html" class="m-sub">Research &amp; Evaluation</a>
-  <a href="real-estate.html" class="m-sub">Real Estate Agency</a>
-  <a href="tours-travel.html" class="m-sub">Tours &amp; Travel</a>
+  <div class="m-sub-rail">
+    <a href="lending.html" class="m-sub">Financial Services</a>
+    <a href="supply-chain.html" class="m-sub">Logistics &amp; Supplies</a>
+    <a href="consultancy.html" class="m-sub">Management Consultancy</a>
+    <a href="advisory.html" class="m-sub">Research &amp; Evaluation</a>
+    <a href="real-estate.html" class="m-sub">Real Estate Agency</a>
+    <a href="tours-travel.html" class="m-sub">Tours &amp; Travel</a>
+  </div>
   <a href="about.html">Company</a>
   <a href="contact.html">Contact</a>
   <a href="https://wa.me/256775858924" target="_blank" rel="noopener" class="btn btn--accent">WhatsApp Us</a>
@@ -79,6 +81,8 @@
      Right 48%: photo only (no text ever here)
 ══════════════════════════════════════════ -->
 <section class="hero" id="hero">
+  <div class="hero-bg-aurora" aria-hidden="true"><span class="aur aur-a"></span><span class="aur aur-b"></span></div>
+  <div class="hero-bg-ledger" aria-hidden="true"></div>
   <div class="hero-zones">
 
     <!-- LEFT: text zone — solid background, no photo bleed -->
@@ -90,9 +94,10 @@
             <span class="hero-badge"><span class="pulse-dot"></span>Finance · Trust · Growth</span>
           </div>
           <h1 class="hero-h1">
-            Structured<br>
-            Solutions<br>
-            <em>Across<br>East Africa.</em>
+            <span class="hl-line"><span>Structured</span></span>
+            <span class="hl-line"><span>Solutions</span></span>
+            <span class="hl-line hl-em"><span>Across</span></span>
+            <span class="hl-line hl-em"><span>East Africa.</span></span>
           </h1>
           <p class="hero-sub">Finance, logistics &amp; supplies, consultancy, research, real estate and travel — six trusted service lines under one accountable partner, delivered with discipline across East Africa.</p>
           <div class="hero-actions">
@@ -106,12 +111,18 @@
     <!-- RIGHT: photo zone — man lives here, zero text -->
     <div class="hero-right" id="heroRight">
       <div class="hero-photo-glow"></div>
-      <!-- Desktop photo -->
-      <picture>
-        <source srcset="assets/hero-mobile.jpg" media="(max-width:768px)"/>
-        <img src="assets/hero-desktop.jpg" alt="Fodman International — East African regional operations leadership" id="heroImg"/>
-      </picture>
+      <div class="hero-photo-parallax" id="heroImgWrap">
+        <picture>
+          <source srcset="assets/hero-mobile.jpg" media="(max-width:768px)"/>
+          <img src="assets/hero-desktop.jpg" alt="Fodman International — East African regional operations leadership" id="heroImg"/>
+        </picture>
+      </div>
     </div>
+
+    <a href="#about" class="hero-scrollcue">
+      <span class="scrollcue-mouse"><span class="scrollcue-dot"></span></span>
+      Scroll
+    </a>
 
   </div>
 
@@ -119,21 +130,25 @@
   <div class="hero-statsbar">
     <div class="hero-statsbar-inner">
       <div class="hstat">
+        <span class="hstat-ic"><svg viewBox="0 0 28 28" fill="none"><rect x="4" y="6" width="20" height="18" rx="2"/><line x1="4" y1="12" x2="24" y2="12"/><line x1="9" y1="3" x2="9" y2="9"/><line x1="19" y1="3" x2="19" y2="9"/></svg></span>
         <span class="hstat-val" data-counter data-target="10" data-suffix="+">10+</span>
         <span class="hstat-lbl">Years Operating</span>
       </div>
       <div class="hstat-div"></div>
       <div class="hstat">
+        <span class="hstat-ic"><svg viewBox="0 0 28 28" fill="none"><circle cx="11" cy="9" r="4"/><path d="M4 24 C4 18 7 15 11 15 C15 15 18 18 18 24"/><path d="M18 9 A3.4 3.4 0 1 1 20.5 15"/><path d="M20 17 C23 17 25 19.5 25 24"/></svg></span>
         <span class="hstat-val" data-counter data-target="50" data-suffix="+">50+</span>
         <span class="hstat-lbl">NGO &amp; Gov Clients</span>
       </div>
       <div class="hstat-div"></div>
       <div class="hstat">
+        <span class="hstat-ic"><svg viewBox="0 0 28 28" fill="none"><rect x="3" y="15" width="5" height="9" rx="1"/><rect x="11.5" y="10" width="5" height="14" rx="1"/><rect x="20" y="5" width="5" height="19" rx="1"/></svg></span>
         <span class="hstat-val" data-counter data-target="15" data-suffix="+">15+</span>
         <span class="hstat-lbl">Sectors Served</span>
       </div>
       <div class="hstat-div"></div>
       <div class="hstat">
+        <span class="hstat-ic"><svg viewBox="0 0 28 28" fill="none"><path d="M14 3 C9.6 3 6 6.6 6 11 C6 17 14 24 14 24 C14 24 22 17 22 11 C22 6.6 18.4 3 14 3 Z"/><circle cx="14" cy="11" r="3"/></svg></span>
         <span class="hstat-val">2</span>
         <span class="hstat-lbl">Regional HQs</span>
       </div>
@@ -155,7 +170,7 @@
 </div>
 
 <!-- ══════ ABOUT ══════ -->
-<section class="section--paper s-about">
+<section class="section--paper s-about" id="about">
   <div class="container">
     <div class="about-grid">
       <div class="reveal">

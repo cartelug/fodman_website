@@ -24,17 +24,23 @@
   })();
 
   // ─── MOBILE NAV ───
+  // Burger morphs to an X via CSS (.open class), panel animates via
+  // opacity/transform (see style.css) — no more innerHTML glyph swap.
   (function(){
     const burger=document.querySelector('.nav-burger'), mn=document.querySelector('.mobile-nav');
     if(!burger||!mn)return;
-    burger.addEventListener('click',()=>{
-      const open=mn.classList.toggle('open');
-      burger.innerHTML=open?'&#10005;':'&#9776;';
+    function setOpen(open){
+      mn.classList.toggle('open',open);
+      burger.classList.toggle('open',open);
+      burger.setAttribute('aria-expanded',open?'true':'false');
+      burger.setAttribute('aria-label',open?'Close menu':'Open menu');
       document.body.style.overflow=open?'hidden':'';
+    }
+    burger.addEventListener('click',()=>setOpen(!mn.classList.contains('open')));
+    mn.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setOpen(false)));
+    document.addEventListener('keydown',e=>{
+      if(e.key==='Escape'&&mn.classList.contains('open'))setOpen(false);
     });
-    mn.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
-      mn.classList.remove('open'); burger.innerHTML='&#9776;'; document.body.style.overflow='';
-    }));
   })();
 
   // ─── SCROLL REVEAL ───

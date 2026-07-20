@@ -25,8 +25,10 @@
   }
 
   // ─── PARALLAX: HERO RIGHT PHOTO ───
-  // The right column photo slides at 0.18x page scroll
-  const heroImg = document.getElementById('heroImg');
+  // The wrapper slides at 0.18x page scroll; the <img> inside owns its
+  // own CSS Ken Burns zoom — two elements, one transform each, so the
+  // scroll-driven translateY never fights the animation's scale().
+  const heroImgWrap = document.getElementById('heroImgWrap');
   const heroEl  = document.getElementById('hero');
 
   // ─── PARALLAX: REGION PHOTO ───
@@ -40,10 +42,10 @@
       const scrollY = window.scrollY;
 
       // Hero parallax (only while hero is on screen)
-      if (heroImg && heroEl) {
+      if (heroImgWrap && heroEl) {
         const heroH = heroEl.offsetHeight;
         if (scrollY < heroH) {
-          heroImg.style.transform = `translateY(${scrollY * 0.18}px)`;
+          heroImgWrap.style.transform = `translateY(${scrollY * 0.18}px)`;
         }
       }
 
@@ -160,6 +162,16 @@
         card.style.setProperty('--my', my + '%');
       });
     });
+
+    // ─── HERO CTA SPOTLIGHT (same technique, primary button only) ───
+    const heroCta = document.querySelector('.hero-actions .btn--accent');
+    if (heroCta) {
+      heroCta.addEventListener('mousemove', e => {
+        const r = heroCta.getBoundingClientRect();
+        heroCta.style.setProperty('--mx', ((e.clientX - r.left) / r.width) * 100 + '%');
+        heroCta.style.setProperty('--my', ((e.clientY - r.top) / r.height) * 100 + '%');
+      });
+    }
   }
 
 })();

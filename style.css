@@ -270,12 +270,70 @@ section{padding:100px 0}
 .nav-links a:hover,.nav-links a.active{color:#fff}
 .nav-links a.active::after{content:"";position:absolute;bottom:-4px;left:0;right:0;height:2px;background:var(--lilac);border-radius:1px}
 .nav-cta{display:flex;align-items:center;gap:12px}
-.nav-burger{display:none;background:none;border:none;color:#fff;font-size:1.4rem}
-.mobile-nav{display:none;position:fixed;top:72px;left:0;right:0;bottom:0;background:var(--plum);z-index:999;padding:30px 40px;flex-direction:column;gap:6px;overflow-y:auto}
-.mobile-nav.open{display:flex}
-.mobile-nav a{color:rgba(255,255,255,.82);font-size:1.1rem;font-weight:500;padding:15px 0;border-bottom:1px solid var(--rule)}
+
+/* ─── BURGER: 3-bar → X morph (replaces the old ☰/✕ text-glyph swap) ─── */
+.nav-burger{display:none;background:none;border:none;padding:6px;cursor:pointer}
+.burger-bars{width:22px;height:16px;position:relative;display:block}
+.burger-bars span{position:absolute;left:0;right:0;height:2px;border-radius:2px;background:#fff;transition:transform .32s cubic-bezier(.4,0,.2,1),opacity .2s ease,top .32s cubic-bezier(.4,0,.2,1)}
+.burger-bars span:nth-child(1){top:0}
+.burger-bars span:nth-child(2){top:7px}
+.burger-bars span:nth-child(3){top:14px}
+.nav-burger.open .burger-bars span:nth-child(1){top:7px;transform:rotate(45deg)}
+.nav-burger.open .burger-bars span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav-burger.open .burger-bars span:nth-child(3){top:7px;transform:rotate(-45deg)}
+
+/* ─── MOBILE NAV: frosted-glass panel driven by opacity/transform
+   (always rendered; visibility/pointer-events gate interaction) so it
+   can actually animate open/closed instead of an instant display swap ─── */
+.mobile-nav{
+  display:flex; position:fixed; top:72px; left:0; right:0; bottom:0;
+  background:rgba(28,11,52,.94);
+  backdrop-filter:blur(22px); -webkit-backdrop-filter:blur(22px);
+  z-index:999; padding:30px 40px; flex-direction:column; gap:6px; overflow-y:auto;
+  opacity:0; visibility:hidden; pointer-events:none;
+  transform:translateY(-16px) scale(.99);
+  transition:opacity .32s ease, transform .38s cubic-bezier(.16,1,.3,1), visibility 0s linear .38s;
+}
+.mobile-nav.open{
+  opacity:1; visibility:visible; pointer-events:auto; transform:translateY(0) scale(1);
+  transition:opacity .32s ease, transform .38s cubic-bezier(.16,1,.3,1), visibility 0s linear 0s;
+}
+.mobile-nav a{
+  position:relative; color:rgba(255,255,255,.82); font-size:1.1rem; font-weight:500;
+  padding:15px 0; border-bottom:1px solid var(--rule);
+  opacity:0; transform:translateX(16px);
+  transition:opacity .4s ease, transform .4s ease, color .15s ease;
+}
 .mobile-nav a:hover{color:var(--lilac)}
-.mobile-nav .btn{margin-top:18px;justify-content:center}
+.mobile-nav a.active{color:#fff}
+.mobile-nav > a.active::before{content:"";position:absolute;left:-16px;top:50%;transform:translateY(-50%);width:4px;height:18px;border-radius:2px;background:var(--lilac)}
+.mobile-nav .btn{margin-top:18px;justify-content:center;opacity:0;transform:translateX(16px);transition:opacity .4s ease,transform .4s ease}
+.mobile-nav .btn--accent{animation:mnavWaPulse 3s ease-in-out infinite}
+@keyframes mnavWaPulse{0%,100%{box-shadow:0 8px 24px rgba(155,123,208,.32)}50%{box-shadow:0 12px 36px rgba(155,123,208,.56)}}
+
+/* Staggered reveal — each link/label cascades in on open */
+.mobile-nav.open a,.mobile-nav.open .btn,.mobile-nav.open .m-sub-label{opacity:1;transform:translateX(0)}
+.mobile-nav.open > a:nth-of-type(1){transition-delay:.05s}
+.mobile-nav.open .m-sub-label{transition-delay:.09s}
+.mobile-nav.open .m-sub-rail a:nth-child(1){transition-delay:.12s}
+.mobile-nav.open .m-sub-rail a:nth-child(2){transition-delay:.16s}
+.mobile-nav.open .m-sub-rail a:nth-child(3){transition-delay:.20s}
+.mobile-nav.open .m-sub-rail a:nth-child(4){transition-delay:.24s}
+.mobile-nav.open .m-sub-rail a:nth-child(5){transition-delay:.28s}
+.mobile-nav.open .m-sub-rail a:nth-child(6){transition-delay:.32s}
+.mobile-nav.open > a:nth-of-type(2){transition-delay:.36s}
+.mobile-nav.open > a:nth-of-type(3){transition-delay:.40s}
+.mobile-nav.open .btn{transition-delay:.44s}
+
+/* Services label + connecting "ledger rail" down the sub-list —
+   ties the mobile menu's visual language to the Ledger Grid section */
+.m-sub-label{
+  opacity:0; transform:translateX(16px); transition:opacity .4s ease,transform .4s ease;
+}
+.m-sub-label--active{color:var(--lilac)}
+.m-sub-rail{position:relative; padding-left:18px; margin:2px 0 4px; display:flex; flex-direction:column}
+.m-sub-rail::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:1px;background:linear-gradient(180deg,var(--lilac) 0%,rgba(155,123,208,.15) 100%)}
+.m-sub-rail a.active::before{content:"";position:absolute;left:-18px;top:50%;transform:translateY(-50%);width:7px;height:7px;border-radius:50%;background:var(--lilac)}
 
 /* ─── FOOTER ─── */
 footer{background:var(--plum);padding:80px 0 0;color:#fff;border-top:1px solid rgba(255,255,255,.06)}
