@@ -82,6 +82,17 @@
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:16px}
+
+/* ─── CROSS-DOCUMENT VIEW TRANSITIONS ───
+   Native, CSS-only page-to-page fade for supporting browsers (Chrome/
+   Edge 126+). Unsupported browsers ignore this at-rule entirely and
+   navigate normally — zero risk, no JS. Browsers also skip this
+   automatically under prefers-reduced-motion, per spec. */
+@view-transition{ navigation: auto; }
+::view-transition-old(root){ animation: vtFadeOut .32s cubic-bezier(.4,0,.2,1) both; }
+::view-transition-new(root){ animation: vtFadeIn .38s cubic-bezier(.4,0,.2,1) both; }
+@keyframes vtFadeOut{ from{opacity:1} to{opacity:0} }
+@keyframes vtFadeIn{ from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 body{font-family:var(--font-sans);color:var(--ink);background:var(--white);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;letter-spacing:normal}
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
@@ -170,7 +181,7 @@ section{padding:100px 0}
 .form-group{display:flex;flex-direction:column;gap:6px}
 .form-group.full{grid-column:1/-1}
 .form-group label{font-size:var(--xs);font-weight:600;color:var(--inkF);letter-spacing:.04em}
-.form-group input,.form-group select,.form-group textarea{border:1.5px solid var(--ruleL);border-radius:var(--r2);padding:12px 16px;font-size:var(--sm);color:var(--ink);background:var(--white);transition:border-color .15s ease,box-shadow .15s ease;width:100%}
+.form-group input,.form-group select,.form-group textarea{border:1.5px solid var(--ruleL);border-radius:var(--r2);padding:12px 16px;font-size:var(--sm);color:var(--ink);background:var(--white);transition:border-color .15s ease,box-shadow .15s ease;width:100%;min-height:44px}
 .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(74,33,120,.12)}
 .form-group textarea{min-height:120px;resize:vertical;line-height:1.55}
 .form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6080' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
@@ -272,7 +283,7 @@ section{padding:100px 0}
 .nav-cta{display:flex;align-items:center;gap:12px}
 
 /* ─── BURGER: 3-bar → X morph (replaces the old ☰/✕ text-glyph swap) ─── */
-.nav-burger{display:none;background:none;border:none;padding:6px;cursor:pointer}
+.nav-burger{display:none;background:none;border:none;padding:0;cursor:pointer;min-width:44px;min-height:44px;align-items:center;justify-content:center}
 .burger-bars{width:22px;height:16px;position:relative;display:block}
 .burger-bars span{position:absolute;left:0;right:0;height:2px;border-radius:2px;background:#fff;transition:transform .32s cubic-bezier(.4,0,.2,1),opacity .2s ease,top .32s cubic-bezier(.4,0,.2,1)}
 .burger-bars span:nth-child(1){top:0}
@@ -344,7 +355,7 @@ footer{background:var(--plum);padding:80px 0 0;color:#fff;border-top:1px solid r
 .footer-brand .logo .wm i{color:var(--lilac);font-style:normal}
 .footer-brand p{font-size:var(--sm);color:rgba(255,255,255,.5);line-height:1.65;max-width:310px}
 .footer-socials{display:flex;gap:10px;margin-top:20px}
-.footer-social{width:38px;height:38px;border-radius:var(--r1);border:1px solid rgba(255,255,255,.13);display:grid;place-items:center;color:rgba(255,255,255,.55);transition:all .15s ease}
+.footer-social{width:44px;height:44px;border-radius:var(--r1);border:1px solid rgba(255,255,255,.13);display:grid;place-items:center;color:rgba(255,255,255,.55);transition:all .15s ease}
 .footer-social svg{width:16px;height:16px}
 .footer-social svg .sym-stroke{stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .footer-social:hover{border-color:var(--lilac);color:var(--lilac)}
@@ -384,7 +395,7 @@ footer{background:var(--plum);padding:80px 0 0;color:#fff;border-top:1px solid r
 
 /* ─── RESPONSIVE ─── */
 @media(max-width:1024px){.container{padding:0 28px}section{padding:76px 0}.footer-grid{grid-template-columns:1fr 1fr;gap:36px}.grid-4{grid-template-columns:repeat(2,1fr)}.grid-split,.grid-split--wide{grid-template-columns:1fr;gap:48px}}
-@media(max-width:768px){.nav-links,.nav-cta{display:none}.nav-burger{display:block}.footer-grid{grid-template-columns:1fr;gap:28px}section{padding:58px 0}.container{padding:0 20px}.form-row,.radio-grid{grid-template-columns:1fr}.grid-2,.grid-3{grid-template-columns:1fr}.grid-4{grid-template-columns:1fr}}
+@media(max-width:768px){.nav-links,.nav-cta{display:none}.nav-burger{display:flex}.footer-grid{grid-template-columns:1fr;gap:28px}section{padding:58px 0}.container{padding:0 20px}.form-row,.radio-grid{grid-template-columns:1fr}.grid-2,.grid-3{grid-template-columns:1fr}.grid-4{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}.preloader{display:none}}
 
 /* ─── Inline header symbols (form section titles) ─── */
