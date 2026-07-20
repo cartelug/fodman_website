@@ -51,13 +51,22 @@
   mask-image: radial-gradient(ellipse 90% 80% at 30% 40%, black, transparent 72%);
   pointer-events: none;
 }
-/* Right-edge bleed so photo zone feels continuous */
+/* Right-edge bleed so photo zone feels continuous — wide, multi-stop
+   ease so the seam dissolves instead of cutting off at a visible edge */
 .hero-left::after {
   content: "";
   position: absolute;
-  top: 0; right: -60px; bottom: 0;
-  width: 120px;
-  background: linear-gradient(90deg, var(--plum), transparent);
+  top: 0; right: -220px; bottom: 0;
+  width: 340px;
+  background: linear-gradient(90deg,
+    var(--plum) 0%,
+    var(--plum) 18%,
+    rgba(36,15,69,.92) 30%,
+    rgba(36,15,69,.72) 42%,
+    rgba(36,15,69,.48) 54%,
+    rgba(36,15,69,.28) 66%,
+    rgba(36,15,69,.12) 80%,
+    rgba(36,15,69,0) 100%);
   z-index: 3;
   pointer-events: none;
 }
@@ -73,6 +82,18 @@
   object-position: center 15%; /* pull face up slightly */
   will-change: transform;
   display: block;
+  /* Feather the photo's own left edge to true transparency so it
+     dissolves into the plum panel — no hard rectangular cutoff */
+  -webkit-mask-image: linear-gradient(90deg,
+    transparent 0%, transparent 3%,
+    rgba(0,0,0,.12) 10%, rgba(0,0,0,.32) 18%,
+    rgba(0,0,0,.6) 27%, rgba(0,0,0,.85) 36%,
+    #000 46%);
+  mask-image: linear-gradient(90deg,
+    transparent 0%, transparent 3%,
+    rgba(0,0,0,.12) 10%, rgba(0,0,0,.32) 18%,
+    rgba(0,0,0,.6) 27%, rgba(0,0,0,.85) 36%,
+    #000 46%);
 }
 /* Top fade so nav transition is smooth */
 .hero-right::before {
@@ -90,10 +111,11 @@
   background: linear-gradient(0deg, var(--plum) 0%, transparent 100%);
   z-index: 2; pointer-events: none;
 }
-/* Ambient glow behind photo */
+/* Ambient glow behind photo — centered over the feathered seam so the
+   dissolve reads as light/atmosphere rather than a flat void */
 .hero-photo-glow {
   position: absolute; inset: 0;
-  background: radial-gradient(ellipse 80% 70% at 60% 40%, rgba(126,79,184,.2), transparent 65%);
+  background: radial-gradient(ellipse 90% 80% at 42% 42%, rgba(126,79,184,.26), transparent 68%);
   z-index: 1; pointer-events: none;
 }
 
