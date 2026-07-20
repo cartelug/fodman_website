@@ -150,8 +150,8 @@ section{padding:100px 0}
 .sym-wrap svg{width:28px;height:28px;overflow:visible}
 .sym-wrap svg .sym-stroke{stroke:var(--lilac);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 4px rgba(155,123,208,.5));animation:symGlow 3s ease-in-out infinite}
 .sym-wrap--dark svg .sym-stroke{stroke:var(--lilac2);filter:drop-shadow(0 0 5px rgba(195,172,230,.6))}
-.js .sym-draw{stroke-dasharray:120;stroke-dashoffset:120;transition:stroke-dashoffset .9s ease}
-.js .sym-draw.drawn{stroke-dashoffset:0}
+.js .sym-wrap .sym-draw{stroke-dasharray:120;stroke-dashoffset:120;transition:stroke-dashoffset .9s ease}
+.js .sym-wrap .sym-draw.drawn{stroke-dashoffset:0}
 @keyframes symGlow{0%,100%{filter:drop-shadow(0 0 3px rgba(155,123,208,.4));opacity:.9}50%{filter:drop-shadow(0 0 10px rgba(155,123,208,.9));opacity:1}}
 .sym-wrap:hover svg{animation:symOrbit 6s linear infinite}
 @keyframes symOrbit{from{transform:rotate(0)}to{transform:rotate(360deg)}}
@@ -332,3 +332,120 @@ footer{background:var(--plum);padding:80px 0 0;color:#fff;border-top:1px solid r
 /* ─── Inline header symbols (form section titles) ─── */
 h3 > span > svg .sym-stroke{stroke:var(--purple);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 h3 > span > svg .sym-dot{fill:var(--purple)}
+
+/* ═══════════════════════════════════════════════════════
+   V4 ADDITIONS — six-line brand, nav dropdown, WhatsApp,
+   leadership, service grid, product cards, legal pages
+   ═══════════════════════════════════════════════════════ */
+
+/* ─── NAV: logo mark + dropdown ─── */
+.nav-logo img{border-radius:50%;background:#0c0618}
+.nav-drop{position:relative;display:flex;align-items:center}
+.nav-drop-toggle{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.nav-drop-toggle .caret{width:9px;height:6px;transition:transform .2s ease}
+.nav-drop-toggle .caret path{stroke:currentColor;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nav-drop:hover .caret{transform:rotate(180deg)}
+.nav-drop-menu{position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%) translateY(8px);width:300px;background:#1b0d38;border:1px solid rgba(255,255,255,.1);border-radius:var(--r2);box-shadow:0 24px 60px rgba(0,0,0,.5);padding:8px;opacity:0;visibility:hidden;transition:all .2s ease;display:grid;gap:2px}
+.nav-drop:hover .nav-drop-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.nav-drop-menu::before{content:"";position:absolute;top:-16px;left:0;right:0;height:16px}
+.nav-drop-menu a{display:block;padding:11px 14px;border-radius:var(--r1);transition:background .15s ease}
+.nav-drop-menu a:hover{background:rgba(155,123,208,.16)}
+.nav-drop-menu a b{display:block;color:#fff;font-weight:600;font-size:.9rem}
+.nav-drop-menu a span{display:block;color:rgba(255,255,255,.5);font-size:.76rem;margin-top:1px}
+.nav-cta .btn--wa{background:#1FA855;color:#fff;box-shadow:0 10px 26px rgba(31,168,85,.32)}
+.nav-cta .btn--wa:hover{background:#25c162;transform:translateY(-2px)}
+
+/* ─── MOBILE NAV: service sub-labels ─── */
+.m-sub-label{font-family:var(--font-knock-heavy);font-weight:700;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--lilac);padding:16px 0 4px;border-bottom:1px solid var(--rule)}
+.mobile-nav a.m-sub{padding-left:14px;color:rgba(255,255,255,.66);font-size:1rem}
+
+/* ─── FOOTER: logo lockup ─── */
+.footer-lockup{width:230px;max-width:78%;margin-bottom:16px}
+
+/* ─── HERO badge finance strip ─── */
+.trust-strip{display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;font-family:var(--font-knock-heavy);font-weight:700;letter-spacing:.24em;text-transform:uppercase;font-size:.78rem;color:var(--lilac)}
+.trust-strip span{display:inline-flex;align-items:center;gap:14px}
+.trust-strip span::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--lilac);opacity:.6}
+.trust-strip span:last-child::after{display:none}
+
+/* ─── SIX-LINE SERVICE GRID ─── */
+.svcx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.svcx{position:relative;display:flex;flex-direction:column;background:var(--white);border:1px solid var(--ruleL);border-radius:var(--r3);padding:30px;box-shadow:var(--s1);transition:all .22s ease;overflow:hidden;height:100%}
+.svcx::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple),var(--lilac));transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+.svcx:hover{box-shadow:var(--s3);transform:translateY(-6px);border-color:transparent}
+.svcx:hover::before{transform:scaleX(1)}
+.svcx-num{font-family:var(--font-knock-heavy);font-weight:700;font-size:.78rem;letter-spacing:.2em;color:var(--inkF)}
+.svcx h3{font-size:1.22rem;margin:14px 0 8px}
+.svcx p{font-size:.9rem;line-height:1.62;flex-grow:1}
+.svcx .svcx-link{margin-top:18px;font-family:var(--font-sans);font-weight:600;font-size:.85rem;color:var(--purple);display:inline-flex;align-items:center;gap:6px;transition:gap .18s ease}
+.svcx:hover .svcx-link{gap:11px}
+.svcx-tag{display:inline-block;margin-top:10px;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--lilac);background:var(--wash);padding:3px 9px;border-radius:999px;align-self:flex-start}
+
+/* ─── LEADERSHIP ─── */
+.lead-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.lead-card{background:var(--white);border:1px solid var(--ruleL);border-radius:var(--r3);padding:26px;box-shadow:var(--s1);transition:all .22s ease}
+.lead-card:hover{box-shadow:var(--s2);transform:translateY(-3px)}
+.lead-avatar{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--purple2));display:grid;place-items:center;color:#fff;font-family:var(--font-display);font-weight:800;font-size:1.3rem;margin-bottom:16px;letter-spacing:-.02em}
+.lead-card h3{font-size:1.08rem;margin-bottom:3px}
+.lead-role{font-family:var(--font-knock-heavy);font-weight:700;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--purple);margin-bottom:10px}
+.lead-card p{font-size:.82rem;line-height:1.55}
+.lead-card--wide{grid-column:span 4;display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center}
+.lead-card--wide .lead-avatar{width:76px;height:76px;font-size:1.7rem;margin-bottom:0}
+.lead-card--wide h3{font-size:1.5rem}
+
+/* ─── PRODUCT / LOAN CARDS ─── */
+.prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.prod-card{background:var(--white);border:1px solid var(--ruleL);border-radius:var(--r3);padding:30px;box-shadow:var(--s1);display:flex;flex-direction:column;transition:all .22s ease}
+.prod-card:hover{box-shadow:var(--s3);transform:translateY(-5px);border-color:transparent}
+.prod-card.featured{background:var(--grape);color:#fff;border-color:transparent}
+.prod-card.featured p,.prod-card.featured li{color:rgba(255,255,255,.72)}
+.prod-card h3{font-size:1.2rem;margin-bottom:6px}
+.prod-card .prod-meta{font-family:var(--font-knock-heavy);font-weight:700;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:16px}
+.prod-card.featured .prod-meta{color:var(--lilac2)}
+.prod-card ul{display:flex;flex-direction:column;gap:9px;margin:6px 0 20px}
+.prod-card ul li{position:relative;padding-left:22px;font-size:.86rem;color:var(--inkM);line-height:1.5}
+.prod-card ul li::before{content:"";position:absolute;left:0;top:7px;width:11px;height:6px;border-left:2px solid var(--purple);border-bottom:2px solid var(--purple);transform:rotate(-45deg)}
+.prod-card.featured ul li::before{border-color:var(--lilac2)}
+.prod-card .btn{margin-top:auto;justify-content:center}
+
+/* ─── PROCESS STEPS (numbered) ─── */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;counter-reset:step}
+.step{position:relative;padding-top:20px}
+.step-n{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--purple),var(--purple2));color:#fff;display:grid;place-items:center;font-family:var(--font-display);font-weight:800;margin-bottom:16px;box-shadow:var(--sp)}
+.step h3{font-size:1.05rem;margin-bottom:8px}
+.step p{font-size:.86rem}
+
+/* ─── INFO / DRAFT NOTICE ─── */
+.notice{display:flex;gap:12px;align-items:flex-start;background:var(--wash);border:1px solid var(--lilac2);border-radius:var(--r2);padding:16px 20px;font-size:.86rem;color:var(--ink2);margin-top:22px}
+.notice svg{width:20px;height:20px;flex-shrink:0;margin-top:1px}
+.notice svg path,.notice svg circle,.notice svg line{stroke:var(--purple);stroke-width:2;fill:none;stroke-linecap:round}
+
+/* ─── PROSE (legal pages) ─── */
+.prose{max-width:760px;margin:0 auto}
+.prose h2{font-size:1.5rem;margin:40px 0 14px}
+.prose h3{font-size:1.1rem;margin:26px 0 10px}
+.prose p{margin-bottom:14px}
+.prose ul{margin:0 0 16px 0;display:flex;flex-direction:column;gap:8px}
+.prose ul li{position:relative;padding-left:22px;color:var(--inkM);font-size:.94rem}
+.prose ul li::before{content:"";position:absolute;left:2px;top:9px;width:6px;height:6px;border-radius:50%;background:var(--purple)}
+.prose a{color:var(--purple);font-weight:500;text-decoration:underline}
+
+/* ─── 404 ─── */
+.err-wrap{min-height:70vh;display:grid;place-items:center;text-align:center;padding:120px 20px 80px}
+.err-code{font-family:var(--font-display);font-weight:800;font-size:clamp(5rem,18vw,10rem);line-height:1;background:linear-gradient(135deg,var(--purple),var(--lilac));-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.05em}
+
+/* ─── FORM: dual submit + success ─── */
+.form-actions{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.form-note{font-size:.8rem;color:var(--inkF);text-align:center}
+.form-note a{color:var(--purple);font-weight:600}
+
+@media(max-width:1024px){
+  .svcx-grid,.prod-grid,.steps{grid-template-columns:repeat(2,1fr)}
+  .lead-grid{grid-template-columns:repeat(2,1fr)}
+  .lead-card--wide{grid-column:span 2}
+}
+@media(max-width:768px){
+  .svcx-grid,.prod-grid,.steps,.lead-grid{grid-template-columns:1fr}
+  .lead-card--wide{grid-column:span 1;grid-template-columns:1fr;text-align:center;justify-items:center}
+  .nav-drop{display:none}
+}

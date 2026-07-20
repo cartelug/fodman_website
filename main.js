@@ -85,26 +85,62 @@
     Array.from(t.children).forEach(el=>t.appendChild(el.cloneNode(true)));
   })();
 
-  // ─── RFQ FORM (demo) ───
+  // ─── RFQ FORM → WhatsApp + Email (no backend required) ───
   (function(){
     const form=document.querySelector('.rfq-form');
     if(!form)return;
-    form.addEventListener('submit',(e)=>{
+    const WA='256775858924', MAIL='info@fodmaninternational.com';
+    const val=n=>{const el=form.querySelector('[name="'+n+'"]');return el?el.value.trim():'';};
+    function regions(){return Array.from(form.querySelectorAll('[name="region"]:checked')).map(c=>c.value).join(', ');}
+    function service(){const s=form.querySelector('[name="service"]:checked');return s?s.value:'';}
+    function compose(){
+      const L=[];
+      L.push('*NEW RFQ — Fodman International*');
+      L.push('');
+      L.push('Service: '+(service()||'—'));
+      L.push('Organization: '+(val('org')||'—'));
+      if(val('industry'))L.push('Industry: '+val('industry'));
+      L.push('Contact: '+(val('person')||'—'));
+      L.push('Email: '+(val('email')||'—'));
+      if(val('phone'))L.push('Phone: '+val('phone'));
+      if(regions())L.push('Region(s): '+regions());
+      L.push('');
+      L.push('Scope / details:');
+      L.push(val('scope')||'—');
+      return L.join('\n');
+    }
+    function validate(){
+      let ok=true;
+      form.querySelectorAll('[required]').forEach(el=>{
+        if(!el.value.trim()){ok=false;el.style.borderColor='#c0392b';}
+        else el.style.borderColor='';
+      });
+      return ok;
+    }
+    function success(channel){
+      let m=form.querySelector('.form-success');
+      if(!m){m=document.createElement('p');m.className='form-success';m.style.cssText='color:#0F7A52;font-size:.9rem;margin-top:6px;font-weight:600;text-align:center';form.querySelector('.form-actions').after(m);}
+      m.textContent='Opening '+channel+'… If nothing opens, use the direct contact details on the right.';
+    }
+    form.addEventListener('submit',e=>{
       e.preventDefault();
-      const btn=form.querySelector('[type=submit]');
-      btn.innerHTML='Submitting…'; btn.disabled=true;
-      setTimeout(()=>{
-        btn.innerHTML='&#10003; RFQ Submitted'; btn.style.background='#0F7A52';
-        if(!form.querySelector('.form-success')){
-          const m=document.createElement('p');
-          m.className='form-success';
-          m.textContent='Thank you. Our corporate accounts team will respond within one business day.';
-          m.style.cssText='color:#0F7A52;font-size:.88rem;margin-top:14px;font-weight:500;text-align:center';
-          btn.after(m);
-        }
-      },1200);
+      if(!validate())return;
+      const text=encodeURIComponent(compose());
+      window.open('https://wa.me/'+WA+'?text='+text,'_blank');
+      success('WhatsApp');
+    });
+    const mailBtn=form.querySelector('.js-email-rfq');
+    if(mailBtn)mailBtn.addEventListener('click',e=>{
+      e.preventDefault();
+      if(!validate())return;
+      const subject=encodeURIComponent('RFQ — '+(val('org')||'New enquiry')+' ('+(service()||'Fodman')+')');
+      const body=encodeURIComponent(compose().replace(/\*/g,''));
+      window.location.href='mailto:'+MAIL+'?subject='+subject+'&body='+body;
+      success('your email app');
     });
   })();
+
+  // ─── MOBILE NAV: expandable services already inline; nothing extra ───
 
   // ─── UPLOAD ZONE ───
   (function(){

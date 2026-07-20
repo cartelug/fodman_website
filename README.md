@@ -1,40 +1,47 @@
-# Fodman International — Website (Redesigned)
+# Fodman International — Website
 
-A complete 5-page corporate website for Fodman International Ltd, rebuilt around
-the official brand identity: the silver globe with three purple arrows descending
-into East Africa.
+A complete corporate website for **Fodman International Ltd** — *Finance · Trust · Growth* —
+built around the official globe-and-arrows brand identity and the company's six service lines.
 
 ## Brand system
-- **Purple** `#4A2178` (sampled from the logo arrows) — primary
-- **Silver** `#A0A0A0` (sampled from the globe) — secondary
-- **Display type:** Syne · **Body type:** Inter
-- **Signature motif:** the three descending arrows — reused in the preloader
-  animation, section dividers, and hover cues.
+- **Purple** `#4A2178` (logo arrows) · **Plum** `#240F45` · **Silver** `#A0A0A8` (globe)
+- **Display type:** Syne · **Body type:** Knockout (self-hosted WOFF2)
+- **Logo:** full lockup on dark, globe mark for nav/favicon (`assets/fodman-lockup.png`, `assets/fodman-mark.png`)
+- **Signature motif:** the three descending arrows — reused in the preloader animation
 
 ## Pages
 | File | Purpose |
 |------|---------|
-| `index.html` | Home — hero, divisions, capabilities, sectors, regional presence |
-| `supply-chain.html` | Supply Chain & Logistics division |
-| `advisory.html` | Research, Advisory & Capacity division |
-| `about.html` | Company history, mission, values, governance |
-| `contact.html` | Request for Quotation (RFQ) form + contact details |
+| `index.html` | Home — hero, six service lines, capabilities, sectors, region |
+| `services.html` | Services hub — all six lines |
+| `lending.html` | Financial Services / Fodman Lending Desk |
+| `supply-chain.html` | Logistics & Supplies |
+| `consultancy.html` | Management Consultancy |
+| `advisory.html` | Research & Evaluation |
+| `real-estate.html` | Real Estate Agency |
+| `tours-travel.html` | Tours & Travel |
+| `about.html` | History, mission/values, leadership, governance |
+| `contact.html` | RFQ form (WhatsApp + email) + contact details |
+| `privacy.html` / `terms.html` | Legal |
+| `404.html` | Not-found page |
 
 ## Features
-- Custom **preloader** that draws the brand arrows into the globe on load
-- Floating logo with orbital ring in the hero
-- Scroll-reveal animations (gracefully degrade if JS is disabled)
-- Animated stat counters, partner ticker, interactive RFQ form
-- Fully responsive (desktop / tablet / mobile) with reduced-motion support
+- Custom preloader drawing the brand arrows into the globe
+- Sticky nav with a **Services dropdown**; responsive mobile menu
+- Scroll-reveal animations, animated counters, partner ticker (all degrade without JS)
+- **RFQ form wired to WhatsApp + email** — no backend required
+- SEO: per-page meta, Open Graph, `sitemap.xml`, `robots.txt`, favicons
+- Fully responsive with reduced-motion support
 
-## Assets
-- `assets/fodman-logo.png` — transparent logo (for light backgrounds)
-- `assets/fodman-logo-light.png` — lightened arrows (for dark backgrounds)
-- `assets/fodman-logo-original.png` — untouched original (backup)
+## Deploying
+Static site — no build step. Push to `main` and the included GitHub Actions workflow
+(`.github/workflows/deploy.yml`) publishes to GitHub Pages. Or drop the folder onto any
+static host (Netlify, Vercel, cPanel).
 
-## Running
-Open `index.html` in any browser, or drop the whole folder onto any static host
-(Netlify, Vercel, GitHub Pages, cPanel). No build step required.
+## Maintaining shared regions
+Nav, footer, and preloader are identical across pages. To change them, edit
+`scratchpad/build.py`'s canonical blocks and re-run it — it injects the regions into every page.
 
 ---
-Built by Shay Investments.
+Contact confirmed against Fodman's corporate profile. HQ address, the two-vs-six service
+scope, and Real Estate / Tours copy are marked for final confirmation with the client.
