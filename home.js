@@ -147,6 +147,19 @@
       });
       card.addEventListener('mouseleave', () => { card.style.transform = ''; });
     });
+
+    // ─── LEDGER CARD SPOTLIGHT ───
+    // Cursor-tracked highlight — position set as CSS custom properties,
+    // visibility/animation handled entirely in CSS (:hover opacity).
+    document.querySelectorAll('.ldg-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const mx = ((e.clientX - r.left) / r.width) * 100;
+        const my = ((e.clientY - r.top) / r.height) * 100;
+        card.style.setProperty('--mx', mx + '%');
+        card.style.setProperty('--my', my + '%');
+      });
+    });
   }
 
 })();

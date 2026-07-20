@@ -362,7 +362,7 @@
 /* ════════════════════════════════
    DIVISIONS
    ════════════════════════════════ */
-.s-divisions { padding: 100px 0; }
+.s-divisions { padding: 100px 0; position:relative; overflow:hidden; }
 .section-head { margin-bottom: 52px; }
 .div-grid { display:grid; grid-template-columns:1fr 1fr; gap:22px; }
 .div-card {
@@ -467,6 +467,164 @@
 .cta-inner h2 { font-size:clamp(2.4rem,6vw,5rem); max-width:720px; margin:0 auto 16px; color:#fff; line-height:.95; }
 .cta-inner p { color:rgba(255,255,255,.65); max-width:500px; margin:0 auto 36px; }
 .cta-actions { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+
+/* ════════════════════════════════
+   LEDGER GRID — six-service bento
+   Finance is the hero tile (dark,
+   2x2); the rest tile a 4-col grid
+   with unique per-card line-art
+   motifs, ledger numerals, proof
+   chips, staggered reveal, and a
+   cursor-tracked spotlight hover.
+   ════════════════════════════════ */
+
+/* Oversized faint numeral bled into the section background */
+.ldg-watermark{
+  position:absolute; top:-48px; right:-14px;
+  font-family:var(--font-display); font-weight:800;
+  font-size:clamp(13rem,26vw,23rem); line-height:1;
+  color:rgba(255,255,255,.032); letter-spacing:-.05em;
+  pointer-events:none; z-index:0; user-select:none;
+}
+
+/* Section header — split: copy left, fact strip right */
+.ldg-head{
+  position:relative; z-index:1;
+  display:flex; justify-content:space-between; align-items:flex-end;
+  gap:40px; text-align:left;
+}
+.ldg-head-text{ max-width:640px; }
+.ldg-head-facts{ display:flex; gap:30px; flex-shrink:0; padding-bottom:4px; }
+.ldg-fact{ display:flex; flex-direction:column; align-items:flex-end; text-align:right; }
+.ldg-fact b{ font-family:var(--font-display); font-weight:800; font-size:2.1rem; color:#fff; letter-spacing:-.03em; line-height:1; }
+.ldg-fact small{ font-family:var(--font-knock-heavy); font-weight:700; font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.42); margin-top:5px; white-space:nowrap; }
+
+/* Bento grid — 4 cols x 3 rows, Finance spans 2x2 */
+.ldg-grid{
+  position:relative; z-index:1;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  grid-template-rows:repeat(3,minmax(160px,1fr));
+  grid-template-areas:
+    "fin fin log log"
+    "fin fin con con"
+    "res res est trv";
+  gap:20px;
+}
+.ldg-fin{ grid-area:fin; }
+.ldg-log{ grid-area:log; }
+.ldg-con{ grid-area:con; }
+.ldg-res{ grid-area:res; }
+.ldg-est{ grid-area:est; }
+.ldg-trv{ grid-area:trv; }
+
+/* Card base */
+.ldg-card{
+  position:relative; overflow:hidden; display:block;
+  background:var(--white); border:1px solid var(--ruleL);
+  border-radius:var(--r3); padding:28px; box-shadow:var(--s1);
+  transition:box-shadow .25s ease, transform .25s ease, border-color .25s ease;
+}
+.ldg-card:hover{ box-shadow:var(--s3); transform:translateY(-5px); border-color:transparent; }
+.ldg-card:focus-visible{ outline:2px solid var(--purple3); outline-offset:3px; }
+.ldg-card::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,var(--purple),var(--lilac));
+  transform:scaleX(0); transform-origin:left; transition:transform .35s ease; z-index:2;
+}
+.ldg-card:hover::before{ transform:scaleX(1); }
+/* Cursor-tracked spotlight (position set via JS custom properties) */
+.ldg-card::after{
+  content:""; position:absolute; inset:0; z-index:2; opacity:0;
+  background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%), rgba(94,46,148,.10), transparent 62%);
+  transition:opacity .35s ease; pointer-events:none;
+}
+.ldg-card:hover::after{ opacity:1; }
+
+/* Content sits above motif + numeral.
+   NOTE: cards sit inside a .section--dark wrapper, whose global
+   ".section--dark h3 / p" rules force white/near-white text — invisible
+   on these white cards. Override explicitly (higher specificity via the
+   .ldg-card ancestor) for every card except the dark hero tile. */
+.ldg-body{ position:relative; z-index:1; display:flex; flex-direction:column; height:100%; }
+.ldg-body .sym-wrap{ margin-bottom:16px; }
+.ldg-card h3{ font-size:1.2rem; margin:0 0 8px; }
+.ldg-card p{ font-size:.9rem; line-height:1.6; max-width:none; }
+.ldg-card:not(.ldg-card--hero) h3{ color:var(--ink); }
+.ldg-card:not(.ldg-card--hero) p{ color:var(--inkM); }
+.ldg-chip{
+  display:inline-flex; align-items:center; gap:6px; margin-top:16px;
+  padding:5px 12px; border-radius:999px; background:var(--wash); color:var(--purple);
+  font-size:.72rem; font-weight:700; letter-spacing:.01em; align-self:flex-start;
+}
+.ldg-chip svg{ width:11px; height:11px; flex-shrink:0; }
+.ldg-link{
+  margin-top:auto; padding-top:18px; font-weight:600; font-size:.85rem; color:var(--purple);
+  display:inline-flex; align-items:center; gap:6px; transition:gap .18s ease;
+}
+.ldg-card:hover .ldg-link{ gap:11px; }
+
+/* Ledger numeral watermark, top-right of each card */
+.ldg-num{
+  position:absolute; top:6px; right:16px; z-index:0; pointer-events:none;
+  font-family:var(--font-display); font-weight:800; letter-spacing:-.04em; line-height:1;
+  font-size:4rem; color:var(--ink); opacity:.05;
+}
+
+/* Background line-art motif, bottom-right, clipped to card radius */
+.ldg-motif{ position:absolute; right:-14px; bottom:-14px; width:160px; height:160px; z-index:0; pointer-events:none; color:var(--purple); opacity:.08; }
+.ldg-motif svg{ width:100%; height:100%; display:block; }
+.ldg-motif svg :not([fill]){ stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+/* Hero tile — Financial Services, dark gradient, larger */
+.ldg-card--hero{
+  padding:40px; color:#fff;
+  background:linear-gradient(150deg,var(--plum) 0%, var(--purple) 130%);
+  border-color:transparent;
+}
+.ldg-card--hero h3{ color:#fff; font-size:1.7rem; margin-top:20px; }
+.ldg-card--hero p{ color:rgba(255,255,255,.72); max-width:340px; }
+.ldg-card--hero .sym-wrap{ background:rgba(255,255,255,.14); }
+.ldg-card--hero .sym-wrap svg .sym-stroke{ stroke:var(--lilac2); }
+.ldg-card--hero .ldg-chip{ background:rgba(255,255,255,.15); color:#fff; }
+.ldg-card--hero .ldg-link{ color:var(--lilac2); }
+.ldg-card--hero .ldg-num{ color:#fff; opacity:.14; font-size:6.5rem; top:2px; right:22px; }
+.ldg-card--hero .ldg-motif{ color:#fff; opacity:.16; width:250px; height:250px; right:-24px; bottom:-24px; }
+.ldg-card--hero::after{ background:radial-gradient(280px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.09), transparent 62%); }
+
+/* Closing row — icon constellation + CTA */
+.ldg-close{ display:flex; flex-direction:column; align-items:center; gap:22px; margin-top:56px; }
+.ldg-icons-strip{ display:flex; gap:16px; padding:11px 20px; border:1px solid rgba(255,255,255,.1); border-radius:999px; background:rgba(255,255,255,.03); }
+.ldg-icons-strip .mini-ic{ width:19px; height:19px; opacity:.5; transition:opacity .2s ease; }
+.ldg-icons-strip:hover .mini-ic{ opacity:.85; }
+.ldg-icons-strip .mini-ic svg{ width:100%; height:100%; }
+.ldg-icons-strip .mini-ic svg :not([fill]){ stroke:var(--lilac); stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+
+@media(max-width:1024px){
+  .ldg-grid{
+    grid-template-columns:repeat(2,1fr); grid-template-rows:auto;
+    grid-template-areas:
+      "fin fin"
+      "log con"
+      "res est"
+      "trv trv";
+  }
+  .ldg-card--hero{ padding:34px; }
+}
+@media(max-width:900px){
+  .ldg-head{ flex-direction:column; align-items:center; text-align:center; gap:24px; }
+  .ldg-head-facts{ justify-content:center; }
+  .ldg-fact{ align-items:center; text-align:center; }
+}
+@media(max-width:768px){
+  .ldg-grid{ display:flex; flex-direction:column; gap:16px; }
+  .ldg-num{ font-size:3.2rem; }
+  .ldg-card--hero .ldg-num{ font-size:5rem; }
+  /* Prevent the fact strip from overflowing narrow viewports */
+  .ldg-head-facts{ gap:16px; flex-wrap:wrap; row-gap:14px; }
+  .ldg-fact b{ font-size:1.6rem; }
+  .ldg-fact small{ font-size:.6rem; letter-spacing:.08em; }
+}
 
 /* ─── RESPONSIVE ─── */
 @media(max-width:1100px){ .sectors-grid{grid-template-columns:repeat(2,1fr)} .cap-grid{grid-template-columns:1fr;gap:48px} .cap-row{grid-template-columns:38px 1fr 1fr auto;gap:12px} }
