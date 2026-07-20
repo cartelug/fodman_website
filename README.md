@@ -5,7 +5,7 @@ built around the official globe-and-arrows brand identity and the company's six 
 
 ## Brand system
 - **Purple** `#4A2178` (logo arrows) · **Plum** `#240F45` · **Silver** `#A0A0A8` (globe)
-- **Display type:** Syne · **Body type:** Knockout (self-hosted WOFF2)
+- **Display type:** Plus Jakarta Sans · **Body type:** Inter (Google Fonts) — chosen for readability and a trustworthy finance feel
 - **Logo:** full lockup on dark, globe mark for nav/favicon (`assets/fodman-lockup.png`, `assets/fodman-mark.png`)
 - **Signature motif:** the three descending arrows — reused in the preloader animation
 
@@ -39,8 +39,9 @@ Static site — no build step. Push to `main` and the included GitHub Actions wo
 static host (Netlify, Vercel, cPanel).
 
 ## Maintaining shared regions
-Nav, footer, and preloader are identical across pages. To change them, edit
-`scratchpad/build.py`'s canonical blocks and re-run it — it injects the regions into every page.
+Nav, footer, and preloader are duplicated across pages so each is a standalone
+static file. When changing a shared region, apply the same edit to every
+`*.html` file (a simple find-and-replace across the folder keeps them in sync).
 
 ---
 Contact confirmed against Fodman's corporate profile. HQ address, the two-vs-six service

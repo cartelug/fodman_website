@@ -7,7 +7,7 @@
    ═══════════════════════════════════════════════════════ */
 
 /* ── Syne display face ── */
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
 
 /* ── Knockout 49 Lightweight — body, nav, buttons (weight 400) ── */
 @font-face {
@@ -56,11 +56,11 @@
 
 /* ── CSS font variables ── */
 :root {
-  --font-display:     'Syne', ui-sans-serif, system-ui, sans-serif;
-  --font-sans:        'Knockout', 'Arial Narrow', Arial, sans-serif;
-  --font-knock-heavy: 'Knockout', 'Arial Narrow', Arial, sans-serif;
-  --font-sumo:        'Knockout Sumo', 'Knockout Full', 'Knockout', Arial, sans-serif;
-  --font-knock-full:  'Knockout Full', 'Knockout', Arial, sans-serif;
+  --font-display:     'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-sans:        'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  --font-knock-heavy: 'Inter', ui-sans-serif, system-ui, Arial, sans-serif;
+  --font-sumo:        'Plus Jakarta Sans', 'Inter', system-ui, Arial, sans-serif;
+  --font-knock-full:  'Plus Jakarta Sans', 'Inter', system-ui, Arial, sans-serif;
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -82,7 +82,7 @@
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:16px}
-body{font-family:var(--font-sans);color:var(--ink);background:var(--white);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;letter-spacing:.01em}
+body{font-family:var(--font-sans);color:var(--ink);background:var(--white);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;letter-spacing:normal}
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
 button,input,select,textarea{font-family:inherit;outline:none}
@@ -91,12 +91,12 @@ ul{list-style:none}
 
 /* ─── TYPOGRAPHY ─── */
 /* Display = Syne (the main font) */
-.syne,h1,h2,h3,h4{font-family:var(--font-display);font-weight:800;line-height:1.06;letter-spacing:-.03em}
+.syne,h1,h2,h3,h4{font-family:var(--font-display);font-weight:800;line-height:1.08;letter-spacing:-.02em}
 h1{font-size:clamp(2.4rem,5vw,3.8rem)}
 h2{font-size:clamp(1.9rem,4vw,2.9rem)}
 h3{font-size:clamp(1.2rem,2.3vw,1.6rem);font-weight:700}
 h4{font-size:clamp(1.05rem,2vw,1.3rem);font-weight:700}
-p{line-height:1.72;color:var(--inkM)}
+p{line-height:1.7;color:var(--inkM);max-width:68ch}
 /* Knockout-heavy compressed for eyebrows + labels */
 .eyebrow{font-family:var(--font-knock-heavy);font-weight:700;font-size:.82rem;letter-spacing:.22em;text-transform:uppercase;color:var(--lilac);display:inline-flex;align-items:center;gap:10px;margin-bottom:16px}
 .eyebrow::before{content:"";width:24px;height:2px;background:var(--lilac);flex-shrink:0}
@@ -338,8 +338,8 @@ h3 > span > svg .sym-dot{fill:var(--purple)}
    leadership, service grid, product cards, legal pages
    ═══════════════════════════════════════════════════════ */
 
-/* ─── NAV: logo mark + dropdown ─── */
-.nav-logo img{border-radius:50%;background:#0c0618}
+/* ─── NAV: logo mark (transparent, no chip) + dropdown ─── */
+.nav-logo img{background:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
 .nav-drop{position:relative;display:flex;align-items:center}
 .nav-drop-toggle{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
 .nav-drop-toggle .caret{width:9px;height:6px;transition:transform .2s ease}
@@ -359,8 +359,19 @@ h3 > span > svg .sym-dot{fill:var(--purple)}
 .m-sub-label{font-family:var(--font-knock-heavy);font-weight:700;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--lilac);padding:16px 0 4px;border-bottom:1px solid var(--rule)}
 .mobile-nav a.m-sub{padding-left:14px;color:rgba(255,255,255,.66);font-size:1rem}
 
-/* ─── FOOTER: logo lockup ─── */
+/* ─── BRAND TEXT-LOCKUP (transparent mark + CSS wordmark) ─── */
 .footer-lockup{width:230px;max-width:78%;margin-bottom:16px}
+.footer-logo{display:inline-flex;align-items:center;gap:13px;margin-bottom:16px}
+.footer-logo img{width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4))}
+.fl-text b{display:block;font-family:var(--font-display);font-weight:800;font-size:1.4rem;color:#fff;letter-spacing:-.01em;line-height:1}
+.fl-text i{display:block;font-style:normal;font-weight:600;font-size:.68rem;letter-spacing:.32em;color:rgba(255,255,255,.72);margin-top:3px}
+.fl-text em{display:block;font-style:normal;font-weight:700;font-size:.58rem;letter-spacing:.2em;color:var(--lilac);text-transform:uppercase;margin-top:6px}
+/* Light-background brand lockup (About page) */
+.brand-lockup{display:inline-flex;align-items:center;gap:18px}
+.brand-lockup img{width:96px;height:96px;object-fit:contain;filter:drop-shadow(0 14px 30px rgba(36,15,69,.22))}
+.brand-lockup b{display:block;font-family:var(--font-display);font-weight:800;font-size:2rem;color:var(--ink);letter-spacing:-.02em;line-height:1}
+.brand-lockup i{display:block;font-style:normal;font-weight:600;font-size:.82rem;letter-spacing:.3em;color:var(--inkM);margin-top:4px}
+.brand-lockup em{display:block;font-style:normal;font-weight:700;font-size:.68rem;letter-spacing:.18em;color:var(--purple);text-transform:uppercase;margin-top:8px}
 
 /* ─── HERO badge finance strip ─── */
 .trust-strip{display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;font-family:var(--font-knock-heavy);font-weight:700;letter-spacing:.24em;text-transform:uppercase;font-size:.78rem;color:var(--lilac)}
@@ -448,4 +459,43 @@ h3 > span > svg .sym-dot{fill:var(--purple)}
   .svcx-grid,.prod-grid,.steps,.lead-grid{grid-template-columns:1fr}
   .lead-card--wide{grid-column:span 1;grid-template-columns:1fr;text-align:center;justify-items:center}
   .nav-drop{display:none}
+}
+
+/* ═══ MOBILE POLISH (≤768px) ═══ */
+@media(max-width:768px){
+  html{font-size:15.5px}
+  .container{padding:0 20px}
+  /* inner-page hero: tighter, readable */
+  .page-hero{padding:104px 0 48px}
+  .page-hero p{font-size:1rem;max-width:100%}
+  .page-hero-icon{width:60px;height:60px;margin-bottom:18px}
+  .page-hero-icon svg{width:28px;height:28px}
+  h1{font-size:clamp(2.05rem,8.5vw,2.7rem)}
+  h2{font-size:clamp(1.6rem,6.5vw,2.1rem)}
+  /* page-hero action buttons go full width, easy to tap */
+  .page-hero .mt32 .btn{width:100%;justify-content:center}
+  /* comfortable card padding */
+  .card,.svcx,.prod-card,.svc-card,.lead-card{padding:24px}
+  .svcx-grid,.prod-grid,.steps,.lead-grid,.grid-2,.grid-3{gap:16px}
+  /* shrink oversized inline CTA panels (padding:64px boxes) */
+  section div[style*="padding:64px"]{padding:38px 22px!important}
+  section div[style*="padding:88px 64px"]{padding:48px 22px!important}
+  /* footer brand + lockups scale down */
+  .footer-grid{gap:30px}
+  .brand-lockup{gap:14px}
+  .brand-lockup img{width:74px;height:74px}
+  .brand-lockup b{font-size:1.6rem}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:10px}
+  /* mobile nav: bigger tap targets */
+  .mobile-nav{padding:26px 22px 40px}
+  .mobile-nav a{padding:16px 4px;font-size:1.08rem}
+  .mobile-nav a.m-sub{padding:13px 4px 13px 14px;font-size:1rem}
+  .m-sub-label{padding:18px 0 6px}
+  /* keep the nav logo tidy */
+  .nav-inner{padding:0 20px}
+  .nav-logo .wm{font-size:1.25rem}
+}
+@media(max-width:400px){
+  .page-hero .mt32{gap:10px}
+  .hero-badge{font-size:.68rem}
 }
