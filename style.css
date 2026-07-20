@@ -81,7 +81,15 @@
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;font-size:16px}
+html{scroll-behavior:smooth;font-size:16px;accent-color:var(--purple)}
+
+/* ─── FINISHING CRAFT: selection + scrollbar in brand colors ─── */
+::selection{background:var(--purple);color:#fff}
+::-webkit-scrollbar{width:11px}
+::-webkit-scrollbar-track{background:var(--paper)}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--purple),var(--purple3));border-radius:6px;border:2px solid var(--paper)}
+::-webkit-scrollbar-thumb:hover{background:var(--purple2)}
+@supports (scrollbar-color: auto){ html{scrollbar-color:var(--purple) var(--paper);scrollbar-width:thin} }
 
 /* ─── CROSS-DOCUMENT VIEW TRANSITIONS ───
    Native, CSS-only page-to-page fade for supporting browsers (Chrome/
@@ -219,10 +227,15 @@ section{padding:100px 0}
 
 /* ─── PAGE HERO (inner pages) ─── */
 .page-hero{background:var(--plum);padding:150px 0 84px;position:relative;overflow:hidden}
+/* Second, counter-drifting glow so inner pages share the homepage's
+   living-background feel — pure CSS, no markup change on 12 pages */
+.page-hero::before{content:"";position:absolute;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(94,46,148,.34),transparent 68%);left:-8%;bottom:-45%;pointer-events:none;filter:blur(48px);animation:pageAurora 28s ease-in-out infinite}
+@keyframes pageAurora{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(52px,-30px) scale(1.07)}}
 .page-hero h1{color:#fff;position:relative;z-index:1}
 .page-hero p{color:rgba(255,255,255,.62);max-width:580px;margin-top:16px;font-size:1.1rem;position:relative;z-index:1}
 .page-hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 70% 90% at 20% 30%,black,transparent 75%)}
-.page-hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(126,79,184,.26),transparent 62%);right:-4%;top:-30%;pointer-events:none}
+.page-hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(126,79,184,.26),transparent 62%);right:-4%;top:-30%;pointer-events:none;animation:pageGlowDrift 24s ease-in-out infinite}
+@keyframes pageGlowDrift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-46px,34px) scale(1.06)}}
 .page-hero-icon{width:72px;height:72px;border-radius:var(--r3);background:linear-gradient(135deg,var(--purple),var(--purple2));display:grid;place-items:center;margin-bottom:24px;box-shadow:var(--sp);position:relative;z-index:1}
 .page-hero-icon svg{width:34px;height:34px}
 .page-hero-icon svg .sym-stroke{stroke:#fff;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
