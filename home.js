@@ -68,64 +68,15 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  // ─── TICKER DUPLICATE ───
-  const track = document.getElementById('tickerTrack');
-  if (track) {
-    Array.from(track.children).forEach(el => track.appendChild(el.cloneNode(true)));
-  }
+  // Ticker duplication is handled once, in main.js (which loads first on
+  // every page including this one) — doing it here too used to double the
+  // ticker content to 4x the intended DOM nodes. Removed.
 
-  // ─── SCROLL REVEAL ───
-  const reveals = document.querySelectorAll('.reveal, .reveal-right');
-  if (reveals.length) {
-    const revealObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
-      });
-    }, { threshold: 0.1 });
-    reveals.forEach(el => revealObs.observe(el));
-  }
-
-  // ─── SVG SYMBOL DRAW-ON ───
-  // When sym-wrap enters viewport, animate .sym-draw strokes
-  const symWraps = document.querySelectorAll('.sym-wrap');
-  if (symWraps.length) {
-    const symObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          const draws = e.target.querySelectorAll('.sym-draw');
-          draws.forEach((el, i) => {
-            setTimeout(() => el.classList.add('drawn'), i * 80);
-          });
-          symObs.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.5 });
-    symWraps.forEach(el => symObs.observe(el));
-  }
-
-  // ─── COUNTER ANIMATION ───
-  const counters = document.querySelectorAll('[data-counter]');
-  if (counters.length) {
-    const cObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting && !e.target.dataset.done) {
-          e.target.dataset.done = '1';
-          const target = parseFloat(e.target.dataset.target);
-          const suffix = e.target.dataset.suffix || '';
-          const dur = 1500, start = performance.now();
-          function step(now) {
-            const p = Math.min((now - start) / dur, 1);
-            const ease = 1 - Math.pow(1 - p, 3);
-            e.target.textContent = Math.round(target * ease) + suffix;
-            if (p < 1) requestAnimationFrame(step);
-          }
-          requestAnimationFrame(step);
-          cObs.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.6 });
-    counters.forEach(c => cObs.observe(c));
-  }
+  // Scroll reveal, SVG symbol draw-on, and counter animation are all
+  // handled once, in main.js (which loads first on every page, including
+  // this one) — duplicating them here used to run two independent
+  // IntersectionObservers over the same elements, with a mismatched
+  // threshold on .sym-wrap (.5 here vs .4 in main.js). Removed.
 
   // ─── SECTOR CARD SIBLINGS DIM ───
   const sectorCards = document.querySelectorAll('.sector-card');
@@ -138,18 +89,10 @@
     });
   });
 
-  // ─── DIVISION CARD TILT ───
+  // (The old "division card tilt" handler that lived here targeted
+  // .div-card, a class removed from the markup when the Ledger Grid
+  // replaced it — the listener was firing on zero elements. Removed.)
   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    document.querySelectorAll('.div-card').forEach(card => {
-      card.addEventListener('mousemove', e => {
-        const r = card.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width - 0.5;
-        const y = (e.clientY - r.top) / r.height - 0.5;
-        card.style.transform = `translateY(-6px) rotateX(${-y * 3.5}deg) rotateY(${x * 3.5}deg)`;
-      });
-      card.addEventListener('mouseleave', () => { card.style.transform = ''; });
-    });
-
     // ─── LEDGER CARD SPOTLIGHT ───
     // Cursor-tracked highlight — position set as CSS custom properties,
     // visibility/animation handled entirely in CSS (:hover opacity).

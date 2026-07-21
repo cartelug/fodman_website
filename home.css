@@ -384,71 +384,9 @@
   .hero-statsbar-inner { flex-wrap: wrap; }
 }
 
-/* ════════════════════════════════
-   ANIMATED SVG SYMBOLS
-   Glow pulse, stroke draw, orbit
-   ════════════════════════════════ */
-.sym-wrap {
-  width: 54px; height: 54px;
-  border-radius: var(--r2);
-  background: var(--wash);
-  display: grid; place-items: center;
-  margin-bottom: 18px;
-  flex-shrink: 0;
-  position: relative;
-  overflow: visible;
-}
-.sym-wrap--dark {
-  background: rgba(155,123,208,.12);
-}
-.sym-wrap svg {
-  width: 28px; height: 28px;
-  overflow: visible;
-}
-/* The glow pulse on the symbol */
-.sym-wrap svg .sym-stroke {
-  stroke: var(--lilac);
-  stroke-width: 2;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  filter: drop-shadow(0 0 4px rgba(155,123,208,.5));
-  animation: symGlow 3s ease-in-out infinite;
-}
-.sym-wrap--dark svg .sym-stroke {
-  stroke: var(--lilac2);
-  filter: drop-shadow(0 0 5px rgba(195,172,230,.6));
-}
-/* Draw-on when section enters */
-.js .sym-draw {
-  stroke-dasharray: 120;
-  stroke-dashoffset: 120;
-  transition: stroke-dashoffset .9s ease;
-}
-.js .sym-draw.drawn {
-  stroke-dashoffset: 0;
-}
-@keyframes symGlow {
-  0%,100% { filter: drop-shadow(0 0 3px rgba(155,123,208,.4)); opacity:.9; }
-  50%      { filter: drop-shadow(0 0 10px rgba(155,123,208,.9)); opacity:1; }
-}
-/* Hover orbit */
-.sym-wrap:hover svg {
-  animation: symOrbit 6s linear infinite;
-}
-@keyframes symOrbit {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-/* Accent dot on some symbols */
-.sym-dot {
-  fill: var(--lilac);
-  animation: symDotPulse 2s ease-in-out infinite;
-}
-@keyframes symDotPulse {
-  0%,100% { r:2; opacity:1; }
-  50%      { r:3; opacity:.7; }
-}
+/* ANIMATED SVG SYMBOLS: defined once in style.css (loaded before this
+   file on every page, including index.html) — removed the byte-identical
+   duplicate that used to live here. */
 
 /* ════════════════════════════════
    ABOUT SECTION
@@ -485,29 +423,8 @@
    ════════════════════════════════ */
 .s-divisions { padding: 100px 0; position:relative; overflow:hidden; }
 .section-head { margin-bottom: 52px; }
-.div-grid { display:grid; grid-template-columns:1fr 1fr; gap:22px; }
-.div-card {
-  display: block; border-radius: var(--r3); overflow: hidden;
-  background: var(--grape); border: 1px solid rgba(255,255,255,.07);
-  text-decoration: none;
-  transition: transform .22s ease, box-shadow .22s ease;
-  perspective: 1000px;
-}
-.div-card:hover { transform: translateY(-6px); box-shadow: 0 28px 72px rgba(0,0,0,.4); }
-.div-card-img { position:relative; height:196px; overflow:hidden; }
-.div-card-img img { width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
-.div-card:hover .div-card-img img { transform:scale(1.06); }
-.div-card-img-overlay { position:absolute; inset:0; background:linear-gradient(180deg,rgba(36,15,69,.1) 0%,rgba(36,15,69,.6) 100%); }
-.div-tag { position:absolute; top:14px; right:14px; background:rgba(155,123,208,.22); border:1px solid rgba(155,123,208,.35); color:var(--lilac2); font-size:.68rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; padding:5px 13px; border-radius:999px; }
-.div-card-body { padding:26px 30px 30px; }
-.div-card h3 { color:#fff; font-size:clamp(1.4rem,2.6vw,1.9rem);margin-bottom:10px;letter-spacing:-.02em; }
-.div-card p { font-size:.88rem; color:rgba(255,255,255,.62); margin-bottom:18px; line-height:1.65; }
-.div-list { display:flex; flex-direction:column; gap:8px; margin-bottom:20px; }
-.div-list li { font-size:.83rem; color:rgba(255,255,255,.56); padding-left:18px; position:relative; }
-.div-list li::before { content:""; position:absolute; left:0; top:8px; width:8px; height:1.5px; background:var(--lilac); border-radius:1px; }
-.div-cta { display:flex; align-items:center; gap:8px; font-size:.85rem; font-weight:600; color:var(--lilac); transition:gap .18s ease; }
-.div-card:hover .div-cta { gap:14px; }
-.div-card--purple { background:var(--purple2); }
+/* .div-card and friends (the pre-Ledger-Grid services section) removed —
+   confirmed zero HTML references; superseded by .ldg-card below. */
 
 /* ════════════════════════════════
    CAPABILITIES
@@ -648,12 +565,8 @@
 }
 .ldg-card:hover{ box-shadow:var(--s3); transform:translateY(-5px); border-color:transparent; }
 .ldg-card:focus-visible{ outline:2px solid var(--purple3); outline-offset:3px; }
-.ldg-card::before{
-  content:""; position:absolute; top:0; left:0; right:0; height:3px;
-  background:linear-gradient(90deg,var(--purple),var(--lilac));
-  transform:scaleX(0); transform-origin:left; transition:transform .35s ease; z-index:2;
-}
-.ldg-card:hover::before{ transform:scaleX(1); }
+/* .ldg-card::before / :hover::before (the accent bar) now live in
+   style.css, shared with .svcx — was a byte-for-byte duplicate. */
 /* Cursor-tracked spotlight (position set via JS custom properties) */
 .ldg-card::after{
   content:""; position:absolute; inset:0; z-index:2; opacity:0;
@@ -748,7 +661,11 @@
 }
 
 /* ─── RESPONSIVE ─── */
-@media(max-width:1100px){ .sectors-grid{grid-template-columns:repeat(2,1fr)} .cap-grid{grid-template-columns:1fr;gap:48px} .cap-row{grid-template-columns:38px 1fr 1fr auto;gap:12px} }
-@media(max-width:900px){ .about-grid{grid-template-columns:1fr;gap:48px} .div-grid{grid-template-columns:1fr} .region-grid{grid-template-columns:1fr;gap:48px} .region-photo-wrap{height:360px} }
+/* Aligned to the same 1024px breakpoint as .ldg-grid above, so every
+   major section on the page collapses to its mobile-ish layout in one
+   consistent step while scrolling/resizing, instead of a staggered
+   cascade across 1024px and 1100px. */
+@media(max-width:1024px){ .sectors-grid{grid-template-columns:repeat(2,1fr)} .cap-grid{grid-template-columns:1fr;gap:48px} .cap-row{grid-template-columns:38px 1fr 1fr auto;gap:12px} }
+@media(max-width:900px){ .about-grid{grid-template-columns:1fr;gap:48px} .region-grid{grid-template-columns:1fr;gap:48px} .region-photo-wrap{height:360px} }
 @media(max-width:768px){ .hero-left{padding:28px 0 24px} .sectors-grid{grid-template-columns:1fr 1fr} .cap-row{grid-template-columns:1fr;gap:4px} .cap-num{display:none} .cta-block{padding:52px 24px} .hero-scrollcue{display:none} .hero-bg-aurora .aur-a{width:320px;height:320px} .hero-bg-aurora .aur-b{width:280px;height:280px} }
 @media(max-width:520px){ .sectors-grid{grid-template-columns:1fr} .astat-grid{grid-template-columns:1fr} .astat--wide{grid-column:1} }

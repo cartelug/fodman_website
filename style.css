@@ -65,7 +65,7 @@
 
 /* ═══════════════════════════════════════════════════════
    FODMAN INTERNATIONAL — DESIGN SYSTEM V3
-   Display: Syne   ·   Secondary sans: Knockout (Oswald fallback)
+   Display: Plus Jakarta Sans   ·   Body/secondary: Inter
    Brand:   Purple #4A2178 · Silver #A0A0A0
    ═══════════════════════════════════════════════════════ */
 
@@ -73,7 +73,7 @@
   --plum:#240F45; --grape:#321557; --purple:#4A2178; --purple2:#5E2E94;
   --purple3:#7E4FB8; --lilac:#9B7BD0; --lilac2:#C3ACE6; --wash:#F2ECF9;
   --silver:#A0A0A8; --paper:#F6F4F9; --white:#FFFFFF;
-  --ink:#1A1230; --ink2:#382A52; --inkM:#6B6080; --inkF:#9A92AC;
+  --ink:#1A1230; --ink2:#382A52; --inkM:#6B6080; --inkF:#756D8A;
   --rule:rgba(255,255,255,.10); --ruleL:#E4DEEE; --green:#0F7A52;
   --s1:0 2px 10px rgba(36,15,69,.07); --s2:0 10px 34px rgba(36,15,69,.12);
   --s3:0 24px 64px rgba(36,15,69,.18); --sp:0 12px 36px rgba(74,33,120,.32);
@@ -82,6 +82,12 @@
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:16px;accent-color:var(--purple)}
+
+/* ─── ACCESSIBILITY: skip link + focus ring ─── */
+.skip-link{position:fixed;top:-60px;left:16px;z-index:10001;background:var(--purple);color:#fff;padding:13px 22px;border-radius:var(--r2);font-weight:600;font-size:.9rem;box-shadow:var(--s3);transition:top .2s ease}
+.skip-link:focus{top:16px}
+:focus-visible{outline:2px solid var(--purple3);outline-offset:3px;border-radius:2px}
+.nav :focus-visible,.mobile-nav :focus-visible,.section--dark :focus-visible,.section--grape :focus-visible,footer :focus-visible,.page-hero :focus-visible,.preloader :focus-visible{outline-color:var(--lilac2)}
 
 /* ─── FINISHING CRAFT: selection + scrollbar in brand colors ─── */
 ::selection{background:var(--purple);color:#fff}
@@ -246,10 +252,13 @@ section{padding:100px 0}
 .breadcrumb span{color:rgba(255,255,255,.22)}
 
 /* ─── SERVICE CARD (inner pages) ─── */
-.svc-card{background:var(--white);border:1px solid var(--ruleL);border-radius:var(--r3);padding:30px;box-shadow:var(--s1);transition:all .22s ease;height:100%}
+.svc-card{background:var(--white);border:1px solid var(--ruleL);border-radius:var(--r3);padding:30px;box-shadow:var(--s1);transition:all .22s ease;height:100%;position:relative;overflow:hidden}
 .svc-card:hover{box-shadow:var(--s3);transform:translateY(-5px);border-color:transparent}
 .svc-card h3{font-size:1.15rem;margin-bottom:10px}
 .svc-card p{font-size:.9rem;line-height:1.6}
+/* Cursor-tracked spotlight — same technique as .ldg-card on the homepage */
+.svc-card::after,.prod-card::after{content:"";position:absolute;inset:0;z-index:2;opacity:0;background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%), rgba(94,46,148,.10), transparent 62%);transition:opacity .35s ease;pointer-events:none}
+.svc-card:hover::after,.prod-card:hover::after{opacity:1}
 
 /* ─── TICKER ─── */
 .ticker-wrap{overflow:hidden;background:var(--grape);border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);padding:22px 0}
@@ -382,9 +391,9 @@ footer{background:var(--plum);padding:80px 0 0;color:#fff;border-top:1px solid r
 .footer-contact-item a{color:rgba(255,255,255,.55);transition:color .15s ease}
 .footer-contact-item a:hover{color:var(--lilac)}
 .footer-bottom{padding:22px 0;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
-.footer-bottom p{font-size:var(--xs);color:rgba(255,255,255,.32)}
+.footer-bottom p{font-size:var(--xs);color:rgba(255,255,255,.48)}
 .footer-bottom-links{display:flex;gap:24px}
-.footer-bottom-links a{font-size:var(--xs);color:rgba(255,255,255,.32);transition:color .15s ease}
+.footer-bottom-links a{font-size:var(--xs);color:rgba(255,255,255,.48);transition:color .15s ease}
 .footer-bottom-links a:hover{color:rgba(255,255,255,.62)}
 
 /* ─── REVEAL ─── */
@@ -464,9 +473,10 @@ h3 > span > svg .sym-dot{fill:var(--purple)}
 /* ─── SIX-LINE SERVICE GRID ─── */
 .svcx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 .svcx{position:relative;display:flex;flex-direction:column;background:var(--white);border:1px solid var(--ruleL);border-radius:var(--r3);padding:30px;box-shadow:var(--s1);transition:all .22s ease;overflow:hidden;height:100%}
-.svcx::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple),var(--lilac));transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+/* Shared "accent bar" hover trick — also used by .ldg-card (home.css) */
+.svcx::before,.ldg-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple),var(--lilac));transform:scaleX(0);transform-origin:left;transition:transform .32s ease;z-index:2}
 .svcx:hover{box-shadow:var(--s3);transform:translateY(-6px);border-color:transparent}
-.svcx:hover::before{transform:scaleX(1)}
+.svcx:hover::before,.ldg-card:hover::before{transform:scaleX(1)}
 .svcx-num{font-family:var(--font-knock-heavy);font-weight:700;font-size:.78rem;letter-spacing:.2em;color:var(--inkF)}
 .svcx h3{font-size:1.22rem;margin:14px 0 8px}
 .svcx p{font-size:.9rem;line-height:1.62;flex-grow:1}
@@ -488,7 +498,7 @@ h3 > span > svg .sym-dot{fill:var(--purple)}
 
 /* ─── PRODUCT / LOAN CARDS ─── */
 .prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.prod-card{background:var(--white);border:1px solid var(--ruleL);border-radius:var(--r3);padding:30px;box-shadow:var(--s1);display:flex;flex-direction:column;transition:all .22s ease}
+.prod-card{background:var(--white);border:1px solid var(--ruleL);border-radius:var(--r3);padding:30px;box-shadow:var(--s1);display:flex;flex-direction:column;transition:all .22s ease;position:relative;overflow:hidden}
 .prod-card:hover{box-shadow:var(--s3);transform:translateY(-5px);border-color:transparent}
 .prod-card.featured{background:var(--grape);color:#fff;border-color:transparent}
 .prod-card.featured p,.prod-card.featured li{color:rgba(255,255,255,.72)}
@@ -507,6 +517,23 @@ h3 > span > svg .sym-dot{fill:var(--purple)}
 .step-n{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--purple),var(--purple2));color:#fff;display:grid;place-items:center;font-family:var(--font-display);font-weight:800;margin-bottom:16px;box-shadow:var(--sp)}
 .step h3{font-size:1.05rem;margin-bottom:8px}
 .step p{font-size:.86rem}
+
+/* ─── FAQ (native <details>/<summary> — zero JS) ─── */
+.faq-list{display:flex;flex-direction:column;gap:12px}
+.faq-item{background:var(--white);border:1px solid var(--ruleL);border-radius:var(--r2);padding:18px 22px;transition:border-color .15s ease}
+.faq-item[open]{border-color:var(--purple3)}
+.faq-item summary{cursor:pointer;font-weight:600;font-size:.98rem;color:var(--ink);list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:"+";font-size:1.3rem;font-weight:400;color:var(--purple);flex-shrink:0;transition:transform .2s ease}
+.faq-item[open] summary::after{transform:rotate(45deg)}
+.faq-item p{margin-top:12px;font-size:.9rem}
+
+/* ─── CTA PANEL (dark closing-section box) ───
+   Consolidates a box that used to be copy-pasted as an inline style on
+   5+ pages: plum background, radial glow, centered content. */
+.cta-panel{background:var(--plum);border-radius:var(--r4);padding:64px;text-align:center;position:relative;overflow:hidden}
+.cta-panel::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% -10%,rgba(126,79,184,.3),transparent 55%)}
+.cta-panel > *{position:relative;z-index:1}
 
 /* ─── INFO / DRAFT NOTICE ─── */
 .notice{display:flex;gap:12px;align-items:flex-start;background:var(--wash);border:1px solid var(--lilac2);border-radius:var(--r2);padding:16px 20px;font-size:.86rem;color:var(--ink2);margin-top:22px}
@@ -559,9 +586,8 @@ h3 > span > svg .sym-dot{fill:var(--purple)}
   /* comfortable card padding */
   .card,.svcx,.prod-card,.svc-card,.lead-card{padding:24px}
   .svcx-grid,.prod-grid,.steps,.lead-grid,.grid-2,.grid-3{gap:16px}
-  /* shrink oversized inline CTA panels (padding:64px boxes) */
-  section div[style*="padding:64px"]{padding:38px 22px!important}
-  section div[style*="padding:88px 64px"]{padding:48px 22px!important}
+  /* shrink the oversized CTA panel box on small screens */
+  .cta-panel{padding:38px 22px!important}
   /* footer brand + lockups scale down */
   .footer-grid{gap:30px}
   .brand-lockup{gap:14px}

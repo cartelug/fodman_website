@@ -163,6 +163,19 @@
     input.addEventListener('change',()=>{if(input.files[0]&&label)label.textContent='\u2713 '+input.files[0].name;});
   })();
 
+  // ─── SERVICE / PRODUCT CARD SPOTLIGHT ───
+  // Same cursor-tracked highlight as .ldg-card on the homepage (home.js),
+  // extended here so inner service pages get the same interaction caliber.
+  if(window.matchMedia('(hover: hover) and (pointer: fine)').matches){
+    document.querySelectorAll('.svc-card,.prod-card').forEach(card=>{
+      card.addEventListener('mousemove',e=>{
+        const r=card.getBoundingClientRect();
+        card.style.setProperty('--mx',((e.clientX-r.left)/r.width)*100+'%');
+        card.style.setProperty('--my',((e.clientY-r.top)/r.height)*100+'%');
+      });
+    });
+  }
+
   // ─── SMOOTH ANCHORS ───
   document.querySelectorAll('a[href^="#"]').forEach(a=>{
     a.addEventListener('click',e=>{
