@@ -10,9 +10,9 @@
     let hidden=false;
     function hide(){ if(hidden)return; hidden=true; pl.classList.add('done'); document.body.style.overflow=''; setTimeout(()=>{pl.style.display='none';},750); }
     document.body.style.overflow='hidden';
-    const minTime=2200, start=performance.now();
+    const minTime=650, start=performance.now();
     window.addEventListener('load',()=>{ const el=performance.now()-start; setTimeout(hide,Math.max(0,minTime-el)); });
-    setTimeout(hide,3600);
+    setTimeout(hide,1800);
   })();
 
   // ─── NAV SCROLL ───
@@ -182,6 +182,150 @@
       });
     });
   }
+
+  // ─── EDITORIAL PAGE VISUALS ───
+  // Each core page receives its own art-directed hero and, where useful, a
+  // second visual chapter. Content stays in the HTML; this layer keeps image
+  // loading, responsive treatment and accessibility consistent site-wide.
+  (function(){
+    const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+    const visualBase='assets/fodman-visuals/';
+    const pages={
+      'services.html':{
+        hero:'20-partnership.webp',
+        alt:'Fodman professionals reviewing a client partnership brief'
+      },
+      'lending.html':{
+        hero:'03-finance-consultation.webp',
+        alt:'Fodman professionals discussing a financial services request',
+        secondary:'04-finance-business.webp',
+        label:'Financial guidance',title:'A clear conversation before every commitment.',
+        text:'We explain the process, confirm what is required and help you understand the next step before you proceed.',
+        href:'apply.html',action:'Start an enquiry'
+      },
+      'supply-chain.html':{
+        hero:'05-logistics-coordination.webp',
+        alt:'Fodman logistics coordinator at a regional depot',
+        secondary:'06-logistics-delivery.webp',
+        label:'Operational control',title:'Visibility from requirement to delivery.',
+        text:'Sourcing, movement and handover are coordinated around an agreed brief, clear documentation and assignment-specific timelines.',
+        href:'contact.html',action:'Request a proposal'
+      },
+      'consultancy.html':{
+        hero:'07-consultancy-strategy.webp',
+        alt:'Fodman consultants in a strategy session',
+        secondary:'08-consultancy-workshop.webp',
+        label:'Working sessions',title:'Advice designed to be used, not shelved.',
+        text:'We translate organisational questions into practical plans, facilitated sessions and tools your team can carry forward.',
+        href:'contact.html',action:'Discuss an assignment'
+      },
+      'advisory.html':{
+        hero:'09-research-field.webp',
+        alt:'Fodman research team gathering field insights',
+        secondary:'10-research-analysis.webp',
+        label:'Evidence to action',title:'From field insight to usable decisions.',
+        text:'Methods are shaped around the question, context and intended audience—then communicated clearly for decision-makers.',
+        href:'contact.html',action:'Plan your study'
+      },
+      'real-estate.html':{
+        hero:'11-property-viewing.webp',
+        alt:'Fodman property advisers leading a viewing',
+        secondary:'12-property-commercial.webp',
+        label:'Property advisory',title:'A clearer brief makes a better search.',
+        text:'Tell us the location, purpose, budget and timing. We use that brief to focus the search and coordinate the next step.',
+        href:'contact.html',action:'Share your property brief'
+      },
+      'tours-travel.html':{
+        hero:'13-travel-safari.webp',
+        alt:'Fodman travel specialist coordinating a regional journey',
+        secondary:'14-travel-airport.webp',
+        label:'Travel coordination',title:'The details are handled before you depart.',
+        text:'We coordinate travel around the traveller, schedule and purpose—from ticketing and transfers to group movement and tours.',
+        href:'contact.html',action:'Plan a journey'
+      },
+      'about.html':{
+        hero:'15-about-team.webp',
+        alt:'Fodman professionals walking together in a modern courtyard'
+      },
+      'contact.html':{
+        hero:'19-contact-concierge.webp',
+        alt:'Fodman client service professional ready to help'
+      }
+    };
+    const data=pages[page];
+    if(!data)return;
+
+    const hero=document.querySelector('.page-hero');
+    if(hero&&data.hero){
+      hero.classList.add('page-hero--media');
+      const frame=document.createElement('figure');
+      frame.className='page-hero-media';
+      const img=document.createElement('img');
+      img.src=visualBase+data.hero;
+      img.alt=data.alt||'';
+      img.decoding='async';
+      img.fetchPriority='high';
+      frame.appendChild(img);
+      hero.appendChild(frame);
+    }
+
+    if(data.secondary){
+      const anchor=document.querySelector('.page-hero + section');
+      if(anchor){
+        const chapter=document.createElement('section');
+        chapter.className='visual-chapter';
+        const wrap=document.createElement('div');
+        wrap.className='container visual-chapter-grid';
+        const frame=document.createElement('figure');
+        frame.className='visual-chapter-media reveal';
+        const img=document.createElement('img');
+        img.src=visualBase+data.secondary;
+        img.alt=data.title;
+        img.loading='lazy';
+        img.decoding='async';
+        frame.appendChild(img);
+        const copy=document.createElement('div');
+        copy.className='visual-chapter-copy reveal';
+        const eye=document.createElement('div'); eye.className='eyebrow eyebrow--dark'; eye.textContent=data.label;
+        const h=document.createElement('h2'); h.textContent=data.title;
+        const p=document.createElement('p'); p.textContent=data.text;
+        const a=document.createElement('a'); a.href=data.href; a.className='btn btn--ghost'; a.innerHTML=data.action+' <span aria-hidden="true">→</span>';
+        copy.append(eye,h,p,a);
+        wrap.append(frame,copy); chapter.appendChild(wrap);
+        anchor.insertAdjacentElement('afterend',chapter);
+      }
+    }
+  })();
+
+  // ─── READING PROGRESS ───
+  (function(){
+    const bar=document.createElement('div');
+    bar.className='site-progress';
+    bar.setAttribute('aria-hidden','true');
+    document.body.appendChild(bar);
+    let ticking=false;
+    function update(){
+      const max=document.documentElement.scrollHeight-innerHeight;
+      bar.style.transform='scaleX('+(max>0?Math.min(scrollY/max,1):0)+')';
+      ticking=false;
+    }
+    addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(update);}},{passive:true});
+    update();
+  })();
+
+  // ─── MOBILE ENQUIRY DOCK ───
+  (function(){
+    if(document.querySelector('.mobile-action-dock'))return;
+    const dock=document.createElement('nav');
+    dock.className='mobile-action-dock';
+    dock.setAttribute('aria-label','Quick contact');
+    const wa=document.createElement('a');
+    wa.href='https://wa.me/256775858924'; wa.target='_blank'; wa.rel='noopener';
+    wa.className='mobile-action-dock__wa'; wa.textContent='WhatsApp';
+    const rfq=document.createElement('a');
+    rfq.href='contact.html'; rfq.className='mobile-action-dock__rfq'; rfq.textContent='Request a quote';
+    dock.append(wa,rfq); document.body.appendChild(dock);
+  })();
 
   // ─── SMOOTH ANCHORS ───
   document.querySelectorAll('a[href^="#"]').forEach(a=>{
