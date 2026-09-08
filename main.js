@@ -110,6 +110,7 @@
       L.push('Email: '+(val('email')||'—'));
       if(val('phone'))L.push('Phone: '+val('phone'));
       if(regions())L.push('Region(s): '+regions());
+      if(form.dataset.attachmentName)L.push('Referenced file: '+form.dataset.attachmentName+' (attach separately)');
       L.push('');
       L.push('Scope / details:');
       L.push(val('scope')||'—');
@@ -159,8 +160,14 @@
     zone.addEventListener('click',()=>input.click());
     zone.addEventListener('dragover',e=>{e.preventDefault();zone.style.borderColor='var(--purple)';});
     zone.addEventListener('dragleave',()=>{zone.style.borderColor='';});
-    zone.addEventListener('drop',e=>{e.preventDefault();zone.style.borderColor='';if(e.dataTransfer.files[0]&&label)label.textContent='\u2713 '+e.dataTransfer.files[0].name;});
-    input.addEventListener('change',()=>{if(input.files[0]&&label)label.textContent='\u2713 '+input.files[0].name;});
+    function remember(file){
+      if(!file)return;
+      if(label)label.textContent='\u2713 '+file.name;
+      const form=zone.closest('form');
+      if(form)form.dataset.attachmentName=file.name;
+    }
+    zone.addEventListener('drop',e=>{e.preventDefault();zone.style.borderColor='';remember(e.dataTransfer.files[0]);});
+    input.addEventListener('change',()=>remember(input.files[0]));
   })();
 
   // ─── SERVICE / PRODUCT CARD SPOTLIGHT ───
