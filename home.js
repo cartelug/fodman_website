@@ -42,11 +42,13 @@
       const scrollY = window.scrollY;
 
       // Hero parallax (only while hero is on screen)
-      if (heroImgWrap && heroEl) {
+      if (heroImgWrap && heroEl && window.innerWidth > 768) {
         const heroH = heroEl.offsetHeight;
         if (scrollY < heroH) {
           heroImgWrap.style.transform = `translateY(${scrollY * 0.18}px)`;
         }
+      } else if (heroImgWrap) {
+        heroImgWrap.style.transform = '';
       }
 
       // Region photo parallax
