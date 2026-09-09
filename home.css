@@ -343,15 +343,18 @@
     display: flex; flex-direction: column;
     flex: 1; min-height: auto;
   }
-  /* Photo: top half, tall enough to show the man's face clearly */
+  /* Portrait stage: preserve the full face below the fixed header. */
   .hero-right {
-    height: 62vw; /* proportional to screen width */
-    min-height: 300px;
+    height: 86vw;
+    min-height: 340px;
     max-height: 460px;
     order: 1; flex-shrink: 0;
   }
   .hero-right img {
-    object-position: center 30%; /* show face prominently */
+    object-position: center top;
+    transform-origin: center top;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
   /* Remove side fades, add bottom fade only */
   .hero-right::before { display: none; }
