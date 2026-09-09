@@ -122,7 +122,7 @@
         if(!el.value.trim()){ok=false;el.style.borderColor='#c0392b';}
         else el.style.borderColor='';
       });
-      return ok;
+      return form.reportValidity() && ok;
     }
     function success(channel){
       let m=form.querySelector('.form-success');
@@ -133,7 +133,7 @@
       e.preventDefault();
       if(!validate())return;
       const text=encodeURIComponent(compose());
-      window.open('https://wa.me/'+WA+'?text='+text,'_blank');
+      window.open('https://wa.me/'+WA+'?text='+text,'_blank','noopener');
       success('WhatsApp');
     });
     const mailBtn=form.querySelector('.js-email-rfq');
@@ -157,7 +157,12 @@
     input.type='file'; input.accept='.pdf,.docx'; input.style.display='none';
     zone.appendChild(input);
     const label=zone.querySelector('span');
-    zone.addEventListener('click',()=>input.click());
+    zone.setAttribute('role','button');
+    zone.tabIndex=0;
+    zone.addEventListener('click',e=>{if(e.target!==input)input.click();});
+    zone.addEventListener('keydown',e=>{
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();input.click();}
+    });
     zone.addEventListener('dragover',e=>{e.preventDefault();zone.style.borderColor='var(--purple)';});
     zone.addEventListener('dragleave',()=>{zone.style.borderColor='';});
     function remember(file){
@@ -277,7 +282,7 @@
         const wrap=document.createElement('div');
         wrap.className='container visual-chapter-grid';
         const frame=document.createElement('figure');
-        frame.className='visual-chapter-media reveal';
+        frame.className='visual-chapter-media';
         const img=document.createElement('img');
         img.src=visualBase+data.secondary;
         img.alt=data.title;
@@ -285,7 +290,7 @@
         img.decoding='async';
         frame.appendChild(img);
         const copy=document.createElement('div');
-        copy.className='visual-chapter-copy reveal';
+        copy.className='visual-chapter-copy';
         const eye=document.createElement('div'); eye.className='eyebrow eyebrow--dark'; eye.textContent=data.label;
         const h=document.createElement('h2'); h.textContent=data.title;
         const p=document.createElement('p'); p.textContent=data.text;
