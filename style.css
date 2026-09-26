@@ -6,8 +6,11 @@
    No @import chain — Safari iOS requires direct declarations.
    ═══════════════════════════════════════════════════════ */
 
-/* ── Syne display face ── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+/* ── Inter + Plus Jakarta Sans ──
+   Loaded from each page's <head> as a non-blocking <link> (media=print
+   swap) instead of an @import here: an @import is only discovered after
+   this file downloads, so it chained a second render-blocking request to
+   Google before the first paint — the main cause of the blank "hang". */
 
 /* ── Knockout 49 Lightweight — body, nav, buttons (weight 400) ── */
 @font-face {
@@ -173,16 +176,23 @@ section{padding:100px 0}
 .sym-wrap{width:54px;height:54px;border-radius:var(--r2);background:var(--wash);display:grid;place-items:center;margin-bottom:18px;flex-shrink:0;position:relative;overflow:visible}
 .sym-wrap--dark{background:rgba(155,123,208,.12)}
 .sym-wrap svg{width:28px;height:28px;overflow:visible}
-.sym-wrap svg .sym-stroke{stroke:var(--lilac);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 4px rgba(155,123,208,.5));animation:symGlow 3s ease-in-out infinite}
-.sym-wrap--dark svg .sym-stroke{stroke:var(--lilac2);filter:drop-shadow(0 0 5px rgba(195,172,230,.6))}
+/* Glow is a static drop-shadow on the <svg> (one filter per icon, painted
+   once). The old infinite symGlow keyframes animated filter on every
+   stroke of every icon, forcing a full SVG repaint on every frame. */
+.sym-wrap svg .sym-stroke{stroke:var(--lilac);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.sym-wrap svg{filter:drop-shadow(0 0 4px rgba(155,123,208,.45))}
+.sym-wrap--dark svg .sym-stroke{stroke:var(--lilac2)}
+.sym-wrap--dark svg{filter:drop-shadow(0 0 5px rgba(195,172,230,.55))}
 .js .sym-wrap .sym-draw{stroke-dasharray:120;stroke-dashoffset:120;transition:stroke-dashoffset .9s ease}
 .js .sym-wrap .sym-draw.drawn{stroke-dashoffset:0}
-@keyframes symGlow{0%,100%{filter:drop-shadow(0 0 3px rgba(155,123,208,.4));opacity:.9}50%{filter:drop-shadow(0 0 10px rgba(155,123,208,.9));opacity:1}}
 .sym-wrap:hover svg{animation:symOrbit 6s linear infinite}
 @keyframes symOrbit{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-.sym-dot{fill:var(--lilac);animation:symDotPulse 2s ease-in-out infinite}
+.sym-dot{fill:var(--lilac);transform-box:fill-box;transform-origin:center}
 .sym-wrap--dark .sym-dot{fill:var(--lilac2)}
-@keyframes symDotPulse{0%,100%{r:2;opacity:1}50%{r:3;opacity:.7}}
+/* Dot pulses only while its icon is hovered — the always-on version
+   repainted ~25 SVGs continuously even when nobody was looking at them. */
+.sym-wrap:hover .sym-dot{animation:symDotPulse 1.6s ease-in-out infinite}
+@keyframes symDotPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.7}}
 /* Inline small symbol (for list checks etc) */
 .sym-check{width:20px;height:20px;flex-shrink:0;display:grid;place-items:center}
 .sym-check svg{width:14px;height:14px}
@@ -419,6 +429,13 @@ footer{background:var(--plum);padding:80px 0 0;color:#fff;border-top:1px solid r
 @media(max-width:1024px){.container{padding:0 28px}section{padding:76px 0}.footer-grid{grid-template-columns:1fr 1fr;gap:36px}.grid-4{grid-template-columns:repeat(2,1fr)}.grid-split,.grid-split--wide{grid-template-columns:1fr;gap:48px}}
 @media(max-width:768px){.nav-links,.nav-cta{display:none}.nav-burger{display:flex}.footer-grid{grid-template-columns:1fr;gap:28px}section{padding:58px 0}.container{padding:0 20px}.form-row,.radio-grid{grid-template-columns:1fr}.grid-2,.grid-3{grid-template-columns:1fr}.grid-4{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}.preloader{display:none}}
+/* Phones: fixed bars sit over constantly-scrolling content, and
+   backdrop-filter re-blurs that content on every scroll frame — the most
+   common cause of scroll stutter on mid-range Android. Near-opaque fills
+   look the same at this size and cost nothing. */
+@media(max-width:768px){
+  .nav{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(36,15,69,.97)}
+}
 
 /* ─── Inline header symbols (form section titles) ─── */
 h3 > span > svg .sym-stroke{stroke:var(--purple);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
@@ -712,7 +729,7 @@ img{color:transparent}
   .people-led-grid{grid-template-columns:1fr;gap:14px}
   .people-card,.people-card--tall{height:min(125vw,560px)}
   body{padding-bottom:68px}
-  .mobile-action-dock{position:fixed;z-index:9000;left:12px;right:12px;bottom:10px;height:56px;padding:5px;display:grid;grid-template-columns:.9fr 1.1fr;gap:5px;border:1px solid rgba(255,255,255,.18);border-radius:18px;background:rgba(27,11,52,.9);box-shadow:0 16px 48px rgba(18,6,35,.34);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+  .mobile-action-dock{position:fixed;z-index:9000;left:12px;right:12px;bottom:10px;height:56px;padding:5px;display:grid;grid-template-columns:.9fr 1.1fr;gap:5px;border:1px solid rgba(255,255,255,.18);border-radius:18px;background:rgba(27,11,52,.97);box-shadow:0 16px 48px rgba(18,6,35,.34)}
   .mobile-action-dock a{display:grid;place-items:center;border-radius:13px;font-size:.78rem;font-weight:750;letter-spacing:.01em}
   .mobile-action-dock__wa{color:#fff;background:rgba(255,255,255,.1)}
   .mobile-action-dock__rfq{color:#23102e;background:#e2c76f}

@@ -3,37 +3,19 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<script>document.documentElement.classList.add('js')</script>
+<link rel="preload" as="image" href="assets/fodman-visuals/02-home-mobile.webp" media="(max-width:768px)" fetchpriority="high"/>
+<link rel="preload" as="image" href="assets/fodman-visuals/01-home-hero.webp" media="(min-width:769px)" fetchpriority="high"/>
 <meta name="description" content="Fodman International — six trusted service lines: finance, logistics & supplies, consultancy, research, real estate and travel. One accountable partner across East Africa since 2013."/>
 <title>Fodman International | Finance · Logistics · Consultancy · East Africa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" media="print" onload="this.media='all'"/><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap"/></noscript>
 <link rel="stylesheet" href="style.css"/>
 <link rel="stylesheet" href="home.css"/>
 <link rel="icon" type="image/png" href="assets/favicon.png"/><link rel="apple-touch-icon" href="assets/apple-touch-icon.png"/><meta name="theme-color" content="#240F45"/><meta property="og:type" content="website"/><meta property="og:site_name" content="Fodman International"/><meta property="og:image" content="https://cartelug.github.io/fodman_website/assets/fodman-visuals/01-home-hero.webp"/><meta name="twitter:card" content="summary_large_image"/><link rel="canonical" href="https://cartelug.github.io/fodman_website/"/><meta property="og:title" content="Fodman International | Finance · Logistics · Consultancy · East Africa"/><meta property="og:description" content="Fodman International — six trusted service lines: finance, logistics &amp; supplies, consultancy, research, real estate and travel. One accountable partner across East Africa since 2013."/><meta property="og:url" content="https://cartelug.github.io/fodman_website/"/><meta name="twitter:title" content="Fodman International | Finance · Logistics · Consultancy · East Africa"/><meta name="twitter:description" content="Fodman International — six trusted service lines: finance, logistics &amp; supplies, consultancy, research, real estate and travel. One accountable partner across East Africa since 2013."/><meta name="twitter:image" content="https://cartelug.github.io/fodman_website/assets/fodman-visuals/01-home-hero.webp"/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Fodman International Limited", "alternateName": "Fodman International", "url": "https://cartelug.github.io/fodman_website/", "logo": "https://cartelug.github.io/fodman_website/assets/uploaded-logo-0.png", "foundingDate": "2013", "description": "Fodman International \u2014 six trusted service lines: finance, logistics & supplies, consultancy, research, real estate and travel. One accountable partner across East Africa since 2013.", "address": {"@type": "PostalAddress", "streetAddress": "Plot 14, Mbuya Kinawataka", "postOfficeBoxNumber": "29559", "addressLocality": "Kampala", "addressCountry": "UG"}, "contactPoint": [{"@type": "ContactPoint", "telephone": "+256-775-858-924", "contactType": "customer service", "areaServed": "UG", "email": "info@fodmaninternational.com"}, {"@type": "ContactPoint", "telephone": "+211-955-910-378", "contactType": "customer service", "areaServed": "SS"}], "sameAs": ["https://wa.me/256775858924"]}</script></head>
 <body>
 <a href="#hero" class="skip-link">Skip to main content</a>
 
-<!-- ══════ PRELOADER ══════ -->
-<div class="preloader" id="preloader">
-  <svg class="pl-mark" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-    <circle class="pl-globe-fill" cx="60" cy="60" r="42"/>
-    <circle class="pl-globe-ring" cx="60" cy="60" r="42"/>
-    <ellipse class="pl-meridian" cx="60" cy="60" rx="42" ry="17"/>
-    <ellipse class="pl-meridian" cx="60" cy="60" rx="17" ry="42"/>
-    <path class="pl-continent" d="M68 38 q10 2 12 10 q-4 8 -12 7 q-6 -10 0 -17 Z"/>
-    <path class="pl-continent" d="M55 70 q9 -2 11 8 q-3 10 -10 11 q-8 -10 -1 -19 Z"/>
-    <path class="pl-arrow a1" style="--len:55" d="M 32,26 C 40,44 50,52 63,66"/>
-    <path class="pl-arrow a2" style="--len:49" d="M 25,40 C 33,54 42,60 55,74"/>
-    <path class="pl-arrow a3" style="--len:41" d="M 20,53 C 28,62 35,68 46,80"/>
-    <path class="pl-head h1" d="M 70.5,74.1 L 56.1,70.2 L 67.7,59.4 Z"/>
-    <path class="pl-head h2" d="M 61.8,81.3 L 48.7,77.8 L 59.3,68.0 Z"/>
-    <path class="pl-head h3" d="M 52.1,86.6 L 40.3,83.4 L 49.9,74.6 Z"/>
-  </svg>
-  <div class="pl-wordmark">FODMAN<span>.</span></div>
-  <div class="pl-bar"><div class="pl-bar-fill"></div></div>
-  <div class="pl-tag">Finance · Trust · Growth</div>
-</div>
 
 <!-- ══════ NAV ══════ -->
 <nav class="nav" id="nav"><div class="nav-inner">
@@ -111,7 +93,7 @@
 
     <!-- RIGHT: photo zone — man lives here, zero text -->
     <div class="hero-right" id="heroRight">
-      <div class="hero-photo-glow"></div>
+      <div class="hero-photo-glow" aria-hidden="true"></div>
       <div class="hero-photo-parallax" id="heroImgWrap">
         <picture>
           <source srcset="assets/fodman-visuals/02-home-mobile.webp" media="(max-width:768px)"/>
@@ -220,32 +202,32 @@
     </div>
     <div class="service-story-grid">
       <a class="service-story service-story--wide reveal" href="lending.html">
-        <img src="assets/fodman-visuals/03-finance-consultation.webp" alt="Fodman team discussing a financial services brief" loading="lazy"/>
+        <img src="assets/fodman-visuals/03-finance-consultation.webp" alt="Fodman team discussing a financial services brief" loading="lazy" decoding="async"/>
         <span class="service-story-shade"></span><span class="service-story-index">01</span>
         <span class="service-story-copy"><small>Financial Services</small><strong>Clear guidance for considered decisions.</strong><em>Explore service →</em></span>
       </a>
       <a class="service-story reveal" href="supply-chain.html">
-        <img src="assets/fodman-visuals/05-logistics-coordination.webp" alt="Fodman logistics coordinator at a regional depot" loading="lazy"/>
+        <img src="assets/fodman-visuals/05-logistics-coordination.webp" alt="Fodman logistics coordinator at a regional depot" loading="lazy" decoding="async"/>
         <span class="service-story-shade"></span><span class="service-story-index">02</span>
         <span class="service-story-copy"><small>Logistics &amp; Supplies</small><strong>Visibility from requirement to delivery.</strong><em>Explore service →</em></span>
       </a>
       <a class="service-story reveal" href="consultancy.html">
-        <img src="assets/fodman-visuals/07-consultancy-strategy.webp" alt="Fodman consultants in a strategy session" loading="lazy"/>
+        <img src="assets/fodman-visuals/07-consultancy-strategy.webp" alt="Fodman consultants in a strategy session" loading="lazy" decoding="async"/>
         <span class="service-story-shade"></span><span class="service-story-index">03</span>
         <span class="service-story-copy"><small>Management Consultancy</small><strong>Sharper systems. Stronger organisations.</strong><em>Explore service →</em></span>
       </a>
       <a class="service-story reveal" href="advisory.html">
-        <img src="assets/fodman-visuals/09-research-field.webp" alt="Fodman research team gathering field insights" loading="lazy"/>
+        <img src="assets/fodman-visuals/09-research-field.webp" alt="Fodman research team gathering field insights" loading="lazy" decoding="async"/>
         <span class="service-story-shade"></span><span class="service-story-index">04</span>
         <span class="service-story-copy"><small>Research &amp; Evaluation</small><strong>Evidence translated into action.</strong><em>Explore service →</em></span>
       </a>
       <a class="service-story reveal" href="real-estate.html">
-        <img src="assets/fodman-visuals/11-property-viewing.webp" alt="Fodman property advisers leading a viewing" loading="lazy"/>
+        <img src="assets/fodman-visuals/11-property-viewing.webp" alt="Fodman property advisers leading a viewing" loading="lazy" decoding="async"/>
         <span class="service-story-shade"></span><span class="service-story-index">05</span>
         <span class="service-story-copy"><small>Real Estate Agency</small><strong>A clearer route to the right property.</strong><em>Explore service →</em></span>
       </a>
       <a class="service-story service-story--wide reveal" href="tours-travel.html">
-        <img src="assets/fodman-visuals/13-travel-safari.webp" alt="Fodman travel specialist coordinating a regional journey" loading="lazy"/>
+        <img src="assets/fodman-visuals/13-travel-safari.webp" alt="Fodman travel specialist coordinating a regional journey" loading="lazy" decoding="async"/>
         <span class="service-story-shade"></span><span class="service-story-index">06</span>
         <span class="service-story-copy"><small>Tours &amp; Travel</small><strong>Journeys planned around people, purpose and place.</strong><em>Explore service →</em></span>
       </a>
@@ -362,7 +344,7 @@
 
 <!-- ══════ CAPABILITIES ══════ -->
 <section class="section--grape s-capabilities">
-  <div class="cap-bg-img"><img src="assets/bg-capabilities.jpg" alt="" loading="lazy"/></div>
+  <div class="cap-bg-img"><img src="assets/bg-capabilities.jpg" alt="" loading="lazy" decoding="async"/></div>
   <div class="container">
     <div class="cap-grid">
       <div class="reveal">
@@ -419,7 +401,7 @@
 
       <!-- Government -->
       <a href="supply-chain.html" class="sector-card reveal" style="transition-delay:.04s">
-        <div class="sector-img"><img src="assets/sector-gov.jpg" alt="Uganda Ministry of Finance" loading="lazy"/></div>
+        <div class="sector-img"><img src="assets/sector-gov.jpg" alt="Uganda Ministry of Finance" loading="lazy" decoding="async"/></div>
         <div class="sector-body">
           <div class="sector-sym">
             <!-- SVG: pillared building -->
@@ -443,7 +425,7 @@
 
       <!-- Healthcare -->
       <a href="supply-chain.html" class="sector-card reveal" style="transition-delay:.12s">
-        <div class="sector-img"><img src="assets/sector-health.jpg" alt="Medical supply logistics" loading="lazy"/></div>
+        <div class="sector-img"><img src="assets/sector-health.jpg" alt="Medical supply logistics" loading="lazy" decoding="async"/></div>
         <div class="sector-body">
           <div class="sector-sym">
             <!-- SVG: cross in square -->
@@ -464,7 +446,7 @@
 
       <!-- NGOs -->
       <a href="advisory.html" class="sector-card reveal" style="transition-delay:.20s">
-        <div class="sector-img"><img src="assets/sector-ngo.jpg" alt="NGO field coordination team" loading="lazy"/></div>
+        <div class="sector-img"><img src="assets/sector-ngo.jpg" alt="NGO field coordination team" loading="lazy" decoding="async"/></div>
         <div class="sector-body">
           <div class="sector-sym">
             <!-- SVG: map pin + people -->
@@ -487,7 +469,7 @@
 
       <!-- Private sector -->
       <a href="advisory.html" class="sector-card reveal" style="transition-delay:.28s">
-        <div class="sector-img"><img src="assets/sector-private.jpg" alt="Kampala corporate boardroom" loading="lazy"/></div>
+        <div class="sector-img"><img src="assets/sector-private.jpg" alt="Kampala corporate boardroom" loading="lazy" decoding="async"/></div>
         <div class="sector-body">
           <div class="sector-sym">
             <!-- SVG: building + arrow -->
@@ -564,7 +546,7 @@
       </div>
       <div class="reveal reveal-delay-2">
         <div class="region-photo-wrap">
-          <img src="assets/region-east-africa.jpg" alt="East African trade route at golden hour" id="regionImg" loading="lazy"/>
+          <img src="assets/region-east-africa.jpg" alt="East African trade route at golden hour" id="regionImg" loading="lazy" decoding="async"/>
           <div class="region-photo-overlay"></div>
         </div>
       </div>
@@ -576,7 +558,7 @@
 <section class="section--paper s-cta">
   <div class="container">
     <div class="cta-block">
-      <div class="cta-bg-img"><img src="assets/bg-cta.jpg" alt="" loading="lazy"/></div>
+      <div class="cta-bg-img"><img src="assets/bg-cta.jpg" alt="" loading="lazy" decoding="async"/></div>
       <div class="cta-glow"></div>
       <div class="cta-inner">
         <div class="eyebrow reveal" style="justify-content:center">Partner with Fodman</div>
@@ -611,7 +593,7 @@
   <div class="footer-bottom"><p>&#169; 2026 Fodman International Limited. All rights reserved.</p><div class="footer-bottom-links"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a><a href="sitemap.html">Sitemap</a></div></div>
 </div></footer>
 
-<script src="main.js"></script>
-<script src="home.js"></script>
+<script src="main.js" defer></script>
+<script src="home.js" defer></script>
 </body>
 </html>

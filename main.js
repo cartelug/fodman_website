@@ -9,10 +9,13 @@
     if(!pl) return;
     let hidden=false;
     function hide(){ if(hidden)return; hidden=true; pl.classList.add('done'); document.body.style.overflow=''; setTimeout(()=>{pl.style.display='none';},750); }
+    // Lift as soon as the DOM is ready rather than waiting for every image
+    // on the page ('load'), and never hold the page for more than 900ms.
     document.body.style.overflow='hidden';
-    const minTime=650, start=performance.now();
-    window.addEventListener('load',()=>{ const el=performance.now()-start; setTimeout(hide,Math.max(0,minTime-el)); });
-    setTimeout(hide,1800);
+    const minTime=350, start=performance.now();
+    function ready(){ const el=performance.now()-start; setTimeout(hide,Math.max(0,minTime-el)); }
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready); else ready();
+    setTimeout(hide,900);
   })();
 
   // ─── NAV SCROLL ───
@@ -308,9 +311,15 @@
     bar.className='site-progress';
     bar.setAttribute('aria-hidden','true');
     document.body.appendChild(bar);
-    let ticking=false;
+    // scrollHeight is cached (refreshed on resize/load) so the scroll
+    // handler never forces a synchronous layout on every frame.
+    let ticking=false, max=0;
+    function measure(){ max=document.documentElement.scrollHeight-innerHeight; }
+    addEventListener('resize',()=>{measure();update();},{passive:true});
+    addEventListener('load',()=>{measure();update();});
+    if('ResizeObserver'in window)new ResizeObserver(()=>{measure();update();}).observe(document.body);
+    measure();
     function update(){
-      const max=document.documentElement.scrollHeight-innerHeight;
       bar.style.transform='scaleX('+(max>0?Math.min(scrollY/max,1):0)+')';
       ticking=false;
     }

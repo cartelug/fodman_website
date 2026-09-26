@@ -1,122 +1,147 @@
-/* Fodman International — home.js V2 */
+/* Fodman International — home.js V3 (performance pass) */
 (function() {
   'use strict';
 
   // ─── JS CLASS ───
+  // Also set by the inline <head> script so the hero's entrance start-state
+  // applies before first paint; kept here as a harmless fallback.
   document.documentElement.classList.add('js');
 
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   // ─── HERO CONTENT LOAD ANIMATION ───
+  // The homepage no longer has a preloader: the hero's own choreographed
+  // entrance starts on the very next frame instead of after a 0.7–3.8s
+  // splash screen. (Still honours a preloader if one is ever re-added.)
+  let heroLoaded = false;
   function triggerHeroLoad() {
     const c = document.getElementById('heroContent');
-    if (c) c.classList.add('loaded');
+    if (!c || heroLoaded) return;
+    heroLoaded = true;
+    c.classList.add('loaded');
+    // Last headline line finishes at .33s delay + .85s — then un-clip.
+    setTimeout(() => c.classList.add('settled'), reduceMotion ? 0 : 1250);
   }
   const pl = document.getElementById('preloader');
   if (pl) {
     const mo = new MutationObserver(() => {
-      if (pl.classList.contains('done')) {
-        setTimeout(triggerHeroLoad, 100);
-        mo.disconnect();
-      }
+      if (pl.classList.contains('done')) { triggerHeroLoad(); mo.disconnect(); }
     });
     mo.observe(pl, { attributes: true, attributeFilter: ['class'] });
-    setTimeout(triggerHeroLoad, 3800);
+    setTimeout(triggerHeroLoad, 1000);
   } else {
-    triggerHeroLoad();
+    // Double rAF: guarantees the hidden start-state has been painted once,
+    // so the transition actually runs instead of snapping to the end.
+    requestAnimationFrame(() => requestAnimationFrame(triggerHeroLoad));
   }
 
-  // ─── PARALLAX: HERO RIGHT PHOTO ───
-  // The wrapper slides at 0.18x page scroll; the <img> inside owns its
-  // own CSS Ken Burns zoom — two elements, one transform each, so the
-  // scroll-driven translateY never fights the animation's scale().
+  const heroEl      = document.getElementById('hero');
   const heroImgWrap = document.getElementById('heroImgWrap');
-  const heroEl  = document.getElementById('hero');
+  const regionImg   = document.getElementById('regionImg');
+  const regionWrap  = regionImg ? regionImg.closest('.region-photo-wrap') : null;
 
-  // ─── PARALLAX: REGION PHOTO ───
-  const regionImg = document.getElementById('regionImg');
+  // ─── PAUSE HERO LOOPS WHEN OFF-SCREEN / TAB HIDDEN ───
+  // Aurora drift, Ken Burns, pulse dots and CTA glow all stop once the hero
+  // leaves the viewport, so the rest of the page scrolls on an idle GPU.
+  let heroOnScreen = true;
+  function syncHeroPause() {
+    if (heroEl) heroEl.classList.toggle('hero--paused', !heroOnScreen || document.hidden);
+  }
+  document.addEventListener('visibilitychange', syncHeroPause);
+
+  // ─── PARALLAX (hero photo + region photo) ───
+  // Layout is measured once (and on resize), never inside the scroll
+  // handler, and each effect only runs while its element is on screen.
+  let heroH = 0, regionTop = 0, regionH = 0, vh = window.innerHeight;
+  let regionOnScreen = false, desktop = window.innerWidth > 768;
+
+  function measure() {
+    vh = window.innerHeight;
+    desktop = window.innerWidth > 768;
+    if (heroEl) heroH = heroEl.offsetHeight;
+    if (regionWrap) {
+      const r = regionWrap.getBoundingClientRect();
+      regionTop = r.top + window.scrollY;
+      regionH = r.height;
+    }
+  }
 
   let rafPending = false;
+  function render() {
+    rafPending = false;
+    const scrollY = window.scrollY;
+
+    if (heroImgWrap) {
+      if (desktop && heroOnScreen && !reduceMotion) {
+        heroImgWrap.style.transform = 'translate3d(0,' + (Math.min(scrollY, heroH) * 0.18).toFixed(1) + 'px,0)';
+      } else if (!desktop) {
+        heroImgWrap.style.transform = '';
+      }
+    }
+
+    if (regionImg && regionOnScreen && !reduceMotion) {
+      const bottom = regionTop + regionH - scrollY;
+      const progress = 1 - (bottom / (vh + regionH));
+      const shift = Math.max(-8, Math.min(8, progress * 16 - 8));
+      regionImg.style.transform = 'translate3d(0,' + shift.toFixed(2) + '%,0)';
+    }
+  }
   function onScroll() {
     if (rafPending) return;
     rafPending = true;
-    requestAnimationFrame(() => {
-      const scrollY = window.scrollY;
-
-      // Hero parallax (only while hero is on screen)
-      if (heroImgWrap && heroEl && window.innerWidth > 768) {
-        const heroH = heroEl.offsetHeight;
-        if (scrollY < heroH) {
-          heroImgWrap.style.transform = `translateY(${scrollY * 0.18}px)`;
-        }
-      } else if (heroImgWrap) {
-        heroImgWrap.style.transform = '';
-      }
-
-      // Region photo parallax
-      if (regionImg) {
-        const rect = regionImg.closest('.region-photo-wrap')?.getBoundingClientRect();
-        if (rect) {
-          const vh = window.innerHeight;
-          if (rect.bottom > 0 && rect.top < vh) {
-            const progress = 1 - (rect.bottom / (vh + rect.height));
-            const shift = (progress * 16 - 8);
-            regionImg.style.transform = `translateY(${shift}%)`;
-          }
-        }
-      }
-
-      rafPending = false;
-    });
+    requestAnimationFrame(render);
   }
+
+  measure();
   window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', () => { measure(); onScroll(); }, { passive: true });
+  window.addEventListener('load', () => { measure(); onScroll(); });
+  // Sections above the region use content-visibility:auto, so its real
+  // offset settles as they render — re-measure whenever the page resizes.
+  if ('ResizeObserver' in window) new ResizeObserver(() => { measure(); }).observe(document.body);
+
+  if ('IntersectionObserver' in window) {
+    if (heroEl) {
+      new IntersectionObserver(entries => {
+        heroOnScreen = entries[0].isIntersecting;
+        syncHeroPause();
+        if (heroOnScreen) onScroll();
+      }).observe(heroEl);
+    }
+    if (regionWrap) {
+      new IntersectionObserver(entries => {
+        regionOnScreen = entries[0].isIntersecting;
+        if (regionOnScreen) { measure(); onScroll(); }
+      }, { rootMargin: '120px 0px' }).observe(regionWrap);
+    }
+  } else {
+    regionOnScreen = true;
+  }
   onScroll();
 
-  // Ticker duplication is handled once, in main.js (which loads first on
-  // every page including this one) — doing it here too used to double the
-  // ticker content to 4x the intended DOM nodes. Removed.
+  // Ticker duplication, scroll reveal, SVG draw-on and counters are handled
+  // once in main.js (loads first on every page). Sector sibling-dimming is
+  // pure CSS (.sectors-grid:has(...) in home.css) — the old JS duplicate
+  // that wrote inline opacity on every mouseenter has been removed.
 
-  // Scroll reveal, SVG symbol draw-on, and counter animation are all
-  // handled once, in main.js (which loads first on every page, including
-  // this one) — duplicating them here used to run two independent
-  // IntersectionObservers over the same elements, with a mismatched
-  // threshold on .sym-wrap (.5 here vs .4 in main.js). Removed.
-
-  // ─── SECTOR CARD SIBLINGS DIM ───
-  const sectorCards = document.querySelectorAll('.sector-card');
-  sectorCards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      sectorCards.forEach(c => { if (c !== card) c.style.opacity = '.7'; });
-    });
-    card.addEventListener('mouseleave', () => {
-      sectorCards.forEach(c => c.style.opacity = '');
-    });
-  });
-
-  // (The old "division card tilt" handler that lived here targeted
-  // .div-card, a class removed from the markup when the Ledger Grid
-  // replaced it — the listener was firing on zero elements. Removed.)
+  // ─── CURSOR SPOTLIGHTS (ledger cards + hero CTA) ───
+  // Mouse events are coalesced to one read + one write per frame (the old
+  // handlers did a getBoundingClientRect on every raw mousemove event).
   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    // ─── LEDGER CARD SPOTLIGHT ───
-    // Cursor-tracked highlight — position set as CSS custom properties,
-    // visibility/animation handled entirely in CSS (:hover opacity).
-    document.querySelectorAll('.ldg-card').forEach(card => {
-      card.addEventListener('mousemove', e => {
-        const r = card.getBoundingClientRect();
-        const mx = ((e.clientX - r.left) / r.width) * 100;
-        const my = ((e.clientY - r.top) / r.height) * 100;
-        card.style.setProperty('--mx', mx + '%');
-        card.style.setProperty('--my', my + '%');
+    const targets = document.querySelectorAll('.ldg-card, .hero-actions .btn--accent');
+    targets.forEach(el => {
+      let x = 0, y = 0, queued = false;
+      function paint() {
+        queued = false;
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', ((x - r.left) / r.width) * 100 + '%');
+        el.style.setProperty('--my', ((y - r.top) / r.height) * 100 + '%');
+      }
+      el.addEventListener('pointermove', e => {
+        x = e.clientX; y = e.clientY;
+        if (!queued) { queued = true; requestAnimationFrame(paint); }
       });
     });
-
-    // ─── HERO CTA SPOTLIGHT (same technique, primary button only) ───
-    const heroCta = document.querySelector('.hero-actions .btn--accent');
-    if (heroCta) {
-      heroCta.addEventListener('mousemove', e => {
-        const r = heroCta.getBoundingClientRect();
-        heroCta.style.setProperty('--mx', ((e.clientX - r.left) / r.width) * 100 + '%');
-        heroCta.style.setProperty('--my', ((e.clientY - r.top) / r.height) * 100 + '%');
-      });
-    }
   }
 
 })();
