@@ -8,14 +8,18 @@
     const pl = document.getElementById('preloader');
     if(!pl) return;
     let hidden=false;
-    function hide(){ if(hidden)return; hidden=true; pl.classList.add('done'); document.body.style.overflow=''; setTimeout(()=>{pl.style.display='none';},750); }
+    function hide(){ if(hidden)return; hidden=true; pl.classList.add('done'); document.body.style.overflow=''; setTimeout(()=>{pl.style.display='none';},550); }
     // Lift as soon as the DOM is ready rather than waiting for every image
-    // on the page ('load'), and never hold the page for more than 900ms.
+    // on the page ('load'). minTime is a floor, not a stall: it just lets
+    // the entrance choreography (finishes ~700ms, see style.css) play out
+    // in full instead of being cut off mid-animation on a fast, cached
+    // load. The 1000ms ceiling is absolute — the preloader can never hold
+    // the page longer than that, however slow the network is.
     document.body.style.overflow='hidden';
-    const minTime=350, start=performance.now();
+    const minTime=700, start=performance.now();
     function ready(){ const el=performance.now()-start; setTimeout(hide,Math.max(0,minTime-el)); }
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready); else ready();
-    setTimeout(hide,900);
+    setTimeout(hide,1000);
   })();
 
   // ─── NAV SCROLL ───

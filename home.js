@@ -10,9 +10,11 @@
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ─── HERO CONTENT LOAD ANIMATION ───
-  // The homepage no longer has a preloader: the hero's own choreographed
-  // entrance starts on the very next frame instead of after a 0.7–3.8s
-  // splash screen. (Still honours a preloader if one is ever re-added.)
+  // The hero's entrance starts the instant the preloader (capped at
+  // ~700–1000ms in main.js) signals .done, so the two feel like one
+  // continuous reveal rather than two separate waits. If the preloader
+  // element is ever removed from index.html, this falls back to firing
+  // on the next frame instead.
   let heroLoaded = false;
   function triggerHeroLoad() {
     const c = document.getElementById('heroContent');
@@ -28,7 +30,9 @@
       if (pl.classList.contains('done')) { triggerHeroLoad(); mo.disconnect(); }
     });
     mo.observe(pl, { attributes: true, attributeFilter: ['class'] });
-    setTimeout(triggerHeroLoad, 1000);
+    // Safety net only — main.js's own hard ceiling is 1000ms, so this
+    // should never be the thing that actually fires.
+    setTimeout(triggerHeroLoad, 1150);
   } else {
     // Double rAF: guarantees the hidden start-state has been painted once,
     // so the transition actually runs instead of snapping to the end.
