@@ -4,22 +4,45 @@
   document.documentElement.classList.add('js');
 
   // ─── PRELOADER ───
+  // The counter/progress bar follow the real load state: they climb toward
+  // ~88% while the DOM is still parsing and only complete once
+  // DOMContentLoaded has fired AND the floor has elapsed. The floor (850ms
+  // first page of a visit, 300ms after) lets the entrance choreography
+  // finish; the ceiling (1250ms / 650ms) is absolute, so the preloader can
+  // never hold a page longer than that whatever the network does. It never
+  // waits for images ('load').
   (function(){
-    const pl = document.getElementById('preloader');
-    if(!pl) return;
-    let hidden=false;
-    function hide(){ if(hidden)return; hidden=true; pl.classList.add('done'); document.body.style.overflow=''; setTimeout(()=>{pl.style.display='none';},550); }
-    // Lift as soon as the DOM is ready rather than waiting for every image
-    // on the page ('load'). minTime is a floor, not a stall: it just lets
-    // the entrance choreography (finishes ~700ms, see style.css) play out
-    // in full instead of being cut off mid-animation on a fast, cached
-    // load. The 1000ms ceiling is absolute — the preloader can never hold
-    // the page longer than that, however slow the network is.
+    const pl=document.getElementById('preloader');
+    if(!pl)return;
+    const count=document.getElementById('plCount'), fill=document.getElementById('plFill');
+    const repeat=document.documentElement.classList.contains('pl-repeat');
+    const MIN=repeat?300:850, MAX=repeat?650:1250;
+    let hidden=false, domReady=document.readyState!=='loading', v=0;
+    const start=performance.now();
+    try{sessionStorage.setItem('fodman-pl','1');}catch(e){}
     document.body.style.overflow='hidden';
-    const minTime=700, start=performance.now();
-    function ready(){ const el=performance.now()-start; setTimeout(hide,Math.max(0,minTime-el)); }
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready); else ready();
-    setTimeout(hide,1000);
+    if(!domReady)document.addEventListener('DOMContentLoaded',()=>{domReady=true;});
+    function paint(){
+      const n=Math.min(100,Math.round(v));
+      if(count)count.textContent=String(n).padStart(3,'0');
+      if(fill)fill.style.transform='scaleX('+(n/100)+')';
+    }
+    function hide(){
+      if(hidden)return; hidden=true; v=100; paint();
+      pl.classList.add('done'); document.body.style.overflow='';
+      setTimeout(()=>{pl.style.display='none';},1000);
+    }
+    function tick(now){
+      if(hidden)return;
+      const el=now-start, t=Math.min(el/MIN,1), eased=t*t*(3-2*t);
+      const target=(domReady?100:88)*eased;
+      v+=(target-v)*.28;
+      if(el>=MAX){hide();return;}
+      if(domReady&&el>=MIN&&v>=98.5){v=100;paint();setTimeout(hide,90);return;} // let "100" register before the curtain opens
+      paint(); requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+    setTimeout(hide,MAX+100);
   })();
 
   // ─── NAV SCROLL ───

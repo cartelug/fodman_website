@@ -277,61 +277,85 @@ section{padding:100px 0}
 .ticker-item::after{content:"";width:5px;height:5px;background:var(--lilac);border-radius:50%;opacity:.7}
 @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* ─── PRELOADER V2 ───
-   On screen for well under a second on any real load: main.js holds it
-   for a 700ms floor (so the choreography below always gets to finish,
-   never flashes) and a 1000ms hard ceiling (so it can never hang the
-   page, whatever the network is doing) — nothing here waits for images.
-   Every looping piece (only the shimmer) animates transform/opacity only;
-   everything else is a one-shot entrance that plays once and stops.
-   prefers-reduced-motion skips it completely (rule further down this
-   file); a <noscript> right after the markup force-hides it for visitors
-   without JavaScript, so it can never be a dead end. */
-.preloader{
-  position:fixed; inset:0; z-index:9999;
-  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:22px;
-  background:var(--plum); overflow:hidden;
-  transition:opacity .5s cubic-bezier(.4,0,.2,1), visibility .5s, transform .5s cubic-bezier(.4,0,.2,1);
-}
-.preloader.done{ opacity:0; visibility:hidden; transform:scale(1.035); pointer-events:none; }
-/* Static backdrop glow — no animation, so it costs nothing while shown */
-.pl-glow{
-  position:absolute; inset:0; pointer-events:none;
+/* ─── PRELOADER V3 — "curtain" ───
+   Editorial layout: big animated mark centre stage, brand + place labels
+   in the corners, a live 0→100 counter bottom-right driven by the real
+   load state, and a two-panel curtain that splits open to reveal the page
+   (the homepage hero starts animating as it opens).
+   Budget: main.js holds it for a 900ms floor (so the choreography always
+   finishes) and a 1300ms ceiling (so it can never hang the page); nothing
+   waits for images. After the first page of a visit, html.pl-repeat plays
+   a brisk ~0.4s version so browsing around never replays the full show.
+   Only transforms/opacity animate (mark entrance, orbit, globe spin,
+   progress); no filter/box-shadow loops. prefers-reduced-motion skips it
+   (rule further down) and a <noscript> in the markup force-hides it. */
+.preloader{ position:fixed; inset:0; z-index:9999; overflow:hidden; transition:visibility 0s linear .9s; }
+.preloader.done{ visibility:hidden; pointer-events:none; }
+.pl-panel{ position:absolute; left:0; right:0; height:50.3%; background:var(--plum); will-change:transform; transition:transform .72s cubic-bezier(.7,0,.15,1) .1s; }
+.pl-panel--t{ top:0 } .pl-panel--b{ bottom:0 }
+.preloader.done .pl-panel--t{ transform:translateY(-101%) }
+.preloader.done .pl-panel--b{ transform:translateY(101%) }
+.pl-content{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; transition:opacity .35s ease, transform .6s cubic-bezier(.4,0,.2,1); }
+.preloader.done .pl-content{ opacity:0; transform:scale(1.06); }
+.pl-glow{ position:absolute; inset:0; pointer-events:none;
   background:
-    radial-gradient(560px circle at 26% 18%, rgba(126,79,184,.26), transparent 60%),
-    radial-gradient(520px circle at 76% 86%, rgba(94,46,148,.22), transparent 62%);
-}
-.pl-stage{ position:relative; width:112px; height:112px; z-index:1; }
-.pl-mark{ width:100%; height:100%; display:block; animation:plMarkIn .5s cubic-bezier(.16,1,.3,1) both; }
-@keyframes plMarkIn{ from{ opacity:0; transform:scale(.8) } to{ opacity:1; transform:scale(1) } }
-.pl-ring{ fill:none; stroke:rgba(155,123,208,.42); stroke-width:1.6; stroke-dasharray:280; stroke-dashoffset:280; animation:plDraw .55s ease forwards .04s; }
-.pl-globe{ fill:rgba(255,255,255,.05); stroke:rgba(255,255,255,.16); stroke-width:1.5; }
-.pl-meridian{ fill:none; stroke:rgba(195,172,230,.26); stroke-width:1; }
-.pl-continent{ fill:rgba(255,255,255,.16); }
-.pl-route{ fill:none; stroke:var(--lilac); stroke-width:6; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:var(--len); stroke-dashoffset:var(--len); animation:plDraw .42s cubic-bezier(.4,0,.2,1) forwards; filter:drop-shadow(0 0 5px rgba(155,123,208,.5)); }
-.pl-route.r1{ animation-delay:.08s } .pl-route.r2{ animation-delay:.15s } .pl-route.r3{ animation-delay:.22s }
-.pl-pin{ fill:var(--lilac); opacity:0; transform-box:fill-box; transform-origin:center; animation:plPin .32s cubic-bezier(.34,1.56,.64,1) forwards; }
-.pl-pin.p1{ animation-delay:.40s } .pl-pin.p2{ animation-delay:.47s } .pl-pin.p3{ animation-delay:.54s }
+    radial-gradient(640px circle at 24% 20%, rgba(126,79,184,.30), transparent 62%),
+    radial-gradient(600px circle at 78% 86%, rgba(94,46,148,.26), transparent 64%),
+    radial-gradient(420px circle at 50% 46%, rgba(155,123,208,.14), transparent 70%); }
+.pl-center{ position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; gap:clamp(18px,3.4vmin,30px); }
+
+/* Mark */
+.pl-stage{ position:relative; width:clamp(132px,23vmin,196px); height:clamp(132px,23vmin,196px); }
+.pl-mark{ width:100%; height:100%; display:block; animation:plMarkIn .6s cubic-bezier(.16,1,.3,1) both; }
+@keyframes plMarkIn{ from{ opacity:0; transform:scale(.78) } to{ opacity:1; transform:scale(1) } }
+.pl-orbit{ position:absolute; inset:-16px; border-radius:50%; border:1px solid rgba(155,123,208,.2); animation:plOrbit 2.2s linear infinite; }
+.pl-orbit::after{ content:""; position:absolute; top:-4px; left:50%; width:8px; height:8px; margin-left:-4px; border-radius:50%; background:var(--lilac2); box-shadow:0 0 12px 2px rgba(195,172,230,.7); }
+@keyframes plOrbit{ to{ transform:rotate(360deg) } }
+.pl-ring{ fill:none; stroke:rgba(155,123,208,.5); stroke-width:1.6; stroke-dasharray:280; stroke-dashoffset:280; animation:plDraw .6s ease forwards .05s; }
+.pl-globe{ fill:rgba(255,255,255,.05); stroke:rgba(255,255,255,.18); stroke-width:1.5; }
+.pl-meridian{ fill:none; stroke:rgba(195,172,230,.3); stroke-width:1; }
+.pl-spin{ transform-box:fill-box; transform-origin:center; animation:plSpin 2.4s linear infinite; }
+.pl-spin.b{ animation-delay:-1.2s; }
+@keyframes plSpin{ 0%{ transform:scaleX(1) } 50%{ transform:scaleX(-1) } 100%{ transform:scaleX(1) } }
+.pl-continent{ fill:rgba(255,255,255,.17); }
+.pl-route{ fill:none; stroke:var(--lilac); stroke-width:6; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:var(--len); stroke-dashoffset:var(--len); animation:plDraw .5s cubic-bezier(.4,0,.2,1) forwards; }
+.pl-route.r1{ animation-delay:.14s } .pl-route.r2{ animation-delay:.24s } .pl-route.r3{ animation-delay:.34s }
+.pl-pin{ fill:var(--lilac); opacity:0; transform-box:fill-box; transform-origin:center; animation:plPin .34s cubic-bezier(.34,1.56,.64,1) forwards; }
+.pl-pin.p1{ animation-delay:.52s } .pl-pin.p2{ animation-delay:.6s } .pl-pin.p3{ animation-delay:.68s }
 @keyframes plDraw{ to{ stroke-dashoffset:0 } }
 @keyframes plPin{ from{ opacity:0; transform:scale(.2) } to{ opacity:1; transform:scale(1) } }
-/* Wordmark: each letter rises in on its own beat rather than one flat fade */
-.pl-word{ display:flex; font-family:var(--font-display); font-weight:800; font-size:1.6rem; letter-spacing:-.01em; color:#fff; z-index:1; }
-.pl-word span,.pl-word i{ display:inline-block; opacity:0; transform:translateY(10px); animation:plLetter .38s cubic-bezier(.16,1,.3,1) forwards; }
+
+/* Wordmark — letters rise on their own beat */
+.pl-word{ display:flex; font-family:var(--font-display); font-weight:800; font-size:clamp(2rem,4.6vmin + 1rem,3.2rem); letter-spacing:.01em; color:#fff; line-height:1; }
+.pl-word span,.pl-word i{ display:inline-block; opacity:0; transform:translateY(.55em); animation:plLetter .5s cubic-bezier(.16,1,.3,1) forwards; }
 .pl-word i{ color:var(--lilac); font-style:normal; }
-.pl-word span:nth-child(1){ animation-delay:.16s } .pl-word span:nth-child(2){ animation-delay:.20s }
-.pl-word span:nth-child(3){ animation-delay:.24s } .pl-word span:nth-child(4){ animation-delay:.28s }
-.pl-word span:nth-child(5){ animation-delay:.32s } .pl-word span:nth-child(6){ animation-delay:.36s }
-.pl-word i{ animation-delay:.40s }
-@keyframes plLetter{ to{ opacity:1; transform:translateY(0) } }
-/* Progress track: a short highlight sweeps the track on loop (translateX
-   only) for as long as the page needs; .done freezes it mid-glow instead
-   of letting it visibly snap or restart, right as the panel fades. */
-.pl-track{ position:relative; width:150px; height:2px; border-radius:2px; background:rgba(255,255,255,.1); overflow:hidden; z-index:1; opacity:0; animation:plFade .3s ease forwards .46s; }
-.pl-fill{ position:absolute; top:0; left:0; width:40%; height:100%; border-radius:2px; background:linear-gradient(90deg,transparent,var(--lilac),transparent); animation:plSweep 1s ease-in-out infinite .56s; }
-.preloader.done .pl-fill{ animation-play-state:paused; }
-@keyframes plSweep{ 0%{ transform:translateX(-100%) } 100%{ transform:translateX(350%) } }
-.pl-tag{ font-family:var(--font-sumo); font-weight:900; font-size:.72rem; letter-spacing:.24em; text-transform:uppercase; color:rgba(255,255,255,.4); opacity:0; z-index:1; animation:plFade .35s ease forwards .5s; }
+.pl-word span:nth-child(1){ animation-delay:.3s } .pl-word span:nth-child(2){ animation-delay:.35s }
+.pl-word span:nth-child(3){ animation-delay:.4s } .pl-word span:nth-child(4){ animation-delay:.45s }
+.pl-word span:nth-child(5){ animation-delay:.5s } .pl-word span:nth-child(6){ animation-delay:.55s }
+.pl-word i{ animation-delay:.62s }
+@keyframes plLetter{ to{ opacity:1; transform:none } }
+
+/* Progress — scaleX driven by main.js from the real load state */
+.pl-track{ width:clamp(160px,26vw,240px); height:2px; border-radius:2px; background:rgba(255,255,255,.12); overflow:hidden; opacity:0; animation:plFade .3s ease forwards .5s; }
+.pl-fill{ width:100%; height:100%; border-radius:2px; transform-origin:left center; transform:scaleX(0); background:linear-gradient(90deg,var(--purple3),var(--lilac),#fff); will-change:transform; }
+
+/* Corner labels + counter */
+.pl-corner{ position:absolute; z-index:1; font-family:var(--font-sumo); font-weight:900; font-size:.66rem; letter-spacing:.24em; text-transform:uppercase; color:rgba(255,255,255,.42); opacity:0; animation:plFade .5s ease forwards .45s; }
+.pl-corner--tl{ top:28px; left:32px } .pl-corner--tr{ top:28px; right:32px }
+.pl-corner--bl{ bottom:32px; left:32px }
+.pl-corner--br{ bottom:22px; right:32px; display:flex; align-items:baseline; gap:4px; letter-spacing:0; color:#fff; }
+.pl-count{ font-family:var(--font-display); font-weight:800; font-size:clamp(2.6rem,7vw,5rem); line-height:1; letter-spacing:-.04em; font-variant-numeric:tabular-nums; }
+.pl-corner--br small{ font-family:var(--font-display); font-weight:700; font-size:1.1rem; color:var(--lilac); letter-spacing:0; }
 @keyframes plFade{ to{ opacity:1 } }
+@media(max-width:600px){
+  .pl-corner--tl{ top:20px; left:20px } .pl-corner--tr{ display:none }
+  .pl-corner--bl{ bottom:24px; left:20px; font-size:.58rem; letter-spacing:.18em }
+  .pl-corner--br{ bottom:14px; right:20px }
+}
+/* Later pages in the same visit: same design, brisk — no full replay */
+.pl-repeat .pl-mark,.pl-repeat .pl-ring,.pl-repeat .pl-route,.pl-repeat .pl-pin,
+.pl-repeat .pl-word span,.pl-repeat .pl-word i,.pl-repeat .pl-track,.pl-repeat .pl-corner{ animation-duration:.01s; animation-delay:0s; }
+.pl-repeat .pl-panel{ transition-duration:.5s; transition-delay:0s; }
 
 /* ─── NAV ─── */
 .nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:72px;display:flex;align-items:center;background:rgba(36,15,69,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--rule);transition:all .3s ease}

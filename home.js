@@ -11,7 +11,7 @@
 
   // ─── HERO CONTENT LOAD ANIMATION ───
   // The hero's entrance starts the instant the preloader (capped at
-  // ~700–1000ms in main.js) signals .done, so the two feel like one
+  // ~1.3s in main.js) signals .done, so the two feel like one
   // continuous reveal rather than two separate waits. If the preloader
   // element is ever removed from index.html, this falls back to firing
   // on the next frame instead.
@@ -32,7 +32,7 @@
     mo.observe(pl, { attributes: true, attributeFilter: ['class'] });
     // Safety net only — main.js's own hard ceiling is 1000ms, so this
     // should never be the thing that actually fires.
-    setTimeout(triggerHeroLoad, 1150);
+    setTimeout(triggerHeroLoad, 1500);
   } else {
     // Double rAF: guarantees the hidden start-state has been painted once,
     // so the transition actually runs instead of snapping to the end.
