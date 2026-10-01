@@ -25,7 +25,7 @@ Configured loan terms start as **draft**. Francis must enter the agreed rate and
 
 Use a dedicated **Supabase Free** project and **Cloudflare Pages Free**. Retain the corporate site on GitHub Pages. Configure the Pages application with `npm run build` and output directory `dist`. Production branch: `main`. The build excludes database source, tests, credentials and documentation from the Pages output. No paid add-ons are required by this code.
 
-1. Create the dedicated Supabase project on the Free plan. Apply the single migration in `supabase/migrations/`. Do not apply it to another business's existing schema.
+1. Create the dedicated Supabase project on the Free plan. Apply the migrations in `supabase/migrations/` in filename order. Do not apply them to another business's existing schema.
 2. Create Francis's verified Auth user privately, then run `supabase/bootstrap_francis.sql` with his verified login email substituted locally. Disable public Auth sign-ups. Nobody can claim administrator access from a signup form.
 3. Deploy `lending-intake` with JWT verification off, and `staff-invite` with JWT verification on, using `supabase/config.toml`. The intake validates Turnstile and is the only public write path. Its SQL function is executable by the server role only.
 4. Set Edge Function secrets in Supabase: `ALLOWED_ORIGINS` (comma-separated exact GitHub/Pages origins), `TURNSTILE_SECRET_KEY`, a random `INTAKE_IP_SALT`, and `STAFF_REDIRECT_URL` (exact Pages `/desk/` URL). Supabase supplies its own URL and server credentials. Never copy secret credentials into browser code or GitHub.
@@ -37,7 +37,7 @@ Use a dedicated **Supabase Free** project and **Cloudflare Pages Free**. Retain 
 
 `npm ci`, `npm test`, `npm run test:database`, `npm run test:edge`, `npx playwright install chromium`, `npm run test:browser`, `npm run build`.
 
-The database suite executes the actual migration in PGlite (PostgreSQL), including roles and RLS. It checks duplicate retries, exact schedule totals, cashiers/viewers/loan officers, reversals, full settlement, public intake limits and two-person approval. Browser checks exercise desktop/mobile, application → approval → disbursement → partial payment → receipt/report, fallback enquiries and public submission retries. Edge tests mock external services and verify input validation, origin restrictions and Turnstile hostname/action binding.
+The database suite executes the actual migrations in PGlite (PostgreSQL), including roles and RLS. It checks duplicate retries, exact schedule totals, cashiers/viewers/loan officers, reversals, full settlement, public intake limits and two-person approval. Browser checks exercise desktop/mobile, application → approval → disbursement → partial payment → receipt/report, fallback enquiries and public submission retries. Edge tests mock external services and verify input validation, origin restrictions and Turnstile hostname/action binding.
 
 Local checks do not establish that a remote project has been configured. Before go-live, submit from a phone and confirm the application appears on Francis's laptop; record a partial and full repayment; confirm another authorised device sees the result; verify a non-staff login cannot see data and exported totals reconcile. Check actual email delivery and run Supabase security advisors.
 

@@ -9,6 +9,7 @@ async function rejected(fn,pattern){await assert.rejects(fn,pattern);count++;}
 async function as(user,role='authenticated'){await db.exec('reset role');await q("select set_config('request.jwt.claim.sub',$1,false)",[user||'']);await db.exec('set role '+role);}
 await db.exec(`create role anon;create role authenticated;create role service_role;create schema auth;create table auth.users(id uuid primary key,email text);create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema auth to anon,authenticated,service_role;grant execute on function auth.uid() to anon,authenticated,service_role;`);
 await db.exec(await readFile(new URL('../supabase/migrations/20261001075058_lending_v1.sql',import.meta.url),'utf8'));
+await db.exec(await readFile(new URL('../supabase/migrations/20261001084639_lending_indexes.sql',import.meta.url),'utf8'));
 for(const [name,id] of Object.entries(uid)){await q('insert into auth.users values($1,$2)',[id,name+'@example.test']);if(name!=='stranger')await q('insert into public.staff_profiles(user_id,name,role) values($1,$2,$3)',[id,name,name==='officer'?'loan_officer':name==='admin'?'admin':name]);}
 await as(uid.admin);
 await rejected(()=>q('insert into public.borrowers(name,phone) values($1,$2)',['Bypass','+256700123456']),/permission denied/);
