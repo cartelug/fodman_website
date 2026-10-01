@@ -1,0 +1,5 @@
+project_id = "fodman-lending-v1"
+[functions.lending-intake]
+verify_jwt = false
+[functions.staff-invite]
+verify_jwt = true
