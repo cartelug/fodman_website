@@ -11,7 +11,7 @@ The public demo uses fictional records; it is not activated for real lending.
 - Thirty-five database checks executed against the actual SQL in PostgreSQL/PGlite: staff roles and direct-write restrictions, duplicate requests, one loan per application, repayment reversal, settlement, unauthorised access, public intake limits and two-person approval.
 - Five intake Edge Function tests: exact origins, required consent and bounded values, Turnstile hostname/action, reference-only response and missing-secret protection. External Turnstile and Supabase services were mocked for these tests.
 - Browser checks: desktop and 390px mobile; new request → approved terms → disbursement → partial repayment → receipt → reconciled report. Public-form fallback and confirmed submission/retry handling also passed. No uncaught page errors. The local test used a packaged Chromium 143 binary after the default browser download was unavailable.
-- Production output built with an allowlist: public assets/screens only. No server credentials, database scripts, tests or sample database records in the Cloudflare output.
+- Production output built with an allowlist: public assets/screens only. No server credentials, database scripts, tests or sample database records in the hosting output.
 
 ## Supabase deployed
 
@@ -23,8 +23,10 @@ Security advisor notices remain for the intentionally protected, role-checked `S
 
 ## Activation still required
 
-The owner is signed into the FODMAN Supabase dashboard. Public staff signups are disabled (verified through the live Auth settings API). `INTAKE_IP_SALT` and the existing GitHub website's `ALLOWED_ORIGINS` are saved in the server secret vault. Francis's email was supplied privately and is not committed to this public repository. His new-user form is prepared; private password entry, Auth account creation and the administrator bootstrap are pending. Cloudflare's dashboard is still asking this cloud browser to complete verification; Pages hosting and Turnstile are not configured.
+The owner is signed into the FODMAN Supabase dashboard. Public staff signups are disabled (verified through the live Auth settings API). `INTAKE_IP_SALT` and the existing GitHub website's `ALLOWED_ORIGINS` are saved in the server secret vault. Francis's Auth account was created privately by the owner; the bootstrap was applied and a live database query confirmed exactly one active staff administrator named Francis. His email and credentials are not committed to this public repository. The live database contains zero applications and zero loans.
 
-The company rate and limits remain unconfirmed. The demonstration's rate is fictional. Production browser configuration remains empty, so real staff sign-in and online database intake remain disabled; the existing website WhatsApp enquiry still works. The public intake returns 503 while the required Turnstile secret is absent (verified against the live function after origin configuration).
+Cloudflare's browser verification still fails after the owner's manual attempt, so no further automated retries are being made. Pages hosting and Turnstile are not configured. A Netlify Free deployment is prepared in `netlify.toml`, with the existing build, security headers and Node 24. Netlify has not been opened or deployed; its account access remains the next step. The build and desktop/mobile browser checks passed again with the real Supabase public configuration.
+
+The company rate and limits remain unconfirmed. The demonstration's rate is fictional. The real Supabase URL and publishable key are in the public browser configuration; live sign-in remains disabled on GitHub Pages and the staff-hosting URL remains blank until deployment. Public CAPTCHA configuration is still blank, so the existing website WhatsApp enquiry still works. The protected public intake returns 503 while the required Turnstile secret is absent (verified against the live function after origin configuration).
 
 Full remote workflow acceptance, real email delivery and phone/laptop shared-record verification must be completed after activation. No paid services were purchased or enabled.

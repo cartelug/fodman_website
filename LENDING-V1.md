@@ -17,13 +17,15 @@ V1 is a lending-only desk connected to the existing FODMAN website. Francis star
 
 ## Current release state
 
-The source and demonstration are ready. Live operations stay disabled until the database, administrator and public configuration are set. The website continues its existing WhatsApp enquiry flow while configuration is empty. No sample data is inserted into the live database.
+The source and demonstration are ready. The dedicated Supabase database and Francis's administrator account are installed. Live operations stay disabled until staff hosting and the remaining public configuration are set. The website continues its existing WhatsApp enquiry flow while public verification is unconfigured. No sample data is inserted into the live database. See `docs/RELEASE-STATUS.md` for deployment evidence and outstanding setup.
 
 Configured loan terms start as **draft**. Francis must enter the agreed rate and limits and confirm them before an application can be approved. The demo's 2.5% monthly flat rate is fictional, not a company rate.
 
 ## Free deployment
 
 Use a dedicated **Supabase Free** project and **Cloudflare Pages Free**. Retain the corporate site on GitHub Pages. Configure the Pages application with `npm run build` and output directory `dist`. Production branch: `main`. The build excludes database source, tests, credentials and documentation from the Pages output. No paid add-ons are required by this code.
+
+**Prepared hosting alternative:** `netlify.toml` supports Netlify Free with the same `main` branch, `npm run build`, `dist` output and security headers. Its current Free plan is USD 0/month with a 300-credit hard limit; projects pause at the limit and there is no automatic recharge. Only the account owner needs hosting access; Francis and later lending staff sign in through Supabase. Select the Free plan and use its provided HTTPS subdomain. This alternative is prepared because Cloudflare's browser verification is blocking setup; it has not been deployed yet. Hosting on Netlify does not complete Turnstile setup. Keep public applications on their WhatsApp fallback until a real verification widget and server secret are configured.
 
 1. Create the dedicated Supabase project on the Free plan. Apply the migrations in `supabase/migrations/` in filename order. Do not apply them to another business's existing schema.
 2. Create Francis's verified Auth user privately, then run `supabase/bootstrap_francis.sql` with his verified login email substituted locally. Disable public Auth sign-ups. Nobody can claim administrator access from a signup form.

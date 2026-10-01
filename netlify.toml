@@ -1,0 +1,10 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+# Preserve explicit .html links and the desk directory's canonical URL.
+[build.processing.html]
+  pretty_urls = false

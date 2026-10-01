@@ -1,9 +1,9 @@
 /* Public configuration only. Never put a secret/service-role key here. */
 window.FODMAN_CONFIG = Object.freeze({
-  supabaseUrl: '',
-  publishableKey: '',
+  supabaseUrl: 'https://pmytoakpwsbgphbyskal.supabase.co',
+  publishableKey: 'sb_publishable_TATvvSnMAEXTV5mqbFYbBQ_aUWH-oQh',
   turnstileSiteKey: '',
-  staffUrl: '', // HTTPS Cloudflare Pages URL, including /desk/
+  staffUrl: '', // HTTPS staff-hosting URL, including /desk/
   websiteUrl: 'https://cartelug.github.io/fodman_website/',
   supportPhone: '+256775858924'
 });
