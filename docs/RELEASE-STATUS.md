@@ -23,8 +23,8 @@ Security advisor notices remain for the intentionally protected, role-checked `S
 
 ## Activation still required
 
-Francis's login email was supplied privately and is not committed to this public repository. His Auth account and administrator bootstrap are still pending. The dashboard remains signed out after the secure sign-in prompt timed out. Its account/settings controls and Edge secret configuration require dashboard access. Cloudflare's dashboard previously stayed on security verification in this cloud browser; Pages hosting and Turnstile are not configured.
+The owner is signed into the FODMAN Supabase dashboard. Public staff signups are disabled (verified through the live Auth settings API). `INTAKE_IP_SALT` and the existing GitHub website's `ALLOWED_ORIGINS` are saved in the server secret vault. Francis's email was supplied privately and is not committed to this public repository. His new-user form is prepared; private password entry, Auth account creation and the administrator bootstrap are pending. Cloudflare's dashboard is still asking this cloud browser to complete verification; Pages hosting and Turnstile are not configured.
 
-The company rate and limits remain unconfirmed. The demonstration's rate is fictional. Production browser configuration remains empty, so real staff sign-in and online database intake remain disabled; the existing website WhatsApp enquiry still works. Deployed functions reject requests while the required origins/secrets are absent.
+The company rate and limits remain unconfirmed. The demonstration's rate is fictional. Production browser configuration remains empty, so real staff sign-in and online database intake remain disabled; the existing website WhatsApp enquiry still works. The public intake returns 503 while the required Turnstile secret is absent (verified against the live function after origin configuration).
 
 Full remote workflow acceptance, real email delivery and phone/laptop shared-record verification must be completed after activation. No paid services were purchased or enabled.
