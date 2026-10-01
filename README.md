@@ -46,8 +46,8 @@ Francis starts as the only administrator, with additional user roles available l
 The website's Apply links feed the same application form. While live setup is pending,
 it keeps the existing WhatsApp enquiry flow. Demonstration records are fictional.
 
-The corporate website remains on GitHub Pages; host the live staff desk on Cloudflare
-Pages with a dedicated Supabase project. No live credentials or records are in this repo.
+The corporate website remains on GitHub Pages; the live staff desk is hosted on Netlify
+with a dedicated Supabase project. No live credentials or records are in this repo.
 
 ## Maintaining shared regions
 Nav, footer, and preloader are duplicated across pages so each is a standalone
@@ -57,3 +57,13 @@ static file. When changing a shared region, apply the same edit to every
 ---
 Contact confirmed against Fodman's corporate profile. HQ address, the two-vs-six service
 scope, and Real Estate / Tours copy are marked for final confirmation with the client.
+
+## Release handoff
+
+Live desk: https://fodman-lending-v1.netlify.app/desk/
+
+- [Francis quick start](docs/FRANCIS-QUICK-START.md)
+- [Remaining account setup](docs/ACTIVATION-CHECKLIST.md)
+- [Release validation](docs/RELEASE-STATUS.md)
+
+The Netlify root address opens the lending desk. Automated email features remain disabled until delivery is verified; the website application form currently prepares a WhatsApp enquiry.

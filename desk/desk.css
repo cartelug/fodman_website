@@ -12,3 +12,5 @@ label.field{display:block;margin-bottom:16px;font-size:.77rem;font-weight:600}in
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
 .card-head .link{white-space:nowrap;font-size:.8rem}
+.guide-steps{padding-left:22px;margin:0;color:var(--muted);font-size:.86rem;line-height:1.7}.guide-steps li{padding:0 0 15px 6px}.guide-steps b{color:var(--ink)}
+@media(max-width:420px){.top-actions{gap:6px}.topbar{padding:0 12px;gap:8px}.top-actions .btn.small{padding:8px 9px}.crumb strong{margin-left:3px}}

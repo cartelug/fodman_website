@@ -25,8 +25,22 @@ Security advisor notices remain for the intentionally protected, role-checked `S
 
 The owner is signed into the FODMAN Supabase dashboard. Public staff signups are disabled (verified through the live Auth settings API). `INTAKE_IP_SALT` and the existing GitHub website's `ALLOWED_ORIGINS` are saved in the server secret vault. Francis's Auth account was created privately by the owner; the bootstrap was applied and a live database query confirmed exactly one active staff administrator named Francis. His email and credentials are not committed to this public repository. The live database contains zero applications and zero loans.
 
-Cloudflare's browser verification still fails after the owner's manual attempt, so no further automated retries are being made. Turnstile is not configured. The owner manually connected the GitHub repository and deployed `fodman-lending-v1.netlify.app` on Netlify. The build configuration remains `main`, `npm run build`, `dist`, and Node 24. A browser request to `/desk/` reached Netlify Team protection, and unauthenticated requests to the portal and configuration returned 401. The deployment exists but its delivered application and security headers cannot yet be verified. Production project visibility must be changed to Public so Francis can reach the FODMAN sign-in screen; database access remains controlled by Supabase staff permissions. The actual Netlify account plan has not been inspected.
+Cloudflare's browser verification still fails after the owner's manual attempt, so no further automated retries are being made. Turnstile is not configured. The owner manually connected GitHub and deployed `fodman-lending-v1.netlify.app`, then made production Public. The `/desk/` page returns HTTP 200 with Content-Security-Policy, no-store, frame denial, nosniff, referrer and permissions headers. The live sign-in screen and fictional dashboard were verified in the browser. The actual Netlify account plan has not been inspected.
 
 The company rate and limits remain unconfirmed. A fresh live database query confirmed one active administrator, zero applications, zero loans, and `terms_ready=false`. The demonstration's rate is fictional. The real Supabase URL and publishable key are in the public browser configuration; live sign-in remains disabled on GitHub Pages. The configured staff URL is now `https://fodman-lending-v1.netlify.app/desk/`. Supabase Auth site/redirect URLs and the server's Netlify origin plus `STAFF_REDIRECT_URL` remain pending. Public CAPTCHA configuration is still blank, so the existing website WhatsApp enquiry still works. The protected public intake returns 503 while the required Turnstile secret is absent (verified against the live function after origin configuration).
 
 Full remote workflow acceptance, real email delivery and phone/laptop shared-record verification must be completed after activation. No paid services were purchased or enabled.
+
+
+## Final polish and validation
+
+- The Netlify root opens the lending desk directly.
+- Added an in-app first-use guide and a separate Francis quick-start document.
+- Sign-out clears the previous navigation/filter state; receipt labels no longer misattribute an unknown recorder to the current viewer.
+- Demo approval notes and recorder identities now match the demonstrated workflow.
+- Account emails and invitations have clear availability messages while provider configuration is pending.
+- Five calculation tests, 35 database checks and five Edge tests passed. Expanded desktop/mobile browser checks passed, including mocked staff login, help, password-email readiness, invitation readiness and cross-staff receipt attribution. Mock tests do not establish a successful real login.
+- All 95 baseline repository files were downloaded and verified against their GitHub blob hashes before packaging, including the complete corporate assets. Local HTML links and assets resolve.
+- The production build passed and contains public website/desk files only.
+
+The Supabase dashboard session is signed out. Auth URL configuration, Netlify origin/redirect secrets, SMTP delivery and Turnstile remain manual setup; the exact steps are in `ACTIVATION-CHECKLIST.md`. Existing verified password login is available, but Francis must verify his credentials and confirm real lending terms before first use. No fictional financial records were added to production.
