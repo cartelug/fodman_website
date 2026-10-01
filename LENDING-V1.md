@@ -1,0 +1,52 @@
+# FODMAN Lending V1
+
+V1 is a lending-only desk connected to the existing FODMAN website. Francis starts as the only administrator. Additional staff can later be invited with administrator, loan officer, cashier or viewer access.
+
+## Delivered
+
+- Public application intake and the existing WhatsApp fallback.
+- Shared applications, review, approval, disbursement, borrowers and loans.
+- Monthly flat-interest schedules in whole UGX, with exact final-instalment rounding and anchored month-end dates.
+- Cash, MoMo and bank repayments recorded after receipt of funds; printable receipts and statements.
+- Administrator reversals that retain original receipts and audit history.
+- Portfolio, overdue and collection totals, CSV export and dated JSON record exports.
+- Database-enforced staff permissions; public applicants cannot read records.
+- Idempotent application/payment retries and one loan per application.
+- Optional review by a second staff member, disabled initially.
+- Responsive desktop/mobile screens and an isolated demonstration using fictional records.
+
+## Current release state
+
+The source and demonstration are ready. Live operations stay disabled until the database, administrator and public configuration are set. The website continues its existing WhatsApp enquiry flow while configuration is empty. No sample data is inserted into the live database.
+
+Configured loan terms start as **draft**. Francis must enter the agreed rate and limits and confirm them before an application can be approved. The demo's 2.5% monthly flat rate is fictional, not a company rate.
+
+## Free deployment
+
+Use a dedicated **Supabase Free** project and **Cloudflare Pages Free**. Retain the corporate site on GitHub Pages. Configure the Pages application with `npm run build` and output directory `dist`. Production branch: `main`. The build excludes database source, tests, credentials and documentation from the Pages output. No paid add-ons are required by this code.
+
+1. Create the dedicated Supabase project on the Free plan. Apply the single migration in `supabase/migrations/`. Do not apply it to another business's existing schema.
+2. Create Francis's verified Auth user privately, then run `supabase/bootstrap_francis.sql` with his verified login email substituted locally. Disable public Auth sign-ups. Nobody can claim administrator access from a signup form.
+3. Deploy `lending-intake` with JWT verification off, and `staff-invite` with JWT verification on, using `supabase/config.toml`. The intake validates Turnstile and is the only public write path. Its SQL function is executable by the server role only.
+4. Set Edge Function secrets in Supabase: `ALLOWED_ORIGINS` (comma-separated exact GitHub/Pages origins), `TURNSTILE_SECRET_KEY`, a random `INTAKE_IP_SALT`, and `STAFF_REDIRECT_URL` (exact Pages `/desk/` URL). Supabase supplies its own URL and server credentials. Never copy secret credentials into browser code or GitHub.
+5. Create a free Cloudflare Turnstile widget for the approved public hostnames. Put only its **site key**, the Supabase **publishable key**, Supabase project URL and Pages staff URL into `lending-config.js`. Publishable keys start `sb_publishable_`; server keys are rejected by the frontend configuration check.
+6. Set the Supabase Auth site URL and redirect allowlist to the exact staff desk URL. Built-in Supabase email delivery is restricted; before inviting staff outside the project organisation, configure a free SMTP provider in Auth. Francis can initially use a privately created verified password account.
+7. Run the acceptance checks below against the actual deployment with disposable test records, then verify the terms and open the intake. Keep credentials out of chat.
+
+## Validation
+
+`npm ci`, `npm test`, `npm run test:database`, `npm run test:edge`, `npx playwright install chromium`, `npm run test:browser`, `npm run build`.
+
+The database suite executes the actual migration in PGlite (PostgreSQL), including roles and RLS. It checks duplicate retries, exact schedule totals, cashiers/viewers/loan officers, reversals, full settlement, public intake limits and two-person approval. Browser checks exercise desktop/mobile, application → approval → disbursement → partial payment → receipt/report, fallback enquiries and public submission retries. Edge tests mock external services and verify input validation, origin restrictions and Turnstile hostname/action binding.
+
+Local checks do not establish that a remote project has been configured. Before go-live, submit from a phone and confirm the application appears on Francis's laptop; record a partial and full repayment; confirm another authorised device sees the result; verify a non-staff login cannot see data and exported totals reconcile. Check actual email delivery and run Supabase security advisors.
+
+## Practical limits of V1
+
+Only UGX, monthly instalments and flat monthly interest are implemented. There is no payment collection API, automatic MoMo verification, SMS sending, automatic WhatsApp sending, document-upload portal, reducing-balance interest, fees, penalties, write-offs or expense accounting. JSON exports are records backups; automated restoration/import is deliberately not exposed. Existing V700 offline/demo records are not migrated automatically. A reviewed import is a separate step if real historical records exist.
+
+The staff desk refreshes confirmed server records every 20 seconds while active and offers manual refresh. Financial changes require a connection; offline changes are not queued. Sessions use this tab's session storage and clear on sign-out. A shared device should be signed out after use. Authorisation is looked up in the database on every protected operation, so disabling staff blocks their access immediately.
+
+Supabase Free has project/size limits and can pause after inactivity; automatic hosted backups are not included. Export records regularly. Do not enable paid capacity without the owner's instruction.
+
+Official references: [Supabase pricing](https://supabase.com/pricing), [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), [API keys](https://supabase.com/docs/guides/api/api-keys), [Edge authentication](https://supabase.com/docs/guides/functions/auth), [Auth email delivery](https://supabase.com/docs/guides/auth/auth-smtp), [Cloudflare Pages limits](https://developers.cloudflare.com/pages/platform/limits/), [Turnstile validation](https://developers.cloudflare.com/turnstile/get-started/server-side-validation/).

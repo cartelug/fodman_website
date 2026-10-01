@@ -1,0 +1,7 @@
+{
+  "name": "fodman-lending-v1",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node --test tests/finance.test.js", "test:database": "node tests/database.test.js", "test:edge": "node --test tests/edge.test.js", "test:browser": "node tests/browser.test.cjs", "build": "node scripts/build.mjs" },
+  "devDependencies": { "@electric-sql/pglite": "0.3.14", "playwright": "1.62.1" }
+}

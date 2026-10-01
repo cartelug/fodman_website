@@ -378,3 +378,7 @@
     });
   });
 })();
+
+
+// Staff gateway keeps the lending desk connected to every corporate page.
+(function(){const links=document.querySelector('.footer-bottom-links');if(links&&!links.querySelector('a[href="staff.html"]')){const a=document.createElement('a');a.href='staff.html';a.textContent='Staff lending desk';links.appendChild(a);}})();

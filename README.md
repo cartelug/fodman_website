@@ -34,9 +34,20 @@ built around the official globe-and-arrows brand identity and the company's six 
 - Fully responsive with reduced-motion support
 
 ## Deploying
-Static site — no build step. Push to `main` and the included GitHub Actions workflow
-(`.github/workflows/deploy.yml`) publishes to GitHub Pages. Or drop the folder onto any
-static host (Netlify, Vercel, cPanel).
+The corporate site is static. Its GitHub Pages publishing source is configured
+in the repository settings. The lending deployment has its own build and setup
+instructions below; it does not require a paid host.
+
+## Lending software V1
+
+The lending software lives in `desk/`. Use `staff.html` for the staff gateway,
+and [LENDING-V1.md](LENDING-V1.md) for implementation, validation and free deployment.
+Francis starts as the only administrator, with additional user roles available later.
+The website's Apply links feed the same application form. While live setup is pending,
+it keeps the existing WhatsApp enquiry flow. Demonstration records are fictional.
+
+The corporate website remains on GitHub Pages; host the live staff desk on Cloudflare
+Pages with a dedicated Supabase project. No live credentials or records are in this repo.
 
 ## Maintaining shared regions
 Nav, footer, and preloader are duplicated across pages so each is a standalone
