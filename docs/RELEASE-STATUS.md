@@ -1,5 +1,10 @@
 # V1 release check — 1 October 2026
 
+The V1 source is merged to `main`. GitHub CI and GitHub Pages deployment passed.
+The published [demonstration](https://cartelug.github.io/fodman_website/desk/)
+was opened and its dashboard verified in the browser. Use **Open demonstration**.
+The public demo uses fictional records; it is not activated for real lending.
+
 ## Completed and verified locally
 
 - Five calculation tests: exact whole-UGX rounding, monthly flat interest, month-end/leap-year anchoring, partial/full settlement and due-date handling.
