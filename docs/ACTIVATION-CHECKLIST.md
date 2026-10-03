@@ -5,6 +5,7 @@ The staff front end is published at https://fodman-lending-v1.netlify.app/desk/ 
 ## Required before real lending
 
 - Francis signs in with his privately set password.
+- If that password has been forgotten, the authorised project owner can generate a one-use recovery link with Supabase Auth Admin `generateLink({ type: 'recovery', email })`. Deliver its `hashed_token` privately in the fragment of the Netlify `/desk/reset.html` page. Francis enters and submits his new password himself. This uses the supported Auth API and does not require SMTP; it does not enable automatic recovery emails.
 - Francis confirms the company's real rate, limits and maximum term in Team & settings. These values cannot be invented by the developer; `terms_ready` remains false until he confirms them.
 - Verify the same authorised account can see confirmed records on a second device. Use a separately identified disposable test environment for a full financial acceptance cycle; do not insert fictional production loans.
 

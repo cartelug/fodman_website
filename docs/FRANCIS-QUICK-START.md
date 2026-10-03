@@ -34,6 +34,8 @@ The app records transfers; it does not transfer money or automatically confirm M
 
 Use **My account / Team & settings → Change password** while signed in. If locked out, contact the account administrator. Automated password-reset emails and staff invitations are disabled until email delivery and redirects are configured and tested.
 
+Your administrator can also prepare a private recovery link using Supabase's supported Auth Admin recovery API. Open that link, enter a new password of at least 12 characters twice and press **Save new password**. Then choose **Open lending desk**. Recovery links expire and can be used only once. The public reset page alone cannot restore access; it needs a valid recovery link for your account. Never put recovery links in public files or messages.
+
 Future staff roles are built in: administrator, loan officer, cashier and viewer. Once invitations are enabled, use **Team & settings → Add user**. Do not share Francis's account with other users.
 
 ## Practising

@@ -56,6 +56,36 @@ const server=http.createServer(async(req,res)=>{try{let name=decodeURIComponent(
   staffSnapshot.profile.role='admin';await staffPage.getByLabel('Email address',{exact:true}).fill('admin@example.com');await staffPage.getByLabel('Password',{exact:true}).fill('test-password-only');await staffPage.getByRole('button',{name:'Sign in →',exact:true}).click();await staffPage.getByRole('heading',{name:'Your desk, at a glance.'}).waitFor();
   await staffPage.getByRole('button',{name:'Open navigation'}).click();await staffPage.getByRole('button',{name:'Team & settings',exact:true}).click();await staffPage.getByRole('button',{name:'+ Add user',exact:true}).click();await staffPage.getByRole('heading',{name:'Adding your next staff member'}).waitFor();
   assert.ok(!apiCalls.some(p=>p.endsWith('/recover')||p.endsWith('/staff-invite')),'Unavailable email features must not attempt requests');await staffPage.close();
-  assert.deepEqual(errors,[]);console.log('PASS: desktop/mobile workflow, exact approval quote, disbursement, repayment, receipt/report, WhatsApp fallback, intake retry, staff help, email readiness and receipt attribution.');
+  // Recovery tests use only fictional tokens and mocked Auth responses.
+  const recoveryPage=await browser.newPage({viewport:{width:390,height:844}});
+  recoveryPage.on('pageerror',e=>errors.push(e.message));
+  const recoveryCalls=[];let rejectVerify=false,failUpdate=true;
+  await recoveryPage.route('https://*.supabase.co/**',route=>{
+   const req=route.request(),pathname=new URL(req.url()).pathname;
+   recoveryCalls.push({path:pathname,method:req.method(),body:req.postDataJSON(),authorization:req.headers().authorization});
+   const rejected=pathname.endsWith('/verify')&&rejectVerify,failed=pathname.endsWith('/user')&&failUpdate;
+   if(failed)failUpdate=false;
+   const payload=rejected?{message:'Recovery link expired or already used.'}:failed?{message:'Temporary save error. Please retry.'}:pathname.endsWith('/verify')?{access_token:'recovery-test-only-access',refresh_token:'recovery-test-only-refresh',expires_in:3600}:{};
+   return route.fulfill({status:rejected?403:failed?503:200,contentType:'application/json',headers:{'access-control-allow-origin':'*'},body:JSON.stringify(payload)});
+  });
+  await recoveryPage.goto(url+'/desk/reset.html');assert.equal(await recoveryPage.locator('#resetPassword').isVisible(),false);assert.equal(recoveryCalls.length,0);
+  const testHash='a'.repeat(64);
+  await recoveryPage.goto(url+'/desk/reset.html#token_hash='+testHash);
+  await recoveryPage.locator('#resetPassword').waitFor();assert.equal(new URL(recoveryPage.url()).hash,'');assert.equal(recoveryCalls.length,0,'Opening a recovery page must not consume its token');
+  assert.ok(await recoveryPage.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  await recoveryPage.getByLabel('New password',{exact:true}).fill('fictional-password-one');await recoveryPage.getByLabel('Confirm new password').fill('fictional-password-two');
+  await recoveryPage.getByRole('button',{name:'Save new password'}).click();await recoveryPage.getByText('The passwords do not match. Enter the same password twice.').waitFor();assert.equal(recoveryCalls.length,0);
+  await recoveryPage.getByLabel('Confirm new password').fill('fictional-password-one');await recoveryPage.getByRole('button',{name:'Save new password'}).click();await recoveryPage.getByText('Temporary save error. Please retry.').waitFor();
+  assert.equal(recoveryCalls[0].path,'/auth/v1/verify');assert.deepEqual(recoveryCalls[0].body,{token_hash:testHash,type:'recovery'});
+  assert.equal(recoveryCalls[1].method,'PUT');assert.equal(recoveryCalls[1].authorization,'Bearer recovery-test-only-access');
+  await recoveryPage.getByRole('button',{name:'Save new password'}).click();await recoveryPage.getByText('Your password has been updated.').waitFor();
+  assert.equal(recoveryCalls.filter(c=>c.path.endsWith('/verify')).length,1,'Retrying a password update must retain the verified recovery session');
+  assert.equal(await recoveryPage.getByLabel('New password',{exact:true}).inputValue(),'');assert.equal(await recoveryPage.locator('#resetPassword').isVisible(),false);
+  await recoveryPage.screenshot({path:path.join(root,'test-results/recovery-success.png'),fullPage:true});
+  rejectVerify=true;await recoveryPage.goto(url+'/desk/reset.html#token_hash='+'b'.repeat(64));
+  await recoveryPage.getByLabel('New password',{exact:true}).fill('fictional-password-three');await recoveryPage.getByLabel('Confirm new password').fill('fictional-password-three');
+  await recoveryPage.getByRole('button',{name:'Save new password'}).click();await recoveryPage.getByText('Recovery link expired or already used.').waitFor();
+  assert.equal(recoveryCalls.filter(c=>c.path.endsWith('/user')).length,2,'An invalid recovery token must not attempt a password update using an existing session');await recoveryPage.close();
+  assert.deepEqual(errors,[]);console.log('PASS: desktop/mobile workflow, exact approval quote, disbursement, repayment, receipt/report, WhatsApp fallback, intake retry, staff help, email readiness, receipt attribution and private password recovery.');
  }finally{await browser.close();await new Promise(r=>server.close(r));}
 })().catch(e=>{console.error(e);process.exitCode=1;server.close();});

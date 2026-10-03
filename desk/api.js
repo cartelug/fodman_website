@@ -11,6 +11,11 @@ async function request(path,body,token,method='POST'){
 function save(value){session=value;if(value)sessionStorage.setItem(STORAGE,JSON.stringify(value));else sessionStorage.removeItem(STORAGE);}
 export async function signIn(email,password){const s=await request('/auth/v1/token?grant_type=password',{email,password});save({...s,expires_at:Date.now()+s.expires_in*1000});return s;}
 export async function recover(email){return request('/auth/v1/recover?redirect_to='+encodeURIComponent(location.origin+location.pathname),{email});}
+export async function verifyRecovery(tokenHash){
+ const s=await request('/auth/v1/verify',{token_hash:tokenHash,type:'recovery'});
+ if(!s?.access_token||!s?.refresh_token||!Number.isFinite(s.expires_in)||s.expires_in<=0)throw Error('This recovery link could not be verified. Request a new link from your account administrator.');
+ save({...s,expires_at:Date.now()+s.expires_in*1000});return s;
+}
 export async function changePassword(password){return request('/auth/v1/user',{password},await token(),'PUT');}
 export function restore(){try{session=JSON.parse(sessionStorage.getItem(STORAGE));}catch{save(null);}return session;}
 export function acceptInvite(){const hash=new URLSearchParams(location.hash.slice(1));if(hash.has('access_token')){save({access_token:hash.get('access_token'),refresh_token:hash.get('refresh_token'),expires_at:Date.now()+Number(hash.get('expires_in')||3600)*1000});history.replaceState(null,'',location.pathname);return true;}return false;}
