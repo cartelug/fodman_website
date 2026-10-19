@@ -42,12 +42,18 @@
   });
 
   /* ---------- menu, header, dropdown ---------- */
-  var menuBtn = $('#menu-btn');
+  var menuBtn = $('#menu-btn'), mnav = $('#mnav'), behind = $$('.skip,.topbar,main,.ftr');
   function setMenu(open) {
+    if (open === root.classList.contains('menu-open')) return;
     root.classList.toggle('menu-open', open);
+    behind.forEach(function (el) { if (open) el.setAttribute('inert', ''); else el.removeAttribute('inert'); });
     if (menuBtn) { menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false'); menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); }
+    if (!open && menuBtn && mnav && mnav.contains(d.activeElement)) menuBtn.focus();
   }
   on(menuBtn, 'click', function () { setMenu(!root.classList.contains('menu-open')); });
+  $$('.mn-acc').forEach(function (b) { on(b, 'click', function () { b.setAttribute('aria-expanded', b.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); }); });
+  on(mnav, 'click', function (e) { var a = e.target.closest && e.target.closest('a[href]'); if (a) setMenu(false); });
+  function openCurrentGroup() { var cur = $('.mn-sub [aria-current]', mnav), acc = $('.mn-acc', mnav); if (cur && acc) acc.setAttribute('aria-expanded', 'true'); }
   var hdr = $('.hdr');
   function onScroll() { if (hdr) hdr.classList.toggle('is-stuck', (window.pageYOffset || 0) > 8); }
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
@@ -57,7 +63,9 @@
   on(d, 'click', function (e) {
     $$('.dd.open').forEach(function (dd) { if (!dd.contains(e.target)) { dd.classList.remove('open'); var b = $('button', dd); if (b) b.setAttribute('aria-expanded', 'false'); } });
   });
+  on(d, 'keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
   window.addEventListener('resize', function () { if (window.innerWidth >= 1024) setMenu(false); });
+  window.addEventListener('pageshow', function (e) { if (e.persisted) setMenu(false); });
 
   /* ---------- skip link ---------- */
   $$('[data-skip]').forEach(function (a) { on(a, 'click', function (e) { e.preventDefault(); var m = $('#main'); if (m) { m.focus(); try { m.scrollIntoView(); } catch (x) { /* ignore */ } } }); });
@@ -82,7 +90,7 @@
     root.setAttribute('data-route', r);
     var v = d.getElementById('v-' + r);
     if (v && v.getAttribute('data-title')) d.title = v.getAttribute('data-title');
-    markNav(r); setMenu(false);
+    markNav(r); openCurrentGroup(); setMenu(false);
     $$('.dd.open').forEach(function (dd) { dd.classList.remove('open'); });
     if (!firstRoute) {
       window.scrollTo(0, 0);
@@ -94,6 +102,7 @@
   if (SPA) { window.addEventListener('hashchange', route); route(); }
   else {
     var nav = root.getAttribute('data-nav'); if (nav) markNav(nav);
+    openCurrentGroup();
     if ($('#pv')) pvInit();
   }
   $$('[data-scroll]').forEach(function (b) {
@@ -173,7 +182,7 @@
     $$('[data-share-close]', modal).forEach(function (b) { on(b, 'click', closeShare); });
     on(modal, 'click', function (e) { if (e.target === modal) closeShare(); });
     on(d, 'keydown', function (e) {
-      if (e.key === 'Escape') { if (modal.classList.contains('open')) closeShare(); setMenu(false); }
+      if (e.key === 'Escape' && modal.classList.contains('open')) closeShare();
       if (e.key === 'Tab' && modal.classList.contains('open')) {
         var f = $$('button,a[href],input', modal).filter(function (x) { return !x.hidden && x.offsetParent !== null; });
         if (!f.length) return; var first = f[0], last = f[f.length - 1];

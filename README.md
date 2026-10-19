@@ -3,7 +3,7 @@
 The company website for **Fodman International Ltd** (*Finance · Trust · Growth*), rebuilt in October 2026
 from the 2026 company profile. Live address: <https://cartelug.github.io/fodman_website/>
 
-It is a static site: plain HTML pages, one stylesheet (`site.css`) and two small scripts. There is no build step and nothing to install.
+It is a static site: plain HTML pages, a stylesheet (`site.css`) with its motion layer (`motion.css`), and two small scripts (`site.js`, `motion.js`). There is no build step and nothing to install.
 
 ## Pages
 | File | What it is |
@@ -32,6 +32,15 @@ Older addresses (`supply-chain.html`, `consultancy.html`, `advisory.html`, `real
 - Fraunces for headings and Montserrat for text, both self-hosted in `fonts/`
 - The Fodman logo: `img/logo.png` and `img/logo-light.png`
 - Photographs are illustrative stock images, credited in the footer of every page. Three are CC BY 2.0, so those credits must stay.
+
+## Motion and the preloader
+`motion.css` and `motion.js` add the animation. They are progressive enhancement: every page is complete without them.
+- **Preloader.** The first page of a visit plays a short intro (about 4 seconds): the globe mark inside a progress ring that follows the real loading of the fonts, hero image and page, the FODMAN wordmark, *Finance / Trust / Growth* lighting up in turn, and a curtain that splits open onto the hero. Visitors can press **Skip intro** or Escape. It plays once per browser tab session (`sessionStorage` key `fodman-intro`).
+- **Page curtain.** Clicking an internal link closes a quick violet curtain with the mark, and the next page opens it (`fodman-go`). Links that open in a new tab, PDFs, and the lending pages (`apply.html`, `privacy.html`, `terms.html`, `staff.html`, `desk/`) skip it.
+- **Reveals.** `motion.js` finds headings, cards, images, lists and so on by class name and animates them as they scroll into view, so new content on the existing classes animates automatically. Headlines rise word by word, statistics count up, the delivery chain draws itself, and the map pulses at Kampala and Juba.
+- **Home page extras.** A moving ticker of the six services, service panels that open under the mouse on desktop (cards on touch screens), a rotating *Finance · Trust · Growth* badge, and live Kampala and Juba local times.
+- **Safety nets.** Visitors who ask their device for reduced motion get no preloader and no animation. If `motion.js` fails or is blocked, a timer in each page's head removes the loader after 7 seconds and nothing stays hidden. Printing shows everything.
+- To remove the preloader only, delete the `<div class="pl" id="pl">` block from the pages and the `pl-full` line in the boot script (`<script>` just before `site.css`).
 
 ## Features
 - Enquiry forms on every service page. They write a message for the visitor to copy or send from their email app, and never claim it was sent.
@@ -70,7 +79,7 @@ The corporate website remains on GitHub Pages; the live staff desk is hosted on 
 with a dedicated Supabase project. No live credentials or records are in this repo.
 
 ## Maintaining shared regions
-The header, footer and share dialog are repeated in every new-design page so that each page is a standalone file.
+The boot script and preloader, header (including the mobile menu panel) and footer and share dialog are repeated in every new-design page so that each page is a standalone file.
 When you change one of them, make the same edit in each of the pages listed above except `apply.html`, `privacy.html` and `terms.html`
 (those three use `style.css`). A find-and-replace across the folder keeps them in sync.
 
