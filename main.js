@@ -2,6 +2,8 @@
 (function(){
   'use strict';
   document.documentElement.classList.add('js');
+  // Where the site starts, read from this script's own address, so the pages work from any folder.
+  const ROOT=(function(){const s=document.currentScript;try{return s&&s.src?new URL('.',s.src).href:'';}catch(e){return '';}})();
 
   // ─── NAV SCROLL ───
   (function(){
@@ -182,7 +184,7 @@
   // loading, responsive treatment and accessibility consistent site-wide.
   (function(){
     const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
-    const visualBase='assets/fodman-visuals/';
+    const visualBase=ROOT+'assets/fodman-visuals/';
     const pages={
       'services.html':{
         hero:'20-partnership.webp',
@@ -194,7 +196,7 @@
         secondary:'04-finance-business.webp',
         label:'Financial guidance',title:'A clear conversation before every commitment.',
         text:'We explain the process, confirm what is required and help you understand the next step before you proceed.',
-        href:'apply.html',action:'Start an enquiry'
+        href:ROOT+'apply/',action:'Start an enquiry'
       },
       'supply-chain.html':{
         hero:'05-logistics-coordination.webp',
@@ -202,7 +204,7 @@
         secondary:'06-logistics-delivery.webp',
         label:'Operational control',title:'Visibility from requirement to delivery.',
         text:'Sourcing, movement and handover are coordinated around an agreed brief, clear documentation and assignment-specific timelines.',
-        href:'contact.html',action:'Request a proposal'
+        href:ROOT+'contact/',action:'Request a proposal'
       },
       'consultancy.html':{
         hero:'07-consultancy-strategy.webp',
@@ -210,7 +212,7 @@
         secondary:'08-consultancy-workshop.webp',
         label:'Working sessions',title:'Advice designed to be used, not shelved.',
         text:'We translate organisational questions into practical plans, facilitated sessions and tools your team can carry forward.',
-        href:'contact.html',action:'Discuss an assignment'
+        href:ROOT+'contact/',action:'Discuss an assignment'
       },
       'advisory.html':{
         hero:'09-research-field.webp',
@@ -218,7 +220,7 @@
         secondary:'10-research-analysis.webp',
         label:'Evidence to action',title:'From field insight to usable decisions.',
         text:'Methods are shaped around the question, context and intended audience—then communicated clearly for decision-makers.',
-        href:'contact.html',action:'Plan your study'
+        href:ROOT+'contact/',action:'Plan your study'
       },
       'real-estate.html':{
         hero:'11-property-viewing.webp',
@@ -226,7 +228,7 @@
         secondary:'12-property-commercial.webp',
         label:'Property advisory',title:'A clearer brief makes a better search.',
         text:'Tell us the location, purpose, budget and timing. We use that brief to focus the search and coordinate the next step.',
-        href:'contact.html',action:'Share your property brief'
+        href:ROOT+'contact/',action:'Share your property brief'
       },
       'tours-travel.html':{
         hero:'13-travel-safari.webp',
@@ -234,7 +236,7 @@
         secondary:'14-travel-airport.webp',
         label:'Travel coordination',title:'The details are handled before you depart.',
         text:'We coordinate travel around the traveller, schedule and purpose—from ticketing and transfers to group movement and tours.',
-        href:'contact.html',action:'Plan a journey'
+        href:ROOT+'contact/',action:'Plan a journey'
       },
       'about.html':{
         hero:'15-about-team.webp',
@@ -322,7 +324,7 @@
     wa.href='https://wa.me/256775858924'; wa.target='_blank'; wa.rel='noopener';
     wa.className='mobile-action-dock__wa'; wa.textContent='WhatsApp';
     const rfq=document.createElement('a');
-    rfq.href='contact.html'; rfq.className='mobile-action-dock__rfq'; rfq.textContent='Request a quote';
+    rfq.href=ROOT+'contact/'; rfq.className='mobile-action-dock__rfq'; rfq.textContent='Request a quote';
     dock.append(wa,rfq); document.body.appendChild(dock);
   })();
 
@@ -339,4 +341,4 @@
 
 
 // Staff gateway keeps the lending desk connected to every corporate page.
-(function(){const links=document.querySelector('.footer-bottom-links');if(links&&!links.querySelector('a[href="staff.html"]')){const a=document.createElement('a');a.href='staff.html';a.textContent='Staff lending desk';links.appendChild(a);}})();
+(function(){const root=document.currentScript&&document.currentScript.src?new URL('.',document.currentScript.src).href:'';const links=document.querySelector('.footer-bottom-links');if(links&&!links.querySelector('a[href$="staff/"],a[href$="staff.html"]')){const a=document.createElement('a');a.href=root+'staff/';a.textContent='Staff lending desk';links.appendChild(a);}})();

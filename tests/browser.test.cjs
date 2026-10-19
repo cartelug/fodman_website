@@ -30,7 +30,7 @@ const server=http.createServer(async(req,res)=>{try{let name=decodeURIComponent(
   await page.getByRole('button',{name:'Open navigation'}).click();await page.getByRole('button',{name:'Overview',exact:true}).click();
   await page.getByRole('heading',{name:'Your desk, at a glance.'}).waitFor();await page.screenshot({path:path.join(root,'test-results/mobile-overview.png'),fullPage:true});
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),JSON.stringify(await page.evaluate(()=>[...document.querySelectorAll('body *')].filter(e=>e.getBoundingClientRect().right>innerWidth+1).slice(0,8).map(e=>({tag:e.tagName,class:e.className,right:e.getBoundingClientRect().right})))));
-  await page.goto(url+'/apply.html?purpose=Business');await page.locator('#apPurpose').selectOption('Business');assert.equal(await page.locator('#apPurpose').inputValue(),'Business');
+  await page.goto(url+'/apply/?purpose=Business');await page.locator('#apPurpose').selectOption('Business');assert.equal(await page.locator('#apPurpose').inputValue(),'Business');
   await page.context().route('https://wa.me/**',r=>r.fulfill({contentType:'text/html',body:'<title>Prepared WhatsApp enquiry</title>'}));let popup=page.waitForEvent('popup');await page.locator('#apName').fill('Test Applicant');await page.locator('#apPhone').fill('+256700123456');await page.locator('#apAmount').fill('100000');await page.locator('#apTerm').fill('3');await page.getByRole('checkbox').check();await page.getByRole('button',{name:'Review in WhatsApp'}).click();const draft=await popup;await draft.waitForURL('https://wa.me/**');assert.ok(draft.url().includes('wa.me'));await draft.close();
   assert.ok((await page.locator('#applyFormNote').innerText()).includes('only when you send'));
   // Simulate configured intake to verify server confirmation and duplicate retry key.
@@ -88,10 +88,10 @@ const server=http.createServer(async(req,res)=>{try{let name=decodeURIComponent(
   assert.equal(recoveryCalls.filter(c=>c.path.endsWith('/user')).length,2,'An invalid recovery token must not attempt a password update using an existing session');await recoveryPage.close();
   // The branded preloader plays once per visit on a lending page, then leaves the form usable and nothing inert.
   const loaderPage=await browser.newPage({viewport:{width:390,height:844}});loaderPage.on('pageerror',e=>errors.push(e.message));
-  await loaderPage.goto(url+'/apply.html');assert.equal(await loaderPage.locator('#pl').isVisible(),true);
+  await loaderPage.goto(url+'/apply/');assert.equal(await loaderPage.locator('#pl').isVisible(),true);
   await loaderPage.locator('#pl').waitFor({state:'hidden',timeout:15000});assert.equal(await loaderPage.locator('[inert]').count(),0);
   await loaderPage.locator('#apName').fill('Loader Check');assert.equal(await loaderPage.locator('#apName').inputValue(),'Loader Check');
-  await loaderPage.goto(url+'/privacy.html');assert.equal(await loaderPage.locator('#pl').isVisible(),false);await loaderPage.close();
+  await loaderPage.goto(url+'/privacy/');assert.equal(await loaderPage.locator('#pl').isVisible(),false);await loaderPage.close();
   assert.deepEqual(errors,[]);console.log('PASS: desktop/mobile workflow, exact approval quote, disbursement, repayment, receipt/report, WhatsApp fallback, intake retry, staff help, email readiness, receipt attribution and private password recovery.');
  }finally{await browser.close();await new Promise(r=>server.close(r));}
 })().catch(e=>{console.error(e);process.exitCode=1;server.close();});

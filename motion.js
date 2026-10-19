@@ -271,7 +271,7 @@
       try { u = new URL(a.href, location.href); } catch (x) { return; }
       if (u.protocol !== location.protocol || u.host !== location.host) return;
       if (u.pathname === location.pathname && u.search === location.search) return;
-      if (!/\.html?$|\/$/.test(u.pathname) || /\/staff\.html?$|\/desk\//.test(u.pathname)) return;   // the staff desk is an app, not a page of the site
+      if (!/\.html?$|\/$/.test(u.pathname) || /\/staff(\.html?|\/)$|\/desk\//.test(u.pathname)) return;   // the staff desk is an app, not a page of the site
       e.preventDefault(); leaving = true;
       store('fodman-go', '1');
       pl.className = 'pl pl--on pl--quick pl--open'; void pl.offsetWidth;

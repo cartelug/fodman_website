@@ -7,6 +7,8 @@
   function $(s, c) { return (c || d).querySelector(s); }
   function $$(s, c) { return Array.prototype.slice.call((c || d).querySelectorAll(s)); }
   function on(el, ev, fn) { if (el) el.addEventListener(ev, fn); }
+  /* Where the site starts, read from this script's own address, so pages work at any folder depth and under any base path. */
+  var SITE = (function () { var s = $('script[src$="site.js"]'); try { return s ? new URL('.', s.src).href : ''; } catch (e) { return ''; } })();
 
   /* ---------- toast ---------- */
   var toastEl, toastT;
@@ -121,18 +123,18 @@
     if (CFG.base) return CFG.base.split('#')[0] + (SPA ? (location.hash || '') : '');
     var ok = /^https?:$/.test(location.protocol);
     if (!ok) return CFG.canonical || 'https://www.fodmaninternational.com/';
-    return location.href.split('?')[0];
+    return location.href.split('#')[0].split('?')[0].replace(/index\.html$/, '');
   }
   function homeUrl() {
     if (CFG.base) return CFG.base.split('#')[0];
     var ok = /^https?:$/.test(location.protocol);
     if (!ok) return CFG.canonical || 'https://www.fodmaninternational.com/';
     if (SPA) return location.href.split('#')[0].split('?')[0];
-    return location.origin + location.pathname.replace(/[^\/]*$/, '');
+    return SITE || location.origin + location.pathname.replace(/[^\/]*$/, '');
   }
   function assetUrl(name) {
     if (!/^https?:$/.test(location.protocol)) return (CFG.canonical || 'https://www.fodmaninternational.com/') + name;
-    try { return new URL(name, location.href).href; } catch (e) { return homeUrl().replace(/[^\/]*$/, '') + name; }
+    try { return new URL(name, SITE || location.href).href; } catch (e) { return homeUrl().replace(/[^\/]*$/, '') + name; }
   }
   function qrSvg(text) {
     try {
@@ -196,7 +198,7 @@
     on(b, 'click', function () {
       var k = b.getAttribute('data-copy-link'), u;
       if (k === 'pdf') u = assetUrl('Fodman_International_Company_Profile_2026.pdf');
-      else if (k === 'profile') u = SPA ? homeUrl() + '#profile' : homeUrl() + 'company-profile.html';
+      else if (k === 'profile') u = SPA ? homeUrl() + '#profile' : homeUrl() + 'company-profile/';
       else u = homeUrl();
       copyText(u, null, 'Link copied');
     });
@@ -269,13 +271,13 @@
     function pad(i) { return (i < 10 ? '0' : '') + i; }
     function show(i, fromUser) {
       cur = Math.max(1, Math.min(n, i));
-      img.src = 'profile/p' + pad(cur) + '.jpg';
+      img.src = SITE + 'profile/p' + pad(cur) + '.jpg';
       img.alt = 'Company profile page ' + cur + ' of ' + n + ': ' + titles[cur - 1];
       cap.innerHTML = '<b>Page ' + cur + ' of ' + n + '</b> &middot; ' + titles[cur - 1];
       prev.disabled = cur === 1; next.disabled = cur === n;
       thumbs.forEach(function (t, k) { t.setAttribute('aria-current', k + 1 === cur ? 'true' : 'false'); });
       var t = thumbs[cur - 1]; if (t && fromUser) { try { t.scrollIntoView({ block: 'nearest', inline: 'nearest' }); } catch (e) { /* ignore */ } }
-      [cur + 1, cur - 1].forEach(function (k) { if (k >= 1 && k <= n) { var im = new Image(); im.src = 'profile/p' + pad(k) + '.jpg'; } });
+      [cur + 1, cur - 1].forEach(function (k) { if (k >= 1 && k <= n) { var im = new Image(); im.src = SITE + 'profile/p' + pad(k) + '.jpg'; } });
     }
     on(prev, 'click', function () { show(cur - 1, true); });
     on(next, 'click', function () { show(cur + 1, true); });

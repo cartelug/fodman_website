@@ -5,27 +5,36 @@ from the 2026 company profile. Live address: <https://cartelug.github.io/fodman_
 
 It is a static site: plain HTML pages, a stylesheet (`site.css`) with its motion layer (`motion.css`) and the stand-alone preloader (`preloader.css`), and two small scripts (`site.js`, `motion.js`). There is no build step and nothing to install.
 
-## Pages
-| File | What it is |
-|------|------------|
-| `index.html` | Home |
-| `services.html` | The six services at a glance |
-| `logistics-and-supplies.html` | Logistics and Supplies |
-| `management-consultancy.html` | Management Consultancy |
-| `research-and-evaluation.html` | Research and Evaluation Consultancy |
-| `financial-services.html` | Financial Services (money lending), with a link to the loan application form |
-| `real-estate-agency.html` | Real Estate Agency |
-| `tours-and-travel.html` | Tours and Travel |
-| `about.html` | Who we are: vision, values, commitment and social responsibility |
-| `team.html` | Board of directors and management team |
-| `company-profile.html` | The 24-page company profile, read online. The PDF is `Fodman_International_Company_Profile_2026.pdf` |
-| `contact.html` | Offices in Kampala and Juba, and an enquiry form |
-| `404.html` | Page not found |
-| `apply.html` | Loan application form (part of the lending software, see below) |
-| `privacy.html`, `terms.html` | Legal pages |
+## Pages and web addresses
+Every page lives in its own folder as `index.html`, so addresses have no `.html` ending: `/about/` is the file `about/index.html`.
 
-Older addresses (`supply-chain.html`, `consultancy.html`, `advisory.html`, `real-estate.html`, `tours-travel.html`,
-`lending.html`, `sitemap.html`) are now small redirect pages that send visitors to the matching new page, so old links keep working.
+| Address | File | What it is |
+|---------|------|------------|
+| `/` | `index.html` | Home |
+| `/services/` | `services/index.html` | The six services at a glance |
+| `/logistics-and-supplies/` | `logistics-and-supplies/index.html` | Logistics and Supplies |
+| `/management-consultancy/` | `management-consultancy/index.html` | Management Consultancy |
+| `/research-and-evaluation/` | `research-and-evaluation/index.html` | Research and Evaluation Consultancy |
+| `/financial-services/` | `financial-services/index.html` | Financial Services (money lending), with a link to the loan application form |
+| `/real-estate-agency/` | `real-estate-agency/index.html` | Real Estate Agency |
+| `/tours-and-travel/` | `tours-and-travel/index.html` | Tours and Travel |
+| `/about/` | `about/index.html` | Who we are: vision, values, commitment and social responsibility |
+| `/team/` | `team/index.html` | Board of directors and management team |
+| `/company-profile/` | `company-profile/index.html` | The 24-page company profile, read online. The PDF is `Fodman_International_Company_Profile_2026.pdf` |
+| `/contact/` | `contact/index.html` | Offices in Kampala and Juba, and an enquiry form |
+| `/apply/` | `apply/index.html` | Loan application form (part of the lending software, see below) |
+| `/privacy/`, `/terms/` | `privacy/index.html`, `terms/index.html` | Legal pages |
+| `/staff/` | `staff/index.html` | Staff gateway to the lending desk (see below) |
+| not found | `404.html` | Page not found. It stays at the top level because that is where GitHub Pages looks for it |
+
+**Links are relative.** A page in a folder reaches shared files with `../` (`../site.css`, `../img/logo.png`) and other pages with `../about/`, so the site works under `/fodman_website/` today and at the root of a company domain later without edits.
+Links to a page always end with a slash. Hero and footer background pictures are set directly on the element (`style="background-image:url(../img/...)"`), not through a CSS variable, so they resolve the same way in every browser.
+
+**To add a page:** make a folder `my-page/` with an `index.html`, copy the head and header from an existing page, change the `../` prefixes only if the folder is nested deeper, link to it as `my-page/` (or `../my-page/`), and add it to `sitemap.xml`.
+
+**Old addresses keep working.** Every former `name.html` (`about.html`, `apply.html`, `contact.html`, and so on) and the older marketing addresses (`supply-chain.html`, `consultancy.html`, `advisory.html`, `real-estate.html`, `tours-travel.html`, `lending.html`, `sitemap.html`) are now small redirect pages at the top level. They send visitors, with any `?query` and `#section`, to the new address, and name it as the canonical one for search engines. They are safe to delete once nobody links to the old addresses.
+
+**Previewing locally.** Open the site through a web server (for example `python3 -m http.server` in this folder). Opening files straight from disk (`file://`) cannot follow a link to a folder, so open each `index.html` directly there.
 
 ## Brand
 - Deep violet (`#22074b`, `#4b2a8c`) with gold (`#b8892b`, `#d9b25e`) on white
@@ -36,11 +45,11 @@ Older addresses (`supply-chain.html`, `consultancy.html`, `advisory.html`, `real
 ## Motion and the preloader
 `motion.css`, `preloader.css` and `motion.js` add the animation. They are progressive enhancement: every page is complete without them.
 - **Preloader.** The first page of a visit plays a short intro (about 4 seconds): the globe mark inside a progress ring that follows the real loading of the fonts, hero image and page, the FODMAN wordmark, *Finance / Trust / Growth* lighting up in turn, and a curtain that splits open onto the hero. Visitors can press **Skip intro** or Escape. It plays once per browser tab session (`sessionStorage` key `fodman-intro`).
-- **Page curtain.** Clicking an internal link closes a quick violet curtain with the mark, and the next page opens it (`fodman-go`). Links that open in a new tab, PDFs, and the staff desk (`staff.html`, `desk/`) skip it.
+- **Page curtain.** Clicking an internal link closes a quick violet curtain with the mark, and the next page opens it (`fodman-go`). Links that open in a new tab, PDFs, and the staff desk (`/staff/`, `desk/`) skip it.
 - **Reveals.** `motion.js` finds headings, cards, images, lists and so on by class name and animates them as they scroll into view, so new content on the existing classes animates automatically. Headlines rise word by word, statistics count up, the delivery chain draws itself, and the map pulses at Kampala and Juba.
 - **Home page extras.** A moving ticker of the six services, service panels that open under the mouse on desktop (cards on touch screens), a rotating *Finance · Trust · Growth* badge, and live Kampala and Juba local times.
 - **Safety nets.** Visitors who ask their device for reduced motion get no preloader and no animation. If `motion.js` fails or is blocked, a timer in each page's head removes the loader after 7 seconds and nothing stays hidden. Printing shows everything.
-- **Lending pages.** `apply.html`, `privacy.html` and `terms.html` (which use `style.css`) get the same preloader and page curtain, and nothing else: they set `<html data-motion="loader">` and load `preloader.css` and `motion.js`, so their layout and buttons are untouched. The old loader that lived in `main.js` and `style.css` was removed. The preloader holds a page for a few seconds on the first page of a visit, so automated browser tests of those pages should run with reduced motion (`tests/browser.test.cjs` does).
+- **Lending pages.** `/apply/`, `/privacy/` and `/terms/` (which use `style.css`) get the same preloader and page curtain, and nothing else: they set `<html data-motion="loader">` and load `preloader.css` and `motion.js`, so their layout and buttons are untouched. The old loader that lived in `main.js` and `style.css` was removed. The preloader holds a page for a few seconds on the first page of a visit, so automated browser tests of those pages should run with reduced motion (`tests/browser.test.cjs` does).
 - To remove the preloader only, delete the `<div class="pl" id="pl">` block from the pages and the `pl-full` line in the boot script (`<script>` in the `<head>`, before the stylesheet links).
 
 ## Features
@@ -57,7 +66,7 @@ Every page reads this one small file.
 - `canonical`: the website address used when someone shares the site from a file instead of the live address.
 
 ## Web address
-Each page names `https://cartelug.github.io/fodman_website/` as its own address (canonical link, share card, `sitemap.xml`, `robots.txt`, `config.js`).
+Each page names `https://cartelug.github.io/fodman_website/` as the base of its own address (canonical link, share card, `sitemap.xml`, `robots.txt`, `config.js`).
 When a company domain such as www.fodmaninternational.com is connected to GitHub Pages, replace that address in those files and add the domain in the repository's Pages settings.
 
 ## Still to confirm with the client
@@ -70,7 +79,7 @@ The lending deployment has its own build and setup instructions below; it does n
 
 ## Lending software V1
 
-The lending software lives in `desk/`. Use `staff.html` for the staff gateway,
+The lending software lives in `desk/`. Use `/staff/` for the staff gateway,
 and [LENDING-V1.md](LENDING-V1.md) for implementation, validation and free deployment.
 Francis starts as the only administrator, with additional user roles available later.
 The website's Apply links feed the same application form. While live setup is pending,
@@ -81,9 +90,9 @@ with a dedicated Supabase project. No live credentials or records are in this re
 
 ## Maintaining shared regions
 The boot script and preloader, header (including the mobile menu panel) and footer and share dialog are repeated in every new-design page so that each page is a standalone file.
-When you change one of them, make the same edit in each of the pages listed above except `apply.html`, `privacy.html` and `terms.html`
+When you change one of them, make the same edit in each of the pages listed above except `/apply/`, `/privacy/` and `/terms/`
 (those three use `style.css`; only the boot script and the preloader block are shared with them). A find-and-replace across the folder keeps them in sync.
-The lending build (`npm run build`) copies `fonts/` and `assets/` so the preloader keeps its fonts and logo on the Netlify copy of those pages.
+The lending build (`npm run build`) copies every top-level folder that holds an `index.html` (the pages), plus `fonts/` and `assets/`, so the Netlify copy of those pages keeps its fonts and logo.
 
 ## Release handoff
 
