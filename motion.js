@@ -1,10 +1,11 @@
 /* Fodman International motion layer: preloader, page curtain, scroll reveals, counters, parallax, map pulse and office clocks.
+   The lending pages set <html data-motion="loader"> and get only the preloader and the page curtain.
    Progressive enhancement. Nothing here is needed to read or use the site, and html.m-on (set by the boot script in each page's head)
    is only present when the visitor has not asked for reduced motion. */
 (function () {
   'use strict';
   var d = document, root = d.documentElement;
-  var ON = root.classList.contains('m-on');
+  var ON = root.classList.contains('m-on'), LOADER = root.getAttribute('data-motion') === 'loader';
   var FINE = !!(window.matchMedia && matchMedia('(hover:hover) and (pointer:fine)').matches);
   var NS = 'http://www.w3.org/2000/svg';
   function $(s, c) { return (c || d).querySelector(s); }
@@ -175,7 +176,10 @@
   /* ---------- intro, page curtain ---------- */
   var pl = $('#pl'), readied = false, failT = null, leaving = false;
   function inert(state) {
-    $$('.skip,.topbar,.hdr,.mnav,main,.ftr,.modal').forEach(function (el) { if (state) el.setAttribute('inert', ''); else el.removeAttribute('inert'); });
+    Array.prototype.forEach.call(d.body.children, function (el) {
+      if (el === pl || /^(SCRIPT|STYLE|NOSCRIPT|LINK)$/.test(el.tagName)) return;
+      if (state) el.setAttribute('inert', ''); else el.removeAttribute('inert');
+    });
   }
   function ready() {
     if (readied) return;
@@ -224,7 +228,7 @@
     var total = 0, ok = 0;
     function track(pr) { var once = false; total++; function f() { if (!once) { once = true; ok++; } } pr.then(f, f); }
     function imgDone(src) { return new Promise(function (res) { var im = new Image(); im.onload = im.onerror = res; im.src = src; }); }
-    if (d.fonts && d.fonts.load) track(Promise.all([d.fonts.load('600 1em Fraunces'), d.fonts.load('400 1em Montserrat')]));
+    if (d.fonts && d.fonts.load) track(Promise.all([d.fonts.load('600 1em Fraunces'), d.fonts.load('600 1em Montserrat')]));
     track(new Promise(function (res) { if (d.readyState === 'complete') res(); else on(window, 'load', res); }));
     var art = $('.hero__art'), bg = art && /url\(["']?([^"')]+)/.exec(window.getComputedStyle(art).backgroundImage || '');
     if (bg) track(imgDone(bg[1]));
@@ -267,7 +271,7 @@
       try { u = new URL(a.href, location.href); } catch (x) { return; }
       if (u.protocol !== location.protocol || u.host !== location.host) return;
       if (u.pathname === location.pathname && u.search === location.search) return;
-      if (!/\.html?$|\/$/.test(u.pathname) || /\/(apply|privacy|terms|staff)\.html?$|\/desk\//.test(u.pathname)) return;   // the lending pages have their own loader
+      if (!/\.html?$|\/$/.test(u.pathname) || /\/staff\.html?$|\/desk\//.test(u.pathname)) return;   // the staff desk is an app, not a page of the site
       e.preventDefault(); leaving = true;
       store('fodman-go', '1');
       pl.className = 'pl pl--on pl--quick pl--open'; void pl.offsetWidth;
@@ -282,7 +286,8 @@
   safe(clocks);
   clearTimeout(window.__mf);
   failT = setTimeout(function () { cleanup(); ready(); }, 9000);
-  safe(heroInit); safe(tagReveals); safe(dust); safe(mapFx); safe(scrollFx); safe(pointerFx); safe(curtain);
+  if (!LOADER) { safe(heroInit); safe(tagReveals); safe(dust); safe(mapFx); safe(scrollFx); safe(pointerFx); }
+  safe(curtain);
   var mode = root.classList.contains('pl-full') ? 'full' : root.classList.contains('pl-quick') ? 'quick' : '';
   if (pl && mode) { try { runIntro(mode === 'full'); } catch (e) { cleanup(); ready(); } }
   else ready();

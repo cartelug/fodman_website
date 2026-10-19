@@ -4,7 +4,7 @@ const root=path.resolve(__dirname,'..');
 const server=http.createServer(async(req,res)=>{try{let name=decodeURIComponent(new URL(req.url,'http://local').pathname);if(name.endsWith('/'))name+='index.html';const file=path.resolve(root,'.'+name);if(!file.startsWith(root+path.sep))throw Error();const data=await fs.readFile(file);res.setHeader('Content-Type',({'.js':'text/javascript','.css':'text/css','.html':'text/html','.png':'image/png'}[path.extname(file)]||'application/octet-stream'));res.end(data);}catch{res.writeHead(404);res.end('Not found');}});
 (async()=>{
  await new Promise(r=>server.listen(0,'127.0.0.1',r));const url='http://127.0.0.1:'+server.address().port;
- const browser=await chromium.launch({headless:true,...(process.env.FODMAN_TEST_CHROMIUM?{executablePath:process.env.FODMAN_TEST_CHROMIUM}:{}),args:['--no-sandbox','--disable-dev-shm-usage']});const page=await browser.newPage({viewport:{width:1440,height:1000}});const errors=[];
+ const browser=await chromium.launch({headless:true,...(process.env.FODMAN_TEST_CHROMIUM?{executablePath:process.env.FODMAN_TEST_CHROMIUM}:{}),args:['--no-sandbox','--disable-dev-shm-usage']});const page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});const errors=[];
  page.on('pageerror',e=>errors.push(e.message));
  try{
   await page.goto(url+'/desk/');await page.getByRole('button',{name:'Open demonstration'}).click();
@@ -86,6 +86,12 @@ const server=http.createServer(async(req,res)=>{try{let name=decodeURIComponent(
   await recoveryPage.getByLabel('New password',{exact:true}).fill('fictional-password-three');await recoveryPage.getByLabel('Confirm new password').fill('fictional-password-three');
   await recoveryPage.getByRole('button',{name:'Save new password'}).click();await recoveryPage.getByText('Recovery link expired or already used.').waitFor();
   assert.equal(recoveryCalls.filter(c=>c.path.endsWith('/user')).length,2,'An invalid recovery token must not attempt a password update using an existing session');await recoveryPage.close();
+  // The branded preloader plays once per visit on a lending page, then leaves the form usable and nothing inert.
+  const loaderPage=await browser.newPage({viewport:{width:390,height:844}});loaderPage.on('pageerror',e=>errors.push(e.message));
+  await loaderPage.goto(url+'/apply.html');assert.equal(await loaderPage.locator('#pl').isVisible(),true);
+  await loaderPage.locator('#pl').waitFor({state:'hidden',timeout:15000});assert.equal(await loaderPage.locator('[inert]').count(),0);
+  await loaderPage.locator('#apName').fill('Loader Check');assert.equal(await loaderPage.locator('#apName').inputValue(),'Loader Check');
+  await loaderPage.goto(url+'/privacy.html');assert.equal(await loaderPage.locator('#pl').isVisible(),false);await loaderPage.close();
   assert.deepEqual(errors,[]);console.log('PASS: desktop/mobile workflow, exact approval quote, disbursement, repayment, receipt/report, WhatsApp fallback, intake retry, staff help, email readiness, receipt attribution and private password recovery.');
  }finally{await browser.close();await new Promise(r=>server.close(r));}
 })().catch(e=>{console.error(e);process.exitCode=1;server.close();});
