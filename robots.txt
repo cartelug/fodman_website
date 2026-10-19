@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://www.fodmaninternational.com/sitemap.xml
+Sitemap: https://cartelug.github.io/fodman_website/sitemap.xml

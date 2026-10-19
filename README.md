@@ -1,42 +1,62 @@
 # Fodman International — Website
 
-A complete corporate website for **Fodman International Ltd** — *Finance · Trust · Growth* —
-built around the official globe-and-arrows brand identity and the company's six service lines.
+The company website for **Fodman International Ltd** (*Finance · Trust · Growth*), rebuilt in October 2026
+from the 2026 company profile. Live address: <https://cartelug.github.io/fodman_website/>
 
-## Brand system
-- **Purple** `#4A2178` (logo arrows) · **Plum** `#240F45` · **Silver** `#A0A0A8` (globe)
-- **Display type:** Plus Jakarta Sans · **Body type:** Inter (Google Fonts) — chosen for readability and a trustworthy finance feel
-- **Logo:** full lockup on dark, globe mark for nav/favicon (`assets/fodman-lockup.png`, `assets/fodman-mark.png`)
-- **Signature motif:** the three descending arrows — reused in the preloader animation
+It is a static site: plain HTML pages, one stylesheet (`site.css`) and two small scripts. There is no build step and nothing to install.
 
 ## Pages
-| File | Purpose |
-|------|---------|
-| `index.html` | Home — hero, six service lines, capabilities, sectors, region |
-| `services.html` | Services hub — all six lines |
-| `lending.html` | Financial Services / Fodman Lending Desk |
-| `supply-chain.html` | Logistics & Supplies |
-| `consultancy.html` | Management Consultancy |
-| `advisory.html` | Research & Evaluation |
-| `real-estate.html` | Real Estate Agency |
-| `tours-travel.html` | Tours & Travel |
-| `about.html` | History, mission/values, leadership, governance |
-| `contact.html` | RFQ form (WhatsApp + email) + contact details |
-| `privacy.html` / `terms.html` | Legal |
-| `404.html` | Not-found page |
+| File | What it is |
+|------|------------|
+| `index.html` | Home |
+| `services.html` | The six services at a glance |
+| `logistics-and-supplies.html` | Logistics and Supplies |
+| `management-consultancy.html` | Management Consultancy |
+| `research-and-evaluation.html` | Research and Evaluation Consultancy |
+| `financial-services.html` | Financial Services (money lending), with a link to the loan application form |
+| `real-estate-agency.html` | Real Estate Agency |
+| `tours-and-travel.html` | Tours and Travel |
+| `about.html` | Who we are: vision, values, commitment and social responsibility |
+| `team.html` | Board of directors and management team |
+| `company-profile.html` | The 24-page company profile, read online. The PDF is `Fodman_International_Company_Profile_2026.pdf` |
+| `contact.html` | Offices in Kampala and Juba, and an enquiry form |
+| `404.html` | Page not found |
+| `apply.html` | Loan application form (part of the lending software, see below) |
+| `privacy.html`, `terms.html` | Legal pages |
+
+Older addresses (`supply-chain.html`, `consultancy.html`, `advisory.html`, `real-estate.html`, `tours-travel.html`,
+`lending.html`, `sitemap.html`) are now small redirect pages that send visitors to the matching new page, so old links keep working.
+
+## Brand
+- Deep violet (`#22074b`, `#4b2a8c`) with gold (`#b8892b`, `#d9b25e`) on white
+- Fraunces for headings and Montserrat for text, both self-hosted in `fonts/`
+- The Fodman logo: `img/logo.png` and `img/logo-light.png`
+- Photographs are illustrative stock images, credited in the footer of every page. Three are CC BY 2.0, so those credits must stay.
 
 ## Features
-- Custom preloader drawing the brand arrows into the globe
-- Sticky nav with a **Services dropdown**; responsive mobile menu
-- Scroll-reveal animations, animated counters, partner ticker (all degrade without JS)
-- **RFQ form wired to WhatsApp + email** — no backend required
-- SEO: per-page meta, Open Graph, `sitemap.xml`, `robots.txt`, favicons
-- Fully responsive with reduced-motion support
+- Enquiry forms on every service page. They write a message for the visitor to copy or send from their email app, and never claim it was sent.
+- A Share dialog with copy-link, WhatsApp, email and a QR code, for sending the site to clients.
+- The company profile can be read online or downloaded as a PDF.
+- Page titles, descriptions, share cards (`og-share.jpg`), `sitemap.xml`, `robots.txt` and structured data for search engines.
+
+## Settings: `config.js`
+Every page reads this one small file.
+- `whatsapp`: the business WhatsApp number with no plus sign or spaces, for example `"256775858924"`. It is empty for now, so no WhatsApp buttons show. Fill it in once the number is confirmed.
+- `endpoint`: the address of a form service such as Formspree. When set, enquiries are also posted there. Empty for now.
+- `email`: where "Open email app" sends enquiries.
+- `canonical`: the website address used when someone shares the site from a file instead of the live address.
+
+## Web address
+Each page names `https://cartelug.github.io/fodman_website/` as its own address (canonical link, share card, `sitemap.xml`, `robots.txt`, `config.js`).
+When a company domain such as www.fodmaninternational.com is connected to GitHub Pages, replace that address in those files and add the domain in the repository's Pages settings.
+
+## Still to confirm with the client
+Each person should approve their own portrait. Wilfred Opobo has no portrait yet, so a monogram shows. Which phone numbers accept WhatsApp.
+Money-lending licence details, if they should be shown. Client logos are not shown because none are confirmed in the company profile.
 
 ## Deploying
-The corporate site is static. Its GitHub Pages publishing source is configured
-in the repository settings. The lending deployment has its own build and setup
-instructions below; it does not require a paid host.
+The site is published by GitHub Pages straight from the `main` branch (root folder, `.nojekyll`). Push to `main` and it updates within a minute or two.
+The lending deployment has its own build and setup instructions below; it does not require a paid host.
 
 ## Lending software V1
 
@@ -50,13 +70,9 @@ The corporate website remains on GitHub Pages; the live staff desk is hosted on 
 with a dedicated Supabase project. No live credentials or records are in this repo.
 
 ## Maintaining shared regions
-Nav, footer, and preloader are duplicated across pages so each is a standalone
-static file. When changing a shared region, apply the same edit to every
-`*.html` file (a simple find-and-replace across the folder keeps them in sync).
-
----
-Contact confirmed against Fodman's corporate profile. HQ address, the two-vs-six service
-scope, and Real Estate / Tours copy are marked for final confirmation with the client.
+The header, footer and share dialog are repeated in every new-design page so that each page is a standalone file.
+When you change one of them, make the same edit in each of the pages listed above except `apply.html`, `privacy.html` and `terms.html`
+(those three use `style.css`). A find-and-replace across the folder keeps them in sync.
 
 ## Release handoff
 
